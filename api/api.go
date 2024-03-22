@@ -13,4 +13,9 @@ func Binding(r *gin.Engine, d *rest.RestDelivery) {
 			"message": "pong",
 		})
 	})
+	r.GET("/healthy", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "healthy",
+		})
+	})
 }

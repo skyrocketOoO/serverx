@@ -7,3 +7,4 @@
 - Viper
 - Gorm
 - Postgres
+- Zerolog
