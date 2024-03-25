@@ -7,6 +7,7 @@ import (
 	"go-server-template/internal/delivery/rest/middleware"
 	"go-server-template/internal/repository/sql"
 	"go-server-template/internal/usecase"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,28 +18,29 @@ import (
 
 func main() {
 	zerolog.TimeFieldFormat = time.RFC3339
-	log.Info().Msg("hello world")
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) // human-friendly logging without efficiency
+	log.Info().Msg("Logger initialized")
 
 	if err := config.ReadConfig(); err != nil {
-		panic(err.Error())
+		log.Fatal().Msg(err.Error())
 	}
 
 	sqlDb, err := sql.InitDB()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal().Msg(err.Error())
 	}
 
 	sqlRepo, err := sql.NewOrmRepository(sqlDb)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal().Msg(err.Error())
 	}
 
 	usecase := usecase.NewUsecase(sqlRepo)
 	restDelivery := rest.NewRestDelivery(usecase)
 
-	r := gin.Default()
-	r.Use(middleware.CORS())
-	api.Binding(r, restDelivery)
+	router := gin.Default()
+	router.Use(middleware.CORS())
+	api.Binding(router, restDelivery)
 
-	r.Run(viper.GetString("address"))
+	router.Run(viper.GetString("address"))
 }
