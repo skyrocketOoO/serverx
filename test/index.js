@@ -11,6 +11,9 @@ export default function() {
     'Content-Type': 'application/json',
   }
 
-  let res = http.get(`${SERVER_URL}/healthy`);
+  let res = http.get(`${SERVER_URL}/ping`);
+  check(res, { 'Server is healthy': (r) => r.status == 200 });
+
+  res = http.get(`${SERVER_URL}/healthy`);
   check(res, { 'Server is healthy': (r) => r.status == 200 });
 }

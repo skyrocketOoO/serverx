@@ -14,6 +14,8 @@ func Binding(r *gin.Engine, d *rest.RestDelivery) {
 		})
 	})
 	r.GET("/healthy", func(c *gin.Context) {
+		// do something check like db connection is established
+
 		c.JSON(http.StatusOK, gin.H{
 			"message": "healthy",
 		})

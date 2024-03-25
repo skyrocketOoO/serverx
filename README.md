@@ -12,4 +12,5 @@
 
 ## Tool
 - Postgres
+- Sqlite
 - K6

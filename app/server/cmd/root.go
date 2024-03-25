@@ -24,40 +24,42 @@ import (
 // Here is the enum flag variable declaration
 var flagDatabaseEnum DatabaseEnum
 
+func workFunc(cmd *cobra.Command, args []string) {
+	zerolog.TimeFieldFormat = time.RFC3339
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) // human-friendly logging without efficiency
+	log.Info().Msg("Logger initialized")
+
+	if err := config.ReadConfig(); err != nil {
+		log.Fatal().Msg(errors.ToString(err, true))
+	}
+
+	sqlDb, err := sql.InitDB(string(flagDatabaseEnum))
+	if err != nil {
+		log.Fatal().Msg(errors.ToString(err, true))
+	}
+
+	sqlRepo, err := sql.NewOrmRepository(sqlDb)
+	if err != nil {
+		log.Fatal().Msg(err.Error())
+	}
+
+	usecase := usecase.NewUsecase(sqlRepo)
+	restDelivery := rest.NewRestDelivery(usecase)
+
+	router := gin.Default()
+	router.Use(middleware.CORS())
+	api.Binding(router, restDelivery)
+
+	port, _ := cmd.Flags().GetString("port")
+	router.Run(":" + port)
+}
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "",
 	Short: "A brief description of your application",
 	Long:  `The longer description`,
-	Run: func(cmd *cobra.Command, args []string) {
-		zerolog.TimeFieldFormat = time.RFC3339
-		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) // human-friendly logging without efficiency
-		log.Info().Msg("Logger initialized")
-
-		if err := config.ReadConfig(); err != nil {
-			log.Fatal().Msg(errors.ToString(err, true))
-		}
-
-		sqlDb, err := sql.InitDB(string(flagDatabaseEnum))
-		if err != nil {
-			log.Fatal().Msg(errors.ToString(err, true))
-		}
-
-		sqlRepo, err := sql.NewOrmRepository(sqlDb)
-		if err != nil {
-			log.Fatal().Msg(err.Error())
-		}
-
-		usecase := usecase.NewUsecase(sqlRepo)
-		restDelivery := rest.NewRestDelivery(usecase)
-
-		router := gin.Default()
-		router.Use(middleware.CORS())
-		api.Binding(router, restDelivery)
-
-		port, _ := cmd.Flags().GetString("port")
-		router.Run(":" + port)
-	},
+	Run:   workFunc,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
