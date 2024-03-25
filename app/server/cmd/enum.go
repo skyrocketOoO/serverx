@@ -1,6 +1,6 @@
 package cmd
 
-import "errors"
+import errors "github.com/rotisserie/eris"
 
 type DatabaseEnum string
 

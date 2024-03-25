@@ -8,6 +8,7 @@
 - Gorm
 - Zerolog
 - Cobra
+- Eris
 
 ## Tool
 - Postgres

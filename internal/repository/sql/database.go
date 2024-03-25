@@ -1,9 +1,9 @@
 package sql
 
 import (
-	"errors"
 	"fmt"
 
+	errors "github.com/rotisserie/eris"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"

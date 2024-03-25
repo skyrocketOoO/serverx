@@ -13,6 +13,8 @@ import (
 	"os"
 	"time"
 
+	errors "github.com/rotisserie/eris"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -33,12 +35,12 @@ var rootCmd = &cobra.Command{
 		log.Info().Msg("Logger initialized")
 
 		if err := config.ReadConfig(); err != nil {
-			log.Fatal().Msg(err.Error())
+			log.Fatal().Msg(errors.ToString(err, true))
 		}
 
 		sqlDb, err := sql.InitDB(string(flagDatabaseEnum))
 		if err != nil {
-			log.Fatal().Msg(err.Error())
+			log.Fatal().Msg(errors.ToString(err, true))
 		}
 
 		sqlRepo, err := sql.NewOrmRepository(sqlDb)
