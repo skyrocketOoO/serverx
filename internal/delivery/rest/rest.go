@@ -2,17 +2,16 @@ package rest
 
 import (
 	"go-server-template/domain"
-	"go-server-template/internal/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type RestDelivery struct {
-	usecase *usecase.Usecase
+	usecase domain.Usecase
 }
 
-func NewRestDelivery(usecase *usecase.Usecase) *RestDelivery {
+func NewRestDelivery(usecase domain.Usecase) *RestDelivery {
 	return &RestDelivery{
 		usecase: usecase,
 	}

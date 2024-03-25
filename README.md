@@ -15,3 +15,8 @@ The basic server template extend for clean-architecture with common library and 
     - Postgres
     - Sqlite
 - End to End test: K6
+
+## Todo
+- Grpc
+- Mock test
+- Swagger

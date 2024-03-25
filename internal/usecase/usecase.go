@@ -2,14 +2,14 @@ package usecase
 
 import (
 	"context"
-	"go-server-template/internal/repository/sql"
+	"go-server-template/domain"
 )
 
 type Usecase struct {
-	repo *sql.OrmRepository
+	repo domain.OrmRepository
 }
 
-func NewUsecase(ormRepo *sql.OrmRepository) *Usecase {
+func NewUsecase(ormRepo domain.OrmRepository) *Usecase {
 	return &Usecase{
 		repo: ormRepo,
 	}
