@@ -37,6 +37,10 @@ func workFunc(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal().Msg(errors.ToString(err, true))
 	}
+	defer func() {
+		db, _ := sqlDb.DB()
+		db.Close()
+	}()
 
 	sqlRepo, err := sql.NewOrmRepository(sqlDb)
 	if err != nil {
