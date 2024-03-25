@@ -1,7 +1,7 @@
 FROM golang:latest
 WORKDIR /builder
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o server app/server.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server app/server.go
 
 
 FROM alpine:latest
