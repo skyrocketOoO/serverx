@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"go-server-template/domain"
 	"go-server-template/internal/usecase"
 	"net/http"
 
@@ -18,13 +19,11 @@ func NewRestDelivery(usecase *usecase.Usecase) *RestDelivery {
 }
 
 func (d *RestDelivery) Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
+	c.JSON(http.StatusOK, domain.Response{Message: "pong"})
 }
 
 func (d *RestDelivery) Healthy(c *gin.Context) {
-	// do something check like db connection is established
+	// do something check
 	if err := d.usecase.Healthy(c.Request.Context()); err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"message": err.Error(),
@@ -32,7 +31,5 @@ func (d *RestDelivery) Healthy(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "healthy",
-	})
+	c.JSON(http.StatusOK, domain.Response{Message: "healthy"})
 }
