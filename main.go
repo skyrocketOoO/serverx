@@ -1,6 +1,6 @@
 package main
 
-import "go-server-template/app/server/cmd"
+import "go-server-template/cmd"
 
 func main() {
 	cmd.Execute()
