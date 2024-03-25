@@ -11,3 +11,6 @@ backup:
 	git add .
 	git commit -m "backup"
 	git push
+
+gen-rest-doc:
+	swag init -g internal/delivery/rest/*.go -o ./docs

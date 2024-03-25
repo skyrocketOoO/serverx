@@ -9,6 +9,7 @@ The basic server template extend for clean-architecture with common library and 
 - Logging: Zerolog
 - Cmd: Cobra
 - Error trace: Eris
+- api doc: swaggo/swag
 
 ## Tool
 - DB:
@@ -19,4 +20,3 @@ The basic server template extend for clean-architecture with common library and 
 ## Todo
 - Grpc
 - Mock test
-- Swagger

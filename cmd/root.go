@@ -6,6 +6,7 @@ package cmd
 import (
 	"go-server-template/api"
 	"go-server-template/config"
+	"go-server-template/docs"
 	"go-server-template/internal/delivery/rest"
 	"go-server-template/internal/delivery/rest/middleware"
 	"go-server-template/internal/repository/sql"
@@ -32,6 +33,12 @@ func workFunc(cmd *cobra.Command, args []string) {
 	if err := config.ReadConfig(); err != nil {
 		log.Fatal().Msg(errors.ToString(err, true))
 	}
+
+	docs.SwaggerInfo.Title = "Swagger API"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "petstore.swagger.io"
+	docs.SwaggerInfo.BasePath = "/v2"
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	sqlDb, err := sql.InitDB(string(flagDatabaseEnum))
 	if err != nil {
