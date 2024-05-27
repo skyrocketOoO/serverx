@@ -22,9 +22,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Here is the enum flag variable declaration
-var flagDatabaseEnum DatabaseEnum
-
 func workFunc(cmd *cobra.Command, args []string) {
 	zerolog.TimeFieldFormat = time.RFC3339
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) // human-friendly logging without efficiency
@@ -40,7 +37,8 @@ func workFunc(cmd *cobra.Command, args []string) {
 	docs.SwaggerInfo.BasePath = "/v2"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
-	sqlDb, err := sql.InitDB(string(flagDatabaseEnum))
+	db, _ := cmd.Flags().GetString("database")
+	sqlDb, err := sql.InitDB(db)
 	if err != nil {
 		log.Fatal().Msg(errors.ToString(err, true))
 	}
@@ -87,5 +85,5 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.Flags().StringP("port", "p", "8080", "port")
-	rootCmd.Flags().Var(&flagDatabaseEnum, "database", `database enum. allowed: "pg", "sqlite"`)
+	rootCmd.Flags().StringP("database", "d", "pg", `database enum. allowed: "pg", "sqlite"`)
 }
