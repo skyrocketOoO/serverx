@@ -1,6 +1,11 @@
 # web-server-template
 The basic server template
 
+## Function
+- Protocol
+  - Grpc
+  - Rest
+
 ## Package
 - Router: Gin
 - Unit test: Testify
@@ -9,7 +14,8 @@ The basic server template
 - Logging: Zerolog
 - Cmd: Cobra
 - Error trace: Eris
-- api doc: swaggo/swag
+- Rest api doc: swaggo/swag
+- Grpc doc: pseudomuto/protoc-gen-doc
 
 ## Tool
 - DB:

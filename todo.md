@@ -1,3 +1,5 @@
 - upsert
 - generalized list dao
-- Auto restrict the line length
+- atlas version migration
+- protoc-gen-doc
+- integrate into command
