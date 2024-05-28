@@ -1,4 +1,4 @@
-module go-server-template
+module web-server-template
 
 go 1.22.1
 
