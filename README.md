@@ -1,5 +1,5 @@
-# go-server-template
-The basic server template extend for clean-architecture with common library and tool
+# web-server-template
+The basic server template
 
 ## Package
 - Router: Gin
@@ -15,4 +15,7 @@ The basic server template extend for clean-architecture with common library and 
 - DB:
     - Postgres
     - Sqlite
-- End to End test: K6
+- Api test: K6
+
+#### Multi-repo vs Mono-repo
+https://goframe.org/pages/viewpage.action?pageId=87246750
