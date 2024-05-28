@@ -8,6 +8,7 @@ run-container:
 	docker run -d --name go-server-template go-server-template
 
 backup:
+	./scripts/add_gitkeep.sh
 	git add .
 	git commit -m "backup"
 	git push
