@@ -9,6 +9,8 @@ run-container:
 
 backup:
 	./scripts/add_gitkeep.sh
+	golines . -w -m 86
+	
 	git add .
 	git commit -m "backup"
 	git push

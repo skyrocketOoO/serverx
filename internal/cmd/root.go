@@ -24,7 +24,9 @@ import (
 
 func workFunc(cmd *cobra.Command, args []string) {
 	zerolog.TimeFieldFormat = time.RFC3339
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) // human-friendly logging without efficiency
+	log.Logger = log.Output(
+		zerolog.ConsoleWriter{Out: os.Stderr},
+	) // human-friendly logging without efficiency
 	log.Info().Msg("Logger initialized")
 
 	if err := config.ReadConfig(); err != nil {
@@ -85,5 +87,6 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.Flags().StringP("port", "p", "8080", "port")
-	rootCmd.Flags().StringP("database", "d", "pg", `database enum. allowed: "pg", "sqlite"`)
+	rootCmd.Flags().
+		StringP("database", "d", "pg", `database enum. allowed: "pg", "sqlite"`)
 }
