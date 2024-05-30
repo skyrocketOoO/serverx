@@ -2,7 +2,8 @@ package usecase
 
 import (
 	"context"
-	"go-server-template/domain"
+
+	"web-server-template/domain"
 )
 
 type Usecase struct {
