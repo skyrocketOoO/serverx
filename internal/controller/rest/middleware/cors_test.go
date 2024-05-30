@@ -1,10 +1,11 @@
 package middleware_test
 
 import (
-	"go-server-template/internal/delivery/rest/middleware"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"web-server-template/internal/controller/rest/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

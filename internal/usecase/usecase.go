@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 
-	"web-server-template/domain"
+	"web-server-template/internal/domain"
 )
 
 type Usecase struct {

@@ -4,15 +4,15 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"go-server-template/api"
-	"go-server-template/config"
-	"go-server-template/docs"
-	"go-server-template/internal/delivery/rest"
-	"go-server-template/internal/delivery/rest/middleware"
-	"go-server-template/internal/repository/sql"
-	"go-server-template/internal/usecase"
 	"os"
 	"time"
+
+	"web-server-template/api"
+	docs "web-server-template/docs/rest"
+	"web-server-template/internal/controller/rest"
+	"web-server-template/internal/controller/rest/middleware"
+	"web-server-template/internal/usecase"
+	"web-server-template/manifest/config"
 
 	errors "github.com/rotisserie/eris"
 
