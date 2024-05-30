@@ -22,6 +22,10 @@ The basic server template
     - Postgres
     - Sqlite
 - Api test: K6
+- format
+  - https://github.com/mvdan/gofumpt
+- Long line format
+  - https://github.com/segmentio/golines
 
 #### Multi-repo vs Mono-repo
 https://goframe.org/pages/viewpage.action?pageId=87246750
