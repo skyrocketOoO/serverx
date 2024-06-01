@@ -7,10 +7,11 @@ import (
 	"os"
 	"time"
 
-	"web-server-template/api"
+	restapi "web-server-template/api/rest"
 	docs "web-server-template/docs/rest"
 	"web-server-template/internal/controller/rest"
 	"web-server-template/internal/controller/rest/middleware"
+	"web-server-template/internal/repository/orm"
 	"web-server-template/internal/usecase"
 	"web-server-template/manifest/config"
 
@@ -40,7 +41,7 @@ func workFunc(cmd *cobra.Command, args []string) {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	db, _ := cmd.Flags().GetString("database")
-	sqlDb, err := sql.InitDB(db)
+	sqlDb, err := orm.InitDB(db)
 	if err != nil {
 		log.Fatal().Msg(errors.ToString(err, true))
 	}
@@ -49,7 +50,7 @@ func workFunc(cmd *cobra.Command, args []string) {
 		db.Close()
 	}()
 
-	sqlRepo, err := sql.NewOrmRepository(sqlDb)
+	sqlRepo, err := orm.NewOrmRepository(sqlDb)
 	if err != nil {
 		log.Fatal().Msg(err.Error())
 	}
@@ -59,7 +60,7 @@ func workFunc(cmd *cobra.Command, args []string) {
 
 	router := gin.Default()
 	router.Use(middleware.CORS())
-	api.Binding(router, restDelivery)
+	restapi.Binding(router, restDelivery)
 
 	port, _ := cmd.Flags().GetString("port")
 	router.Run(":" + port)

@@ -1,8 +1,9 @@
 package rest
 
 import (
-	"go-server-template/domain"
 	"net/http"
+
+	"web-server-template/internal/domain"
 
 	"github.com/gin-gonic/gin"
 )
