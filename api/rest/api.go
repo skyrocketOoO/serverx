@@ -1,4 +1,4 @@
-package api
+package restapi
 
 import (
 	"web-server-template/internal/controller/rest"

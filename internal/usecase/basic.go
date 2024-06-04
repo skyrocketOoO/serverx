@@ -6,17 +6,17 @@ import (
 	"web-server-template/internal/repository/orm/domain"
 )
 
-type Usecase struct {
+type BasicUsecase struct {
 	repo domain.OrmRepository
 }
 
-func NewUsecase(ormRepo domain.OrmRepository) *Usecase {
-	return &Usecase{
+func NewUsecase(ormRepo domain.OrmRepository) *BasicUsecase {
+	return &BasicUsecase{
 		repo: ormRepo,
 	}
 }
 
-func (u *Usecase) Healthy(c context.Context) error {
+func (u *BasicUsecase) Healthy(c context.Context) error {
 	// do something check like db connection is established
 	if err := u.repo.Ping(c); err != nil {
 		return err

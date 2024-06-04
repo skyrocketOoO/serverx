@@ -1,6 +1,9 @@
 # web-server-template
 The basic server template
 
+## Directory structure
+
+
 ## Function
 - Protocol
   - Grpc
