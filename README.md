@@ -21,7 +21,7 @@ The basic server template
 - DB:
     - Postgres
     - Sqlite
-- Api test: K6
+- Benchmark: K6
 - format
   - https://github.com/mvdan/gofumpt
 - Long line format
