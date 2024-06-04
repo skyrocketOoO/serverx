@@ -1,7 +1,7 @@
 package api
 
 import (
-	"web-server-template/internal/delivery/rest"
+	"web-server-template/internal/controller/rest"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
