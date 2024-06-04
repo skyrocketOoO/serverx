@@ -2,7 +2,29 @@
 The basic server template
 
 ## Directory structure
-
+- api: API definition
+  - grpc: Store the generated grpc object
+  - rest: Route binding with controller function
+- benchmark: Benchmark and api test with k6
+- docs: Documentation
+  - grpc: Document generated from proto-gen-doc
+  - rest: Document generated from go-swagger
+- internal: Go function to not export the main logic
+  - boot: The initial process
+  - cmd: Command to run start and multiple functions
+  - consts: Immutable variables
+  - domain: General domain like errorcode...etc
+  - controller: The first layer received from api, used for parse request and response, validation...etc
+  - usecase: Primary business logic
+  - repository: Orm, Redis, Dao... 
+  - i18n
+- manifest: Config...
+  - config
+  - deploy
+  - docker
+  - protobuf
+- scripts: 
+- utils: Utility functions
 
 ## Function
 - Protocol
