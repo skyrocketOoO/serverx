@@ -15,7 +15,7 @@ var Db *gorm.DB
 
 func InitDB(database string) (*gorm.DB, error) {
 	switch database {
-	case "pg":
+	case "postgres":
 		log.Info().Msg("Connecting to Postgres")
 		connStr := fmt.Sprintf(
 			"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=%s",

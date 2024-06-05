@@ -2,6 +2,7 @@ package orm
 
 import (
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -16,12 +17,15 @@ func NewRepository(db *gorm.DB) (*Repository, error) {
 	}, nil
 }
 
-func (r *Repository) Ping(c context.Context) error {
+func (r *Repository) Ping(ctx context.Context) error {
 	db, err := r.db.DB()
 	if err != nil {
 		return err
 	}
-	if err := db.PingContext(c); err != nil {
+
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+	if err := db.PingContext(ctx); err != nil {
 		return err
 	}
 

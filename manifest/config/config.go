@@ -15,3 +15,5 @@ func ReadConfig() error {
 
 	return nil
 }
+
+type Config struct{}
