@@ -3,14 +3,17 @@ package usecase
 import (
 	"context"
 
-	"web-server-template/internal/repository/orm/domain"
+	"web-server-template/internal/repository/orm"
+
+	"gorm.io/gorm"
 )
 
 type BasicUsecase struct {
-	repo domain.OrmRepository
+	repo orm.Repository
+	db   *gorm.DB
 }
 
-func NewUsecase(ormRepo domain.OrmRepository) *BasicUsecase {
+func NewBasicUsecase(ormRepo orm.Repository) *BasicUsecase {
 	return &BasicUsecase{
 		repo: ormRepo,
 	}

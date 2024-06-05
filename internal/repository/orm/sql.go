@@ -6,17 +6,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type OrmRepository struct {
+type Repository struct {
 	db *gorm.DB
 }
 
-func NewOrmRepository(db *gorm.DB) (*OrmRepository, error) {
-	return &OrmRepository{
+func NewRepository(db *gorm.DB) (*Repository, error) {
+	return &Repository{
 		db: db,
 	}, nil
 }
 
-func (r *OrmRepository) Ping(c context.Context) error {
+func (r *Repository) Ping(c context.Context) error {
 	db, err := r.db.DB()
 	if err != nil {
 		return err
