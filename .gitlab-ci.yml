@@ -1,3 +1,4 @@
+# This file is a template, and might need editing before it works on your project.
 # You can copy and paste this template into a new `.gitlab-ci.yml` file.
 # You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
 #
@@ -6,30 +7,214 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
 
-image: golang:latest
 
 stages:
-  - test
-  - build
-  - deploy
+    - notify_start
+    - build
+    - backup
+    - deploy
+    - notify_telegram
+    - notify_if_failure
 
-format:
-  stage: test
-  script:
-    - go fmt $(go list ./... | grep -v /vendor/)
-    - go vet $(go list ./... | grep -v /vendor/)
-    - go test -race $(go list ./... | grep -v /vendor/)
+variables:
+    BOT_ID:
+        value: 
+        description: "This is the ID of telegram bot."
+    CHAT_ID:
+        value: 
+        description: "This is the chat ID where the telegram bot in."
 
-compile:
-  stage: build
-  script:
-    - mkdir -p mybinaries
-    - go build -o mybinaries ./...
-  artifacts:
-    paths:
-      - mybinaries
+    GIT_LAB_IP: 10.7.88.16
 
-deploy:
-  stage: deploy
-  script: echo "Define your deployment script!"
-  environment: production
+    BINARY: firebaseAPI
+    PROJECT: firebaseAPI
+    REMOTE_USERNAME: ubuntu
+    REMOTE_PASSWORD: '1qaz@WSX3edc'
+
+init-notify:
+    stage: notify_start
+    allow_failure: true
+    variables:
+        MESSAGE: |
+            【BUILD】
+            `$CI_PROJECT_NAMESPACE / $CI_PROJECT_NAME`
+
+            Pipeline ID: [$CI_PIPELINE_ID](http://$GIT_LAB_IP/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/-/pipelines/$CI_PIPELINE_ID)
+
+            ```
+            Branch: $CI_COMMIT_BRANCH
+            Commit: $CI_COMMIT_SHA
+            Title: $CI_COMMIT_TITLE
+            Author: $CI_COMMIT_AUTHOR
+            Commit Timestamp: $CI_COMMIT_TIMESTAMP
+            ```
+    script:
+        - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+build-job: # This job runs in the build stage, which runs first.
+    stage: build
+    variables:
+        NOW_BRANCH: "uat"
+    before_script:
+        - export PATH=$PATH:/usr/local/go/bin
+    script:
+        # 建置 Binary
+        - export GOOS=linux
+        - export GOARCH=amd64
+        - export GOINSECURE=$GIT_LAB_IP
+        - export GONOSUMDB=$GIT_LAB_IP
+        - go mod tidy
+        - go get ./src
+        - go build -o bin/$BINARY ./src
+        - sha256sum bin/$BINARY
+        - sha256sum bin/$BINARY > bin/${BINARY}_sha256sum.txt
+        # 環境設定檔
+        - NOW_DATE=$(date +%Y%m%d)
+        - FILE_PREFIX=$(basename `git rev-parse --show-toplevel`)
+        - TAR_FILE=$FILE_PREFIX.$NOW_BRANCH.$NOW_DATE.tar.gz
+        - mkdir -p release
+        - tar -acvf $TAR_FILE src/config/*.conf bin/*
+        - mv $TAR_FILE release/
+        - cd release
+        - echo -e "the compresed archive is $TAR_FILE"
+        - echo -e "$TAR_FILE" > released_file_name.txt
+        - echo "done."
+    tags:
+        - jumpvm:uat
+    artifacts:
+        paths:
+            - release/
+    only:
+        - uat
+
+backup-job-41:
+    stage: backup
+    variables:
+        NOW_BRANCH: "uat"
+        REMOTE_IP: 10.0.1.41
+    script:
+        - echo "Backup application..."
+        - NOW_DATE=$(date +%Y%m%d_%H%M%S)
+        - TAR_FILE=$PROJECT.$NOW_DATE.backup.lzma
+        # 備份整個資料夾
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo tar -acvf /becreator/$TAR_FILE /becreator/$PROJECT/$BINARY /becreator/$PROJECT/${BINARY}_sha256sum.txt /becreator/$PROJECT/*.conf
+        # 放旁邊
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo chown ubuntu:ubuntu /becreator/$TAR_FILE
+        - echo "done."
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+backup-job-43:
+    stage: backup
+    variables:
+        NOW_BRANCH: "uat"
+        REMOTE_IP: 10.0.1.43
+    script:
+        - echo "Backup application..."
+        - NOW_DATE=$(date +%Y%m%d_%H%M%S)
+        - TAR_FILE=$PROJECT.$NOW_DATE.backup.lzma
+        # 備份整個資料夾
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo tar -acvf /becreator/$TAR_FILE /becreator/$PROJECT/$BINARY /becreator/$PROJECT/${BINARY}_sha256sum.txt /becreator/$PROJECT/*.conf
+        # 放旁邊
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo chown ubuntu:ubuntu /becreator/$TAR_FILE
+        - echo "done."
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+deploy-job-41: # This job runs in the deploy stage.
+    stage: deploy
+    variables:
+        REMOTE_IP: 10.0.1.41
+    script:
+        - echo "Deploying application..."
+        - cd release
+        # 上傳 tar 檔
+        - TAR_FILE=$(cat released_file_name.txt)
+        - sshpass -p $REMOTE_PASSWORD scp -oStrictHostKeyChecking=no -r $TAR_FILE "$REMOTE_USERNAME@$REMOTE_IP:"
+        - NOW_DATE=$(date +%Y%m%d)
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP mkdir -p $NOW_DATE
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP mv $TAR_FILE $NOW_DATE/
+        # 解壓縮 tar 檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && mkdir -p $PROJECT && tar -axvf $TAR_FILE -C $PROJECT"
+        # 複製設定檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && sudo cp -rv $PROJECT/src/config/* /becreator/$PROJECT/"
+        # 複製 binary 並重新啟動服務
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && sudo service $PROJECT stop && sudo cp -rv $PROJECT/bin/* /becreator/$PROJECT/ && sudo service $PROJECT start"
+        - echo "Application successfully deployed."
+        # 移除佈署用的壓縮檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP rm -rf $NOW_DATE/
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+deploy-job-43: # This job runs in the deploy stage.
+    stage: deploy
+    variables:
+        REMOTE_IP: 10.0.1.43
+    script:
+        - echo "Deploying application..."
+        - cd release
+        # 上傳 tar 檔
+        - TAR_FILE=$(cat released_file_name.txt)
+        - sshpass -p $REMOTE_PASSWORD scp -oStrictHostKeyChecking=no -r $TAR_FILE "$REMOTE_USERNAME@$REMOTE_IP:"
+        - NOW_DATE=$(date +%Y%m%d)
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP mkdir -p $NOW_DATE
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP mv $TAR_FILE $NOW_DATE/
+        # 解壓縮 tar 檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && mkdir -p $PROJECT && tar -axvf $TAR_FILE -C $PROJECT"
+        # 複製設定檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && sudo cp -rv $PROJECT/src/config/* /becreator/$PROJECT/"
+        # 複製 binary 並重新啟動服務
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP "cd $NOW_DATE && sudo service $PROJECT stop && sudo cp -rv $PROJECT/bin/* /becreator/$PROJECT/ && sudo service $PROJECT start"        - echo "Application successfully deployed."
+        # 移除佈署用的壓縮檔
+        - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP rm -rf $NOW_DATE/
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+success-job:
+    stage: notify_telegram
+    allow_failure: true
+    variables:
+        MESSAGE: |
+            【SUCCESS】
+            `$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME` 
+
+            Pipeline ID: [$CI_PIPELINE_ID](http://$GIT_LAB_IP/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/-/pipelines/$CI_PIPELINE_ID)
+
+            CICD Success\!
+    script:
+        - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
+
+failure-job:
+    stage: notify_if_failure
+    when: on_failure
+    allow_failure: true
+    variables:
+        MESSAGE: |
+            \!\!\! FAILED \!\!\!
+            `$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME`
+
+            Pipeline ID: [$CI_PIPELINE_ID](http://$GIT_LAB_IP/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/-/pipelines/$CI_PIPELINE_ID)
+
+            CICD FAILED\!
+    script:
+        - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
+    tags:
+        - jumpvm:uat
+    only:
+        - uat
