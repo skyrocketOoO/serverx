@@ -3,7 +3,7 @@ package rest
 import (
 	"net/http"
 
-	"web-server-template/internal/domain"
+	"web-server-template/internal/global/domain"
 
 	"github.com/gin-gonic/gin"
 )

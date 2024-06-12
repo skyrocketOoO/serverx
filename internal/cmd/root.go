@@ -1,14 +1,10 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"os"
-	"time"
 
 	restapi "web-server-template/api/rest"
-	docs "web-server-template/docs/rest"
+	"web-server-template/internal/boot"
 	"web-server-template/internal/controller/rest"
 	"web-server-template/internal/controller/rest/middleware"
 	"web-server-template/internal/repository/orm"
@@ -18,27 +14,16 @@ import (
 	errors "github.com/rotisserie/eris"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
 func workFunc(cmd *cobra.Command, args []string) {
-	zerolog.TimeFieldFormat = time.RFC3339
-	log.Logger = log.Output(
-		zerolog.ConsoleWriter{Out: os.Stderr},
-	) // human-friendly logging without efficiency
-	log.Info().Msg("Logger initialized")
+	boot.InitAll()
 
 	if err := config.ReadConfig(); err != nil {
 		log.Fatal().Msg(errors.ToString(err, true))
 	}
-
-	docs.SwaggerInfo.Title = "Swagger API"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "petstore.swagger.io"
-	docs.SwaggerInfo.BasePath = "/v2"
-	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	db, _ := cmd.Flags().GetString("database")
 	sqlDb, err := orm.InitDB(db)

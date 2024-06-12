@@ -12,8 +12,8 @@ The basic server template
 - internal: Go function to not export the main logic
   - boot: The initial process
   - cmd: Command to run start and multiple functions
-  - consts: Immutable variables
-  - domain: General domain like errorcode...etc
+  - global:
+    - domain: General domain like errorcode...etc
   - controller: The first layer received from api, used for parse request and response, validation...etc
   - usecase: Primary business logic
   - repository: Orm, Redis, Dao... 
