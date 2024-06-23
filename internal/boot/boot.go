@@ -1,7 +1,11 @@
 package boot
 
-func InitAll() {
+func InitAll() (err error) {
 	InitLogger()
-	InitConfig()
+	if err = InitConfig(); err != nil {
+		return
+	}
 	InitSwagger()
+
+	return nil
 }

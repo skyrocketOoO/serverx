@@ -8,7 +8,6 @@ import (
 	"web-server-template/internal/service/dao"
 	"web-server-template/internal/service/orm"
 	"web-server-template/internal/usecase"
-	"web-server-template/manifest/config"
 
 	errors "github.com/rotisserie/eris"
 
@@ -23,10 +22,8 @@ var RunCmd = &cobra.Command{
 	Long:  ``,
 	// Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		boot.InitAll()
-
-		if err := config.ReadConfig(); err != nil {
-			log.Fatal().Msg(errors.ToString(err, true))
+		if err := boot.InitAll(); err != nil {
+			panic(err.Error())
 		}
 
 		dbConf, _ := cmd.Flags().GetString("database")

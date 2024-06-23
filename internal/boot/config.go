@@ -1,9 +1,18 @@
 package boot
 
 import (
-	"web-server-template/manifest/config"
+	"errors"
+
+	"github.com/spf13/viper"
 )
 
-func InitConfig() {
-	config.ReadConfig()
+func InitConfig() (err error) {
+	viper.AddConfigPath("./manifest/config")
+	viper.SetConfigType("yaml")
+
+	if err = viper.ReadInConfig(); err != nil {
+		return errors.New(err.Error())
+	}
+
+	return nil
 }
