@@ -13,7 +13,7 @@ import (
 
 var Db *gorm.DB
 
-func InitDB(database string) (*gorm.DB, error) {
+func NewDB(database string) (*gorm.DB, error) {
 	switch database {
 	case "postgres":
 		log.Info().Msg("Connecting to Postgres")

@@ -3,25 +3,25 @@ package usecase
 import (
 	"context"
 
-	"web-server-template/internal/repository/orm"
+	"web-server-template/internal/service/dao"
 
 	"gorm.io/gorm"
 )
 
 type BasicUsecase struct {
-	repo orm.Repository
-	db   *gorm.DB
+	dao *dao.Dao
+	db  *gorm.DB
 }
 
-func NewBasicUsecase(ormRepo orm.Repository) *BasicUsecase {
+func NewBasicUsecase(dao *dao.Dao) *BasicUsecase {
 	return &BasicUsecase{
-		repo: ormRepo,
+		dao: dao,
 	}
 }
 
 func (u *BasicUsecase) Healthy(c context.Context) error {
 	// do something check like db connection is established
-	if err := u.repo.Ping(c); err != nil {
+	if err := u.dao.Ping(c); err != nil {
 		return err
 	}
 
