@@ -8,7 +8,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func Binding(r *gin.Engine, d *rest.RestDelivery) {
+func Binding(r *gin.Engine, d *rest.RestController) {
 	r.GET("/ping", d.Ping)
 	r.GET("/healthy", d.Healthy)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

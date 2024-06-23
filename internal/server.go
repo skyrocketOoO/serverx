@@ -37,11 +37,11 @@ func RunServer(cmd *cobra.Command, args []string) {
 	}
 
 	usecase := usecase.NewBasicUsecase(dao)
-	restDelivery := rest.NewRestDelivery(usecase)
+	restController := rest.NewRestController(usecase)
 
 	router := gin.Default()
 	router.Use(middleware.CORS())
-	restapi.Binding(router, restDelivery)
+	restapi.Binding(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	router.Run(":" + port)

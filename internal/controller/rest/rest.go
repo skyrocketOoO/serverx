@@ -3,17 +3,17 @@ package rest
 import (
 	"net/http"
 
-	"web-server-template/internal/global/domain"
+	"web-server-template/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )
 
-type RestDelivery struct {
-	usecase domain.Usecase
+type RestController struct {
+	usecase *usecase.BasicUsecase
 }
 
-func NewRestDelivery(usecase domain.Usecase) *RestDelivery {
-	return &RestDelivery{
+func NewRestController(usecase *usecase.BasicUsecase) *RestController {
+	return &RestController{
 		usecase: usecase,
 	}
 }
@@ -23,8 +23,8 @@ func NewRestDelivery(usecase domain.Usecase) *RestDelivery {
 // @Produce json
 // @Success 200 {object} domain.Response
 // @Router /ping [get]
-func (d *RestDelivery) Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, domain.Response{Message: "pong"})
+func (d *RestController) Ping(c *gin.Context) {
+	c.JSON(http.StatusOK, Response{Message: "pong"})
 }
 
 // @Summary Check the server healthy
@@ -33,12 +33,12 @@ func (d *RestDelivery) Ping(c *gin.Context) {
 // @Success 200 {object} domain.Response
 // @Failure 503 {object} domain.Response
 // @Router /healthy [get]
-func (d *RestDelivery) Healthy(c *gin.Context) {
+func (d *RestController) Healthy(c *gin.Context) {
 	// do something check
 	if err := d.usecase.Healthy(c.Request.Context()); err != nil {
-		c.JSON(http.StatusServiceUnavailable, domain.Response{Message: err.Error()})
+		c.JSON(http.StatusServiceUnavailable, Response{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.Response{Message: "healthy"})
+	c.JSON(http.StatusOK, Response{Message: "healthy"})
 }
