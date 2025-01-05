@@ -40,7 +40,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 
 	router := gin.Default()
 	router.Use(middleware.CORS())
-	api.Binding(router, restController)
+	api.Bind(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	router.Run(":" + port)
