@@ -1,8 +1,7 @@
 package run
 
 import (
-	"web-server-template/internal"
-
+	"github.com/skyrocketOoO/web-server-template/internal"
 	"github.com/spf13/cobra"
 )
 

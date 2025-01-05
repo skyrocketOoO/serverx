@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"web-server-template/internal/cmd/service"
-
+	"github.com/skyrocketOoO/web-server-template/internal/cmd/service"
 	"github.com/spf13/cobra"
 )
 

@@ -3,8 +3,7 @@ package usecase
 import (
 	"context"
 
-	"web-server-template/internal/service/dao"
-
+	"github.com/skyrocketOoO/web-server-template/internal/service/dao"
 	"gorm.io/gorm"
 )
 

@@ -1,11 +1,10 @@
-package rest
+package controller
 
 import (
 	"net/http"
 
-	"web-server-template/internal/usecase"
-
 	"github.com/gin-gonic/gin"
+	"github.com/skyrocketOoO/web-server-template/internal/usecase"
 )
 
 type RestController struct {

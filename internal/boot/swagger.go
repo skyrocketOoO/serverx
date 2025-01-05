@@ -1,8 +1,6 @@
 package boot
 
-import (
-	docs "web-server-template/docs/rest"
-)
+import docs "github.com/skyrocketOoO/web-server-template/docs/rest"
 
 func InitSwagger() {
 	docs.SwaggerInfo.Title = "Swagger API"

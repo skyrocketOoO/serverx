@@ -1,15 +1,14 @@
 package internal
 
 import (
-	restapi "web-server-template/api/rest"
-	"web-server-template/internal/boot"
-	"web-server-template/internal/controller/rest"
-	"web-server-template/internal/controller/rest/middleware"
-	"web-server-template/internal/service/dao"
-	"web-server-template/internal/service/orm"
-	"web-server-template/internal/usecase"
-
 	errors "github.com/rotisserie/eris"
+	"github.com/skyrocketOoO/web-server-template/api"
+	"github.com/skyrocketOoO/web-server-template/internal/boot"
+	"github.com/skyrocketOoO/web-server-template/internal/controller"
+	"github.com/skyrocketOoO/web-server-template/internal/middleware"
+	"github.com/skyrocketOoO/web-server-template/internal/service/dao"
+	"github.com/skyrocketOoO/web-server-template/internal/service/orm"
+	"github.com/skyrocketOoO/web-server-template/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
@@ -37,11 +36,11 @@ func RunServer(cmd *cobra.Command, args []string) {
 	}
 
 	usecase := usecase.NewBasicUsecase(dao)
-	restController := rest.NewRestController(usecase)
+	restController := controller.NewRestController(usecase)
 
 	router := gin.Default()
 	router.Use(middleware.CORS())
-	restapi.Binding(router, restController)
+	api.Binding(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	router.Run(":" + port)

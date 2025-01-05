@@ -5,9 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"web-server-template/internal/controller/rest/middleware"
-
 	"github.com/gin-gonic/gin"
+	"github.com/skyrocketOoO/web-server-template/internal/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
