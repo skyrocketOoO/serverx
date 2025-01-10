@@ -2,8 +2,8 @@ package boot
 
 import (
 	"github.com/rs/zerolog/log"
-	"github.com/skyrocketOoO/web-server-template/internal/service/db"
-	"github.com/skyrocketOoO/web-server-template/internal/service/validator"
+	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	"github.com/skyrocketOoO/web-server-template/internal/service/inter/validator"
 )
 
 func NewService() error {

@@ -8,7 +8,7 @@ import (
 	"github.com/skyrocketOoO/web-server-template/internal/boot"
 	"github.com/skyrocketOoO/web-server-template/internal/controller"
 	"github.com/skyrocketOoO/web-server-template/internal/middleware"
-	"github.com/skyrocketOoO/web-server-template/internal/service/db"
+	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
 	"github.com/spf13/cobra"
 )
 

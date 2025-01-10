@@ -10,7 +10,7 @@ import (
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
 	col "github.com/skyrocketOoO/web-server-template/internal/gen/column"
 	"github.com/skyrocketOoO/web-server-template/internal/model"
-	"github.com/skyrocketOoO/web-server-template/internal/service/db"
+	"github.com/skyrocketOoO/web-server-template/internal/service/external/db"
 	"github.com/spf13/viper"
 )
 
