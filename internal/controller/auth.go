@@ -14,6 +14,7 @@ import (
 	dm "github.com/skyrocketOoO/web-server-template/internal/global/domain"
 	"github.com/skyrocketOoO/web-server-template/internal/model"
 	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	"gorm.io/gorm"
 )
 
 // @Param   user  body  controller.Login.Req  true  "Login User"
@@ -77,21 +78,25 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 
 	db := db.Get()
-	user := model.User{
-		Name:     req.Name,
-		Password: string(auth.Hash(req.Password, cm.GetSalt())),
+	var existingUser model.User
+	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
+		Take(&existingUser).Error; err != nil {
+		if err != gorm.ErrRecordNotFound {
+			dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+			return
+		}
+	} else {
+		dm.RespErr(c, http.StatusInternalServerError, erx.W(dm.ErrUserNameRepetite))
+		return
 	}
 
-	if err := user.Create(db); err != nil {
+	if err := db.Create(&model.User{
+		Name:     req.Name,
+		Password: string(auth.Hash(req.Password, cm.GetSalt())),
+	}).Error; err != nil {
 		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
 		return
 	}
 
 	c.Status(http.StatusOK)
-}
-
-func (h *Handler) Logout(c *gin.Context) {
-}
-
-func (h *Handler) ForgetPassword(c *gin.Context) {
 }
