@@ -4,17 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/skyrocketOoO/web-server-template/internal/usecase"
 )
 
-type RestController struct {
-	usecase *usecase.BasicUsecase
-}
+type Handler struct{}
 
-func NewRestController(usecase *usecase.BasicUsecase) *RestController {
-	return &RestController{
-		usecase: usecase,
-	}
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
 // @Summary Check the server started
@@ -22,8 +17,8 @@ func NewRestController(usecase *usecase.BasicUsecase) *RestController {
 // @Produce json
 // @Success 200 {object} dm.ErrResp
 // @Router /ping [get]
-func (d *RestController) Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, Response{Message: "pong"})
+func (d *Handler) Ping(c *gin.Context) {
+	c.Status(http.StatusOK)
 }
 
 // @Summary Check the server healthy
@@ -32,12 +27,8 @@ func (d *RestController) Ping(c *gin.Context) {
 // @Success 200 {object} dm.ErrResp
 // @Failure 503 {object} dm.ErrResp
 // @Router /healthy [get]
-func (d *RestController) Healthy(c *gin.Context) {
+func (d *Handler) Healthy(c *gin.Context) {
 	// do something check
-	if err := d.usecase.Healthy(c.Request.Context()); err != nil {
-		c.JSON(http.StatusServiceUnavailable, Response{Message: err.Error()})
-		return
-	}
 
-	c.JSON(http.StatusOK, Response{Message: "healthy"})
+	c.Status(http.StatusOK)
 }

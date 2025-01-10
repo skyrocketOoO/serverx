@@ -1,10 +1,16 @@
 package boot
 
 func InitAll() (err error) {
-	InitLogger()
 	if err = InitConfig(); err != nil {
 		return
 	}
+
+	InitLogger()
+
+	if err = NewService(); err != nil {
+		return err
+	}
+
 	InitSwagger()
 
 	return nil

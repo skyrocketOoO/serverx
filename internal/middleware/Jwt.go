@@ -9,7 +9,7 @@ import (
 	dm "github.com/skyrocketOoO/web-server-template/internal/global/domain"
 )
 
-func JwtMiddleware() gin.HandlerFunc {
+func Jwt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Get the token from the Authorization header
 		authHeader := c.GetHeader("Authorization")

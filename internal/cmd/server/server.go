@@ -8,9 +8,7 @@ import (
 	"github.com/skyrocketOoO/web-server-template/internal/boot"
 	"github.com/skyrocketOoO/web-server-template/internal/controller"
 	"github.com/skyrocketOoO/web-server-template/internal/middleware"
-	"github.com/skyrocketOoO/web-server-template/internal/service/dao"
 	"github.com/skyrocketOoO/web-server-template/internal/service/db"
-	"github.com/skyrocketOoO/web-server-template/internal/usecase"
 	"github.com/spf13/cobra"
 )
 
@@ -33,13 +31,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	dao := dao.NewDao(db.Get())
-	if err != nil {
-		log.Fatal().Msg(err.Error())
-	}
-
-	usecase := usecase.NewBasicUsecase(dao)
-	restController := controller.NewRestController(usecase)
+	restController := controller.NewHandler()
 
 	router := gin.Default()
 	router.Use(middleware.Cors())
