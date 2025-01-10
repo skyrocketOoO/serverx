@@ -7,7 +7,7 @@ import (
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/controller"
-	"github.com/skyrocketOoO/serverx/internal/middleware"
+	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/spf13/cobra"
 )
 

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/skyrocketOoO/serverx/internal/controller/middleware" // avoid import cycle
 )
 
 type Handler struct{}

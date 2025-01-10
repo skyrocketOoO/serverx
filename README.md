@@ -1,13 +1,14 @@
 # serverx
-The basic server template
+A server template combines multiple basic tools
 
 ## How to use
-
-## Term
-- Init: Initialize someting
-- New: New instance
+1. Clone the repository
+2. Change the module name to yours
 
 ## Convention
+- **camelCase**: file name, folder name
+- **PascalCase**: json attribute name
+- 
 
 ## Dev environment
 - Linux
