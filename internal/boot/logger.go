@@ -7,7 +7,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/skyrocketOoO/web-server-template/internal/service/exter/loki"
 )
+
+var SendLoki *bool
 
 func InitLogger() {
 	zerolog.TimeFieldFormat = time.RFC3339
@@ -44,7 +47,11 @@ func InitLogger() {
 
 	log.Info().Msg("Logger initialized")
 
-	log.Logger = log.Output(consoleWriter).With().Caller().Timestamp().Logger()
+	if *SendLoki {
+		log.Logger = log.Output(loki.NewLokiWriter()).With().Caller().Timestamp().Logger()
+	} else {
+		log.Logger = log.Output(consoleWriter).With().Caller().Timestamp().Logger()
+	}
 }
 
 func simplifyCaller(caller string) string {

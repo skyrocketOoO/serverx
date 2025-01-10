@@ -100,3 +100,8 @@ func (h *Handler) Register(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *Handler) ForgetPassword(c *gin.Context) {
+	dm.RespErr(c, http.StatusNotFound, erx.W(dm.ErrNotImplement))
+	return
+}
