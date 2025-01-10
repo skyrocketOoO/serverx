@@ -9,22 +9,22 @@ import (
 	"github.com/skyrocketOoO/web-server-template/internal/service/inter/validator"
 )
 
-func BindAndValidate[T any](c *gin.Context, req *T) error {
+func BindAndValidate[T any](c *gin.Context, req *T) bool {
 	if c.Request.Body == nil || c.Request.ContentLength == 0 {
 		dm.RespErr(c, http.StatusBadRequest, erx.W(dm.ErrEmptyRequest))
-		return dm.ErrEmptyRequest
+		return false
 	}
 
 	if err := c.ShouldBindJSON(req); err != nil {
 		dm.RespErr(c, http.StatusBadRequest, erx.W(err))
-		return err
+		return false
 	}
 
 	if err := validator.Get().Struct(req); err != nil {
 		dm.RespErr(c, http.StatusBadRequest, erx.W(err))
-		return err
+		return false
 	}
-	return nil
+	return true
 }
 
 func RespErr(c *gin.Context, statusCode int, err error) {

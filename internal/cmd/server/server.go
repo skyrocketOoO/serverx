@@ -22,7 +22,7 @@ var Cmd = &cobra.Command{
 
 func RunServer(cmd *cobra.Command, args []string) {
 	if err := boot.InitAll(); err != nil {
-		panic(err.Error())
+		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
 	dbConf, _ := cmd.Flags().GetString("database")

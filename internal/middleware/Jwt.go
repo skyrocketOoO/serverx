@@ -37,7 +37,7 @@ func Jwt() gin.HandlerFunc {
 
 		// Token is valid, store the claims in the context
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			c.Set("username", claims["username"])
+			c.Set("userID", claims["userID"])
 		}
 
 		// Continue to the next handler

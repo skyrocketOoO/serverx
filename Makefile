@@ -17,4 +17,4 @@ backup:
 	git push
 
 gen-rest-doc:
-	swag init -g internal/controller/*.go -o ./docs/openapi
+	swag init --output ./docs/openapi  -g internal/controller/*.go

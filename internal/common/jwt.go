@@ -22,12 +22,11 @@ func GetJwtSecretKey() []byte {
 	return []byte(viper.GetString("jwt-secret-key"))
 }
 
-func GenerateToken(username string) (string, error) {
+func GenerateToken(userID string) (string, error) {
 	// Set token claims
 	claims := jwt.MapClaims{
-		"username": username,
-		"exp":      time.Now().Add(10000 * time.Hour).Unix(),
-		"iss":      "alarm-system",
+		"userID": userID,
+		"exp":    time.Now().Add(10000 * time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

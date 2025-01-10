@@ -1,4 +1,19 @@
 definitions:
+  controller.Login.Req:
+    properties:
+      Name:
+        type: string
+      Password:
+        type: string
+    required:
+    - Name
+    - Password
+    type: object
+  controller.Login.Resp:
+    properties:
+      token:
+        type: string
+    type: object
   dm.ErrResp:
     properties:
       error:
@@ -25,6 +40,28 @@ paths:
           schema:
             $ref: '#/definitions/dm.ErrResp'
       summary: Check the server healthy
+  /login:
+    post:
+      parameters:
+      - description: Login User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controller.Login.Req'
+      responses:
+        "200":
+          description: token
+          schema:
+            $ref: '#/definitions/controller.Login.Resp'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+        "500":
+          description: error
+          schema:
+            type: string
   /ping:
     get:
       consumes:

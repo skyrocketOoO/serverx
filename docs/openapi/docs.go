@@ -40,6 +40,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/login": {
+            "post": {
+                "parameters": [
+                    {
+                        "description": "Login User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Login.Req"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "token",
+                        "schema": {
+                            "$ref": "#/definitions/controller.Login.Resp"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dm.ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "consumes": [
@@ -61,6 +96,29 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.Login.Req": {
+            "type": "object",
+            "required": [
+                "Name",
+                "Password"
+            ],
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "Password": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.Login.Resp": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "dm.ErrResp": {
             "type": "object",
             "properties": {

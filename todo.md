@@ -1,5 +1,1 @@
 - upsert
-- generalized list dao
-- atlas version migration
-- protoc-gen-doc
-- integrate into command
