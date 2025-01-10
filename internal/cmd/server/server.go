@@ -1,19 +1,26 @@
-package internal
+package server
 
 import (
-	errors "github.com/rotisserie/eris"
+	"github.com/rs/zerolog/log"
+
+	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/web-server-template/api"
 	"github.com/skyrocketOoO/web-server-template/internal/boot"
 	"github.com/skyrocketOoO/web-server-template/internal/controller"
 	"github.com/skyrocketOoO/web-server-template/internal/middleware"
 	"github.com/skyrocketOoO/web-server-template/internal/service/dao"
-	"github.com/skyrocketOoO/web-server-template/internal/service/orm"
+	"github.com/skyrocketOoO/web-server-template/internal/service/db"
 	"github.com/skyrocketOoO/web-server-template/internal/usecase"
-
-	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
+
+var Cmd = &cobra.Command{
+	Use:   "server",
+	Short: "The main service command",
+	Long:  ``,
+	// Args:  cobra.MinimumNArgs(1),
+	Run: RunServer,
+}
 
 func RunServer(cmd *cobra.Command, args []string) {
 	if err := boot.InitAll(); err != nil {
@@ -21,16 +28,12 @@ func RunServer(cmd *cobra.Command, args []string) {
 	}
 
 	dbConf, _ := cmd.Flags().GetString("database")
-	db, err := orm.NewDB(dbConf)
+	err := db.New(dbConf)
 	if err != nil {
-		log.Fatal().Msg(errors.ToString(err, true))
+		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
-	defer func() {
-		db, _ := db.DB()
-		db.Close()
-	}()
 
-	dao := dao.NewDao(db)
+	dao := dao.NewDao(db.Get())
 	if err != nil {
 		log.Fatal().Msg(err.Error())
 	}
@@ -39,9 +42,15 @@ func RunServer(cmd *cobra.Command, args []string) {
 	restController := controller.NewRestController(usecase)
 
 	router := gin.Default()
-	router.Use(middleware.CORS())
+	router.Use(middleware.Cors())
 	api.Bind(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	router.Run(":" + port)
+}
+
+func init() {
+	Cmd.Flags().StringP("port", "p", "8080", "port")
+	Cmd.Flags().
+		StringP("database", "d", "postgres", `database enum. allowed: "postgres", "sqlite"`)
 }

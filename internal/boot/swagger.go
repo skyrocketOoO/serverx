@@ -1,11 +1,11 @@
 package boot
 
-import docs "github.com/skyrocketOoO/web-server-template/docs/rest"
+import "github.com/skyrocketOoO/web-server-template/docs/openapi"
 
 func InitSwagger() {
-	docs.SwaggerInfo.Title = "Swagger API"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "petstore.swagger.io"
-	docs.SwaggerInfo.BasePath = "/v2"
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	openapi.SwaggerInfo.Title = "Swagger API"
+	openapi.SwaggerInfo.Version = "1.0"
+	openapi.SwaggerInfo.Host = "petstore.swagger.io"
+	openapi.SwaggerInfo.BasePath = "/v2"
+	openapi.SwaggerInfo.Schemes = []string{"http"}
 }

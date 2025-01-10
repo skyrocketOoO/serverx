@@ -2,6 +2,7 @@ package boot
 
 import (
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -10,8 +11,45 @@ import (
 
 func InitLogger() {
 	zerolog.TimeFieldFormat = time.RFC3339
-	log.Logger = log.Output(
-		zerolog.ConsoleWriter{Out: os.Stderr},
-	) // human-friendly logging without efficiency
+
+	consoleWriter := zerolog.ConsoleWriter{
+		Out:        os.Stdout,
+		TimeFormat: "2006-01-02 15:04:05",
+		FormatTimestamp: func(i interface{}) string {
+			if i == nil {
+				return "0000-00-00 00:00:00"
+			}
+			return i.(string)
+		},
+		FormatLevel: func(i interface{}) string {
+			if i == nil {
+				return "[???]"
+			}
+			return "[" + i.(string) + "]"
+		},
+		FormatCaller: func(i interface{}) string {
+			if i == nil {
+				return "unknown:0"
+			}
+			return simplifyCaller(i.(string))
+		},
+		FormatMessage: func(i interface{}) string {
+			if i == nil {
+				return ""
+			}
+			return i.(string)
+		},
+		// NoColor: false,
+	}
+
 	log.Info().Msg("Logger initialized")
+
+	log.Logger = log.Output(consoleWriter).With().Caller().Timestamp().Logger()
+}
+
+func simplifyCaller(caller string) string {
+	file := filepath.Base(caller)
+	dir := filepath.Dir(caller)
+
+	return filepath.Join(filepath.Base(dir), file)
 }

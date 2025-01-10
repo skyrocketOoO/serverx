@@ -1,7 +1,9 @@
 definitions:
-  domain.Response:
+  dm.ErrResp:
     properties:
-      message:
+      error:
+        type: string
+      id:
         type: string
     type: object
 info:
@@ -17,11 +19,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Response'
+            $ref: '#/definitions/dm.ErrResp'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/domain.Response'
+            $ref: '#/definitions/dm.ErrResp'
       summary: Check the server healthy
   /ping:
     get:
@@ -33,6 +35,6 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Response'
+            $ref: '#/definitions/dm.ErrResp'
       summary: Check the server started
 swagger: "2.0"

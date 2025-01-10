@@ -20,7 +20,7 @@ func NewRestController(usecase *usecase.BasicUsecase) *RestController {
 // @Summary Check the server started
 // @Accept json
 // @Produce json
-// @Success 200 {object} domain.Response
+// @Success 200 {object} dm.ErrResp
 // @Router /ping [get]
 func (d *RestController) Ping(c *gin.Context) {
 	c.JSON(http.StatusOK, Response{Message: "pong"})
@@ -29,8 +29,8 @@ func (d *RestController) Ping(c *gin.Context) {
 // @Summary Check the server healthy
 // @Accept json
 // @Produce json
-// @Success 200 {object} domain.Response
-// @Failure 503 {object} domain.Response
+// @Success 200 {object} dm.ErrResp
+// @Failure 503 {object} dm.ErrResp
 // @Router /healthy [get]
 func (d *RestController) Healthy(c *gin.Context) {
 	// do something check

@@ -1,7 +1,10 @@
 package cmd
 
 import (
-	"github.com/skyrocketOoO/web-server-template/internal/cmd/service"
+	"github.com/rs/zerolog/log"
+
+	"github.com/skyrocketOoO/web-server-template/internal/cmd/gen"
+	"github.com/skyrocketOoO/web-server-template/internal/cmd/server"
 	"github.com/spf13/cobra"
 )
 
@@ -17,10 +20,11 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal().Msg(err.Error())
 	}
 }
 
 func init() {
-	rootCmd.AddCommand(service.ServiceCmd)
+	rootCmd.AddCommand(server.Cmd)
+	rootCmd.AddCommand(gen.Cmd)
 }

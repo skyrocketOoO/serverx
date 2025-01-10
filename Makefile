@@ -8,13 +8,13 @@ run-container:
 	docker run -d --name go-server-template go-server-template
 
 backup:
-	./scripts/add_gitkeep.sh
-	golines . -w -m 93
-	gofumpt -w .
+	# ./scripts/add_gitkeep.sh
+	# golines . -w -m 93
+	# gofumpt -w .
 	
 	git add .
 	git commit -m "backup"
 	git push
 
 gen-rest-doc:
-	swag init -g internal/delivery/rest/*.go -o ./docs
+	swag init -g internal/controller/*.go -o ./docs/openapi

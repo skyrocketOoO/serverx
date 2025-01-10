@@ -1,6 +1,14 @@
 # web-server-template
 The basic server template
 
+## Term
+- Init: Initialize someting
+- New: New instance
+
+## Dev environment
+- Linux
+- Code first (not data first)
+
 ## Directory structure
 - api: API definition
   - grpc: Store the generated grpc object
