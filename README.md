@@ -5,6 +5,8 @@ The basic server template
 - Init: Initialize someting
 - New: New instance
 
+## Convention
+
 ## Dev environment
 - Linux
 - Code first (not data first)

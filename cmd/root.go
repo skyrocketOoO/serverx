@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/rs/zerolog/log"
 
-	"github.com/skyrocketOoO/web-server-template/internal/cmd/gen"
-	"github.com/skyrocketOoO/web-server-template/internal/cmd/server"
+	"github.com/skyrocketOoO/web-server-template/cmd/gen"
+	"github.com/skyrocketOoO/web-server-template/cmd/server"
 	"github.com/spf13/cobra"
 )
 

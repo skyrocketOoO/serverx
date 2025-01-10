@@ -60,11 +60,34 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, Resp{Token: token})
 }
 
+// @Param   user  body  controller.Register.Req  true  "Login User"
+// @Success 200 {object} controller.Register.Resp "token"
+// @Failure 500 {string} dm.ErrResp "error"
+// @Failure 400 {object} dm.ErrResp "bad request"
+// @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {
-		Name     string `json:"Name" validate:"required"`
-		Password string `json:"Password" validate:"required"`
+		Name     string `json:"Name" validate:"required,min=6,max=32"`
+		Password string `json:"Password" validate:"required,min=8,max=32"`
 	}
+
+	var req Req
+	if ok := cm.BindAndValidate(c, &req); !ok {
+		return
+	}
+
+	db := db.Get()
+	user := model.User{
+		Name:     req.Name,
+		Password: string(auth.Hash(req.Password, cm.GetSalt())),
+	}
+
+	if err := user.Create(db); err != nil {
+		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
 
 func (h *Handler) Logout(c *gin.Context) {

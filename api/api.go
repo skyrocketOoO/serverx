@@ -16,6 +16,9 @@ func Bind(r *gin.Engine, h *controller.Handler) {
 	vr.GET("/healthy", h.Healthy)
 	vr.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	vr.POST("/login", h.Login)
+	vr.POST("/register", h.Register)
+
 	pR := vr.Group("/")
 	pR.Use(middleware.Jwt())
 }
