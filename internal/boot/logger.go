@@ -3,17 +3,16 @@ package boot
 import (
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/skyrocketOoO/web-server-template/internal/service/exter/loki"
+	"github.com/skyrocketOoO/serverx/internal/service/exter/loki"
 )
 
-var SendLoki *bool
+var SendLoki bool
 
 func InitLogger() {
-	zerolog.TimeFieldFormat = time.RFC3339
+	log.Info().Msg("Logger initialized")
 
 	consoleWriter := zerolog.ConsoleWriter{
 		Out:        os.Stdout,
@@ -46,8 +45,8 @@ func InitLogger() {
 	}
 
 	log.Info().Msg("Logger initialized")
-
-	if *SendLoki {
+	if SendLoki {
+		consoleWriter.Out = log.Output(loki.NewLokiWriter()).With().Caller().Timestamp().Logger()
 		log.Logger = log.Output(loki.NewLokiWriter()).With().Caller().Timestamp().Logger()
 	} else {
 		log.Logger = log.Output(consoleWriter).With().Caller().Timestamp().Logger()

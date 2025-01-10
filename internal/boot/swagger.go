@@ -1,8 +1,8 @@
 package boot
 
 import (
-	"github.com/skyrocketOoO/web-server-template/docs/openapi"
-	"github.com/skyrocketOoO/web-server-template/internal/global"
+	"github.com/skyrocketOoO/serverx/docs/openapi"
+	"github.com/skyrocketOoO/serverx/internal/global"
 )
 
 func InitSwagger() {

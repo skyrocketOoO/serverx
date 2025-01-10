@@ -8,9 +8,9 @@ import (
 	"github.com/golang-jwt/jwt"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
-	col "github.com/skyrocketOoO/web-server-template/internal/gen/column"
-	"github.com/skyrocketOoO/web-server-template/internal/model"
-	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	col "github.com/skyrocketOoO/serverx/internal/gen/column"
+	"github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
 	"github.com/spf13/viper"
 )
 

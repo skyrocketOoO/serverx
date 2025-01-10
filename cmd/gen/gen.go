@@ -7,8 +7,8 @@ import (
 
 	"github.com/skyrocketOoO/gorm-plugin/columnname"
 	"github.com/skyrocketOoO/gorm-plugin/tablename"
-	"github.com/skyrocketOoO/web-server-template/internal/boot"
-	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	"github.com/skyrocketOoO/serverx/internal/boot"
+	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
 	"github.com/spf13/cobra"
 )
 

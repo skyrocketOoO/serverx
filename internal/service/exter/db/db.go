@@ -6,7 +6,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/web-server-template/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

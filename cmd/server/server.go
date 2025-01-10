@@ -4,11 +4,10 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/skyrocketOoO/web-server-template/api"
-	"github.com/skyrocketOoO/web-server-template/internal/boot"
-	"github.com/skyrocketOoO/web-server-template/internal/controller"
-	"github.com/skyrocketOoO/web-server-template/internal/middleware"
-	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	"github.com/skyrocketOoO/serverx/api"
+	"github.com/skyrocketOoO/serverx/internal/boot"
+	"github.com/skyrocketOoO/serverx/internal/controller"
+	"github.com/skyrocketOoO/serverx/internal/middleware"
 	"github.com/spf13/cobra"
 )
 
@@ -25,11 +24,11 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	dbConf, _ := cmd.Flags().GetString("database")
-	err := db.New(dbConf)
-	if err != nil {
-		log.Fatal().Msgf("Initialization failed: %v", err)
-	}
+	// dbConf, _ := cmd.Flags().GetString("database")
+	// err := db.New(dbConf)
+	// if err != nil {
+	// 	log.Fatal().Msgf("Initialization failed: %v", err)
+	// }
 
 	restController := controller.NewHandler()
 

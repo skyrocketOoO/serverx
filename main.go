@@ -1,6 +1,6 @@
 package main
 
-import "github.com/skyrocketOoO/web-server-template/cmd"
+import "github.com/skyrocketOoO/serverx/cmd"
 
 func main() {
 	cmd.Execute()

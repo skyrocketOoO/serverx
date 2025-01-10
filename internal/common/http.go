@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	dm "github.com/skyrocketOoO/web-server-template/internal/global/domain"
-	"github.com/skyrocketOoO/web-server-template/internal/service/inter/validator"
+	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
+	"github.com/skyrocketOoO/serverx/internal/service/inter/validator"
 )
 
 func BindAndValidate[T any](c *gin.Context, req *T) bool {

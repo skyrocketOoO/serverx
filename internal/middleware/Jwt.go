@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	cm "github.com/skyrocketOoO/web-server-template/internal/common"
-	dm "github.com/skyrocketOoO/web-server-template/internal/global/domain"
+	cm "github.com/skyrocketOoO/serverx/internal/common"
+	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
 )
 
 func Jwt() gin.HandlerFunc {

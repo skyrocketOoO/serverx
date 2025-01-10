@@ -8,12 +8,12 @@ import (
 	"github.com/skyrocketOoO/go-utils/auth"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
-	cm "github.com/skyrocketOoO/web-server-template/internal/common"
-	col "github.com/skyrocketOoO/web-server-template/internal/gen/column"
-	tb "github.com/skyrocketOoO/web-server-template/internal/gen/table"
-	dm "github.com/skyrocketOoO/web-server-template/internal/global/domain"
-	"github.com/skyrocketOoO/web-server-template/internal/model"
-	"github.com/skyrocketOoO/web-server-template/internal/service/exter/db"
+	cm "github.com/skyrocketOoO/serverx/internal/common"
+	col "github.com/skyrocketOoO/serverx/internal/gen/column"
+	tb "github.com/skyrocketOoO/serverx/internal/gen/table"
+	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
+	"github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
 	"gorm.io/gorm"
 )
 

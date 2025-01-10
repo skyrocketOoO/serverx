@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	_ "github.com/skyrocketOoO/web-server-template/docs/openapi"
-	"github.com/skyrocketOoO/web-server-template/internal/controller"
-	"github.com/skyrocketOoO/web-server-template/internal/global"
-	"github.com/skyrocketOoO/web-server-template/internal/middleware"
+	_ "github.com/skyrocketOoO/serverx/docs/openapi"
+	"github.com/skyrocketOoO/serverx/internal/controller"
+	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

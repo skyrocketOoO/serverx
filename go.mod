@@ -1,6 +1,6 @@
-module github.com/skyrocketOoO/web-server-template
+module github.com/skyrocketOoO/serverx
 
-replace github.com/skyrocketOoO/web-server-template => ./
+replace github.com/skyrocketOoO/serverx => ./
 
 go 1.23.3
 
