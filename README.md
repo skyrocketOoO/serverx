@@ -6,9 +6,15 @@ A server template combines multiple basic tools
 2. Change the module name to yours
 
 ## Convention
+```sh
+# Check conventions
+python3 scripts/convention/check.py
+```
 - **camelCase**: file name, folder name
-- **PascalCase**: json attribute name
-- 
+- **PascalCase**: json attribute name, db table name, db column name
+- Lines must be less than 99 characters, but its soft limit
+- Never use **init()**, except for 3rd-party specify
+- Never use fmt.Prinxxx, use log.Debug() instead
 
 ## Dev environment
 - Linux
