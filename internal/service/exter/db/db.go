@@ -98,3 +98,15 @@ func New() error {
 	})
 	return err
 }
+
+func Close() error {
+	if global.DB == nil {
+		return nil
+	}
+
+	db, err := global.DB.DB()
+	if err != nil {
+		return err
+	}
+	return db.Close()
+}
