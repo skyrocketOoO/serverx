@@ -8,7 +8,7 @@ import (
 
 func NewService() error {
 	log.Info().Msg("InitService")
-	if err := db.New("sqlite"); err != nil {
+	if err := db.New(); err != nil {
 		return err
 	}
 

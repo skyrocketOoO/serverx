@@ -9,8 +9,8 @@ import (
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	"github.com/skyrocketOoO/serverx/internal/model"
-	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
 	"github.com/spf13/viper"
 )
 
@@ -40,7 +40,7 @@ func GetOperator(c *gin.Context) (user model.User, err error) {
 		return model.User{}, errors.New("username not set in jwt")
 	}
 
-	db := db.Get()
+	db := global.DB
 	if err = db.
 		Where(wh.B(col.Users.Name, ope.Eq), operatorName).
 		Take(&user).Error; err != nil {

@@ -2,10 +2,12 @@ package db
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	"github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -17,13 +19,9 @@ import (
 )
 
 var (
-	db      *gorm.DB
-	Migrate bool = false
+	Migrate  bool = false
+	initOnce sync.Once
 )
-
-func Get() *gorm.DB {
-	return db
-}
 
 type zerologWriter struct{}
 
@@ -31,66 +29,72 @@ func (z *zerologWriter) Printf(format string, v ...interface{}) {
 	log.Info().Msgf(format, v...)
 }
 
-func New(database string) error {
-	log.Info().Msg("New db")
-
-	config := gorm.Config{
-		NamingStrategy: schema.NamingStrategy{
-			NoLowerCase: true,
-		},
-		Logger: logger.New(
-			&zerologWriter{},
-			logger.Config{
-				SlowThreshold:             time.Second,
-				LogLevel:                  logger.Warn,
-				IgnoreRecordNotFoundError: false,
-				ParameterizedQueries:      true,
-				Colorful:                  true,
-			},
-		),
-	}
+func New() error {
 	var err error
-	switch database {
-	case "mysql":
-		log.Info().Msg("Connecting to Postgres")
-		dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=%s",
-			viper.GetString("db.user"),
-			viper.GetString("db.password"),
-			viper.GetString("db.host"),
-			viper.GetInt("db.port"),
-			viper.GetString("db.db"),
-			viper.GetString("db.timezone"),
-		)
 
-		db, err = gorm.Open(mysql.Open(dsn), &config)
-	case "postgres":
-		log.Info().Msg("Connecting to Postgres")
-		connStr := fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s TimeZone=%s",
-			viper.GetString("db.host"),
-			viper.GetString("db.port"),
-			viper.GetString("db.user"),
-			viper.GetString("db.password"),
-			viper.GetString("db.db"),
-			viper.GetString("db.timezone"),
-		)
-		db, err = gorm.Open(postgres.Open(connStr), &config)
-
-	case "sqlite":
-		log.Info().Msg("Connecting to Sqlite")
-		db, err = gorm.Open(sqlite.Open("sqlite.db"), &gorm.Config{})
-	}
-
-	if err != nil {
-		return erx.W(err)
-	}
-
-	if Migrate {
-		if err = db.AutoMigrate(
-			&model.User{},
-		); err != nil {
-			return err
+	initOnce.Do(func() {
+		log.Info().Msg("New db")
+		config := gorm.Config{
+			NamingStrategy: schema.NamingStrategy{
+				NoLowerCase: true,
+			},
+			Logger: logger.New(
+				&zerologWriter{},
+				logger.Config{
+					SlowThreshold:             time.Second,
+					LogLevel:                  logger.Warn,
+					IgnoreRecordNotFoundError: false,
+					ParameterizedQueries:      true,
+					Colorful:                  true,
+				},
+			),
 		}
-	}
-	return nil
+
+		switch global.Database {
+		case "mysql":
+			log.Info().Msg("Connecting to MySQL")
+			dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=%s",
+				viper.GetString("db.user"),
+				viper.GetString("db.password"),
+				viper.GetString("db.host"),
+				viper.GetInt("db.port"),
+				viper.GetString("db.db"),
+				viper.GetString("db.timezone"),
+			)
+
+			global.DB, err = gorm.Open(mysql.Open(dsn), &config)
+		case "postgres":
+			log.Info().Msg("Connecting to Postgres")
+			connStr := fmt.Sprintf(
+				"host=%s port=%s user=%s password=%s dbname=%s TimeZone=%s",
+				viper.GetString("db.host"),
+				viper.GetString("db.port"),
+				viper.GetString("db.user"),
+				viper.GetString("db.password"),
+				viper.GetString("db.db"),
+				viper.GetString("db.timezone"),
+			)
+			global.DB, err = gorm.Open(postgres.Open(connStr), &config)
+
+		case "sqlite":
+			log.Info().Msg("Connecting to Sqlite")
+			global.DB, err = gorm.Open(sqlite.Open("sqlite.db"), &gorm.Config{})
+		}
+
+		if err != nil {
+			err = erx.W(err, "Initialize database failed")
+			return
+		}
+
+		if Migrate {
+			if err = global.DB.AutoMigrate(
+				&model.User{},
+			); err != nil {
+				err = erx.W(err, "Migration failed")
+				return
+			}
+		}
+		return
+	})
+	return err
 }

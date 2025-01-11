@@ -8,6 +8,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/controller"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	"github.com/spf13/cobra"
 )
 
@@ -24,12 +25,6 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	// dbConf, _ := cmd.Flags().GetString("database")
-	// err := db.New(dbConf)
-	// if err != nil {
-	// 	log.Fatal().Msgf("Initialization failed: %v", err)
-	// }
-
 	restController := controller.NewHandler()
 
 	router := gin.Default()
@@ -43,5 +38,5 @@ func RunServer(cmd *cobra.Command, args []string) {
 func init() {
 	Cmd.Flags().StringP("port", "p", "8080", "port")
 	Cmd.Flags().
-		StringP("database", "d", "postgres", `database enum. allowed: "postgres", "sqlite"`)
+		StringVarP(&global.Database, `database`, "d", "postgres", `"postgres", "sqlite", "mysql"`)
 }

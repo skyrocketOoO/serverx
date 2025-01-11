@@ -11,9 +11,9 @@ import (
 	cm "github.com/skyrocketOoO/serverx/internal/common"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	tb "github.com/skyrocketOoO/serverx/internal/gen/table"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
 	"github.com/skyrocketOoO/serverx/internal/model"
-	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
 	"gorm.io/gorm"
 )
 
@@ -34,7 +34,7 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	hashedPassword := string(auth.Hash(req.Password, cm.GetSalt()))
-	db := db.Get()
+	db := global.DB
 
 	var user model.User
 	if err := db.
@@ -77,7 +77,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	db := db.Get()
+	db := global.DB
 	var existingUser model.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
