@@ -61,8 +61,8 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, Resp{Token: token})
 }
 
-// @Param   user  body  controller.Register.Req  true  "Login User"
-// @Success 200 {object} controller.Register.Resp "token"
+// @Param   user  body  controller.Register.Req  true  "Register"
+// @Success 200
 // @Failure 500 {string} dm.ErrResp "error"
 // @Failure 400 {object} dm.ErrResp "bad request"
 // @Router /register [post]

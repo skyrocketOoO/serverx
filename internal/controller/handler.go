@@ -4,7 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/skyrocketOoO/erx/erx"
 	_ "github.com/skyrocketOoO/serverx/internal/controller/middleware" // avoid import cycle
+	"github.com/skyrocketOoO/serverx/internal/global"
+	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
 )
 
 type Handler struct{}
@@ -30,6 +33,16 @@ func (d *Handler) Ping(c *gin.Context) {
 // @Router /healthy [get]
 func (d *Handler) Healthy(c *gin.Context) {
 	// do something check
+	db := global.DB
+	sqlDb, err := db.DB()
+	if err != nil {
+		dm.RespErr(c, http.StatusServiceUnavailable, erx.W(err))
+		return
+	}
+	if err := sqlDb.Ping(); err != nil {
+		dm.RespErr(c, http.StatusServiceUnavailable, erx.W(err))
+		return
+	}
 
 	c.Status(http.StatusOK)
 }
