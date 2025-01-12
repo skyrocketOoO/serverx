@@ -51,14 +51,14 @@ init-notify:
     script:
         - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 build-job: # This job runs in the build stage, which runs first.
     stage: build
     variables:
-        NOW_BRANCH: "uat"
+        NOW_BRANCH: "dev"
     before_script:
         - export PATH=$PATH:/usr/local/go/bin
     script:
@@ -84,17 +84,17 @@ build-job: # This job runs in the build stage, which runs first.
         - echo -e "$TAR_FILE" > released_file_name.txt
         - echo "done."
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     artifacts:
         paths:
             - release/
     only:
-        - uat
+        - dev
 
 backup-job-41:
     stage: backup
     variables:
-        NOW_BRANCH: "uat"
+        NOW_BRANCH: "dev"
         REMOTE_IP: 10.0.1.41
     script:
         - echo "Backup application..."
@@ -106,14 +106,14 @@ backup-job-41:
         - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo chown ubuntu:ubuntu /becreator/$TAR_FILE
         - echo "done."
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 backup-job-43:
     stage: backup
     variables:
-        NOW_BRANCH: "uat"
+        NOW_BRANCH: "dev"
         REMOTE_IP: 10.0.1.43
     script:
         - echo "Backup application..."
@@ -125,9 +125,9 @@ backup-job-43:
         - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP sudo chown ubuntu:ubuntu /becreator/$TAR_FILE
         - echo "done."
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 deploy-job-41: # This job runs in the deploy stage.
     stage: deploy
@@ -152,9 +152,9 @@ deploy-job-41: # This job runs in the deploy stage.
         # 移除佈署用的壓縮檔
         - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP rm -rf $NOW_DATE/
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 deploy-job-43: # This job runs in the deploy stage.
     stage: deploy
@@ -178,9 +178,9 @@ deploy-job-43: # This job runs in the deploy stage.
         # 移除佈署用的壓縮檔
         - sshpass -p $REMOTE_PASSWORD ssh -oStrictHostKeyChecking=no $REMOTE_USERNAME@$REMOTE_IP rm -rf $NOW_DATE/
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 success-job:
     stage: notify_telegram
@@ -196,9 +196,9 @@ success-job:
     script:
         - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
 
 failure-job:
     stage: notify_if_failure
@@ -215,6 +215,6 @@ failure-job:
     script:
         - curl https://api.telegram.org/bot$BOT_ID/sendMessage -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" -d "parse_mode=MarkdownV2"
     tags:
-        - jumpvm:uat
+        - jumpvm:dev
     only:
-        - uat
+        - dev
