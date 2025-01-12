@@ -40,10 +40,6 @@ info:
 paths:
   /healthy:
     get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
       responses:
         "200":
           description: OK
@@ -53,7 +49,7 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/dm.ErrResp'
-      summary: Check the server healthy
+      summary: Check the services are healthy
   /login:
     post:
       parameters:
@@ -69,11 +65,11 @@ paths:
           schema:
             $ref: '#/definitions/controller.Login.Resp'
         "400":
-          description: bad request
+          description: Bad Request
           schema:
             $ref: '#/definitions/dm.ErrResp'
         "500":
-          description: error
+          description: Internal Server Error
           schema:
             type: string
   /ping:
@@ -85,8 +81,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/dm.ErrResp'
       summary: Check the server started
   /register:
     post:
@@ -107,5 +101,5 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/dm.ErrResp'
 swagger: "2.0"

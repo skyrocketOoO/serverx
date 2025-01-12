@@ -17,13 +17,7 @@ const docTemplate = `{
     "paths": {
         "/healthy": {
             "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Check the server healthy",
+                "summary": "Check the services are healthy",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -61,13 +55,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/dm.ErrResp"
                         }
                     },
                     "500": {
-                        "description": "error",
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -86,10 +80,7 @@ const docTemplate = `{
                 "summary": "Check the server started",
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
-                        }
+                        "description": "OK"
                     }
                 }
             }
@@ -120,7 +111,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/dm.ErrResp"
                         }
                     }
                 }
