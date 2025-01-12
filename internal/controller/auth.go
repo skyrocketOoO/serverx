@@ -63,8 +63,8 @@ func (h *Handler) Login(c *gin.Context) {
 
 // @Param   user  body  controller.Register.Req  true  "Register"
 // @Success 200
-// @Failure 500 {string} dm.ErrResp "error"
-// @Failure 400 {object} dm.ErrResp "bad request"
+// @Failure 500 {string} dm.ErrResp
+// @Failure 400 {object} dm.ErrResp
 // @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {

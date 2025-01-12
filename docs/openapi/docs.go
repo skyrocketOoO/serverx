@@ -112,13 +112,13 @@ const docTemplate = `{
                         "description": "OK"
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/dm.ErrResp"
                         }
                     },
                     "500": {
-                        "description": "error",
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
