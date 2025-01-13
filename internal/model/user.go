@@ -1,11 +1,10 @@
 package model
 
-import (
-	"github.com/skyrocketOoO/gorm-plugin/lib/model"
-)
+import "gorm.io/gorm"
 
 type User struct {
-	model.Base
+	ID string `gorm:"type:char(36);default:uuid();primaryKey"`
+	gorm.Model
 
 	Name     string `gorm:"unique"`
 	Password string `gorm:"type:varchar(255)"`

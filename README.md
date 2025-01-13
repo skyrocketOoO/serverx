@@ -17,7 +17,6 @@ A server template combines multiple basic tools
 - Validator: go-playground/validator
 - DB:
     - Postgres
-    - Sqlite
     - Mysql
 - Benchmark: K6
 - format
