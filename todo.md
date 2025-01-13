@@ -1,0 +1,2 @@
+- implement jwt logout mechanism
+- add flag validation

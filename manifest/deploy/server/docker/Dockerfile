@@ -8,4 +8,4 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=0 /builder/server .
 COPY config/config.yaml ./config/config.yaml
-CMD ["./server"]
+CMD ["./server . server"]
