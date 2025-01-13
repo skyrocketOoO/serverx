@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/inter/validator"
 )
 
 func BindAndValidate[T any](c *gin.Context, req *T) bool {
@@ -20,7 +20,7 @@ func BindAndValidate[T any](c *gin.Context, req *T) bool {
 		return false
 	}
 
-	if err := validator.Get().Struct(req); err != nil {
+	if err := global.Validator.Struct(req); err != nil {
 		dm.RespErr(c, http.StatusBadRequest, erx.W(err))
 		return false
 	}

@@ -1,6 +1,9 @@
 package global
 
-import "gorm.io/gorm"
+import (
+	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
+)
 
 const (
 	ApiVersion = "/v1"
@@ -13,5 +16,6 @@ var (
 	Env         string
 
 	// instance
-	DB *gorm.DB
+	DB        *gorm.DB
+	Validator *validator.Validate // use a single instance of Validate, it caches struct info
 )
