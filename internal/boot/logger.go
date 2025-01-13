@@ -6,6 +6,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/skyrocketOoO/serverx/internal/global"
 	"github.com/skyrocketOoO/serverx/internal/service/exter/loki"
 )
 
@@ -13,6 +14,12 @@ var SendLoki bool
 
 func InitLogger() {
 	log.Info().Msg("Logger initialized")
+
+	if global.Env == "dev" {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else if global.Env == "prod" {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
 
 	consoleWriter := zerolog.ConsoleWriter{
 		Out:        os.Stdout,

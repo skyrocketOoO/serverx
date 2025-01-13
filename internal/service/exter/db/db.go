@@ -12,16 +12,12 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
-var (
-	Migrate  bool = false
-	initOnce sync.Once
-)
+var initOnce sync.Once
 
 type zerologWriter struct{}
 
@@ -75,10 +71,6 @@ func New() error {
 				viper.GetString("db.timezone"),
 			)
 			global.DB, err = gorm.Open(postgres.Open(connStr), &config)
-
-		case "sqlite":
-			log.Info().Msg("Connecting to Sqlite")
-			global.DB, err = gorm.Open(sqlite.Open("sqlite.db"), &gorm.Config{})
 		}
 
 		if err != nil {
@@ -86,7 +78,7 @@ func New() error {
 			return
 		}
 
-		if Migrate {
+		if global.AutoMigrate {
 			if err = global.DB.AutoMigrate(
 				&model.User{},
 			); err != nil {

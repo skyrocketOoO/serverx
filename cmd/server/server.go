@@ -80,5 +80,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 func init() {
 	Cmd.Flags().StringP("port", "p", "8080", "port")
 	Cmd.Flags().
-		StringVarP(&global.Database, `database`, "d", "sqlite", `"postgres", "sqlite", "mysql"`)
+		StringVarP(&global.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
+	Cmd.Flags().
+		StringVarP(&global.Env, `env`, "e", "dev", `"dev", "prod"`)
 }

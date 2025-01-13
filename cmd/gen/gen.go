@@ -23,7 +23,7 @@ var Cmd = &cobra.Command{
 
 func Gen(cmd *cobra.Command, args []string) {
 	db.New()
-	db.Migrate = true
+	global.AutoMigrate = true
 	if err := boot.InitAll(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
