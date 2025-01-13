@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,6 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/controller"
@@ -87,24 +87,22 @@ func init() {
 		StringVarP(&global.Env, `env`, "e", "dev", `"dev", "prod"`)
 
 	Cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
-		// Validate database flag
 		validDatabases := map[string]bool{"postgres": true, "mysql": true}
 		if !validDatabases[global.Database] {
-			return fmt.Errorf("invalid database value: %s. Must be one of: postgres, mysql", global.Database)
+			return erx.Errorf("invalid database value: %s. Must be one of: postgres, mysql",
+				global.Database)
 		}
 
-		// Validate env flag
 		validEnvs := map[string]bool{"dev": true, "prod": true}
 		if !validEnvs[global.Env] {
-			return fmt.Errorf("invalid environment value: %s. Must be one of: dev, prod", global.Env)
+			return erx.Errorf("invalid environment value: %s. Must be one of: dev, prod", global.Env)
 		}
 
-		// Validate port flag
 		port, _ := cmd.Flags().GetString("port")
 		if _, err := strconv.Atoi(port); err != nil || port == "" {
-			return fmt.Errorf("invalid port value: %s. Must be a valid number", port)
+			return erx.Errorf("invalid port value: %s. Must be a valid number", port)
 		}
 
-		return nil // No errors, validation passed
+		return nil
 	}
 }

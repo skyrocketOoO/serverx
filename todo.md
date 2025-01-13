@@ -1,2 +1,3 @@
 - implement jwt logout mechanism
 - add flag validation
+- query and route parameter binding and validate
