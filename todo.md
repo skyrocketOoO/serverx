@@ -1,3 +1,3 @@
-- implement jwt logout mechanism
-- add flag validation
 - query and route parameter binding and validate
+- implement map error to http status code
+- implement role based auth
