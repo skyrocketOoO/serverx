@@ -9,8 +9,8 @@ const (
 var (
 	// env | flag
 	Database    string
-	AutoMigrate bool   = false
-	Env         string // dev | prod
+	AutoMigrate bool = false
+	Env         string
 
 	// instance
 	DB *gorm.DB
