@@ -1,4 +1,30 @@
 definitions:
+  cm.Pager:
+    properties:
+      number:
+        example: 1
+        minimum: 1
+        type: integer
+      size:
+        example: 10
+        minimum: 1
+        type: integer
+    required:
+    - number
+    - size
+    type: object
+  cm.Sorter:
+    properties:
+      asc:
+        example: false
+        type: boolean
+      field:
+        example: Time
+        type: string
+    required:
+    - asc
+    - field
+    type: object
   controller.CreateUser.Req:
     properties:
       name:
@@ -18,13 +44,12 @@ definitions:
     type: object
   controller.GetUsers.Req:
     properties:
-      name:
-        type: string
-      password:
-        type: string
-    required:
-    - name
-    - password
+      pager:
+        $ref: '#/definitions/cm.Pager'
+      sorter:
+        items:
+          $ref: '#/definitions/cm.Sorter'
+        type: array
     type: object
   controller.GetUsers.Resp:
     properties:

@@ -282,6 +282,42 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "cm.Pager": {
+            "type": "object",
+            "required": [
+                "number",
+                "size"
+            ],
+            "properties": {
+                "number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 10
+                }
+            }
+        },
+        "cm.Sorter": {
+            "type": "object",
+            "required": [
+                "asc",
+                "field"
+            ],
+            "properties": {
+                "asc": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "field": {
+                    "type": "string",
+                    "example": "Time"
+                }
+            }
+        },
         "controller.CreateUser.Req": {
             "type": "object",
             "required": [
@@ -310,16 +346,15 @@ const docTemplate = `{
         },
         "controller.GetUsers.Req": {
             "type": "object",
-            "required": [
-                "name",
-                "password"
-            ],
             "properties": {
-                "name": {
-                    "type": "string"
+                "pager": {
+                    "$ref": "#/definitions/cm.Pager"
                 },
-                "password": {
-                    "type": "string"
+                "sorter": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cm.Sorter"
+                    }
                 }
             }
         },

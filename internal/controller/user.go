@@ -68,8 +68,8 @@ func (d *Handler) CreateUser(c *gin.Context) {
 // @Tags Alarm
 func (d *Handler) GetUsers(c *gin.Context) {
 	type Req struct {
-		Name     string `json:"name" validate:"required"`
-		Password string `json:"password" validate:"required"`
+		Pager  *cm.Pager   `json:"pager"`
+		Sorter []cm.Sorter `json:"sorter"`
 	}
 
 	var req Req
