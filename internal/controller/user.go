@@ -1,6 +1,6 @@
 package controller
 
 func CreateUser() {}
-func ListUsers()  {}
+func GetUsers()   {}
 func UpdateUser() {}
 func DeleteUser() {}
