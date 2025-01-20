@@ -16,6 +16,13 @@ import (
 	"gorm.io/gorm"
 )
 
+// @Param request body controller.CreateUser.Req true "Request body"
+// @Failure 400 {object} dm.ErrResp ""
+// @Success 200
+// @Failure 500 {object} dm.ErrResp ""
+// @Router /user/create [post]
+// @Security Bearer
+// @Tags Alarm
 func (d *Handler) CreateUser(c *gin.Context) {
 	type Req struct {
 		Name     string `json:"name" validate:"required"`
@@ -52,20 +59,56 @@ func (d *Handler) CreateUser(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Param request body controller.GetUsers.Req true "Request body"
+// @Failure 400 {object} dm.ErrResp ""
+// @Success 200 {object} controller.GetUsers.Resp ""
+// @Failure 500 {object} dm.ErrResp ""
+// @Router /user/get [post]
+// @Security Bearer
+// @Tags Alarm
 func (d *Handler) GetUsers(c *gin.Context) {
+	type Req struct {
+		Name     string `json:"name" validate:"required"`
+		Password string `json:"password" validate:"required"`
+	}
+
+	var req Req
+	if ok := cm.BindAndValidate(c, &req); !ok {
+		return
+	}
+
 	db := global.DB
 
-	var users []model.User
-	if err := db.Find(&users).Error; err != nil {
+	type User struct {
+		ID   uint   `json:"id"`
+		Name string `json:"name"`
+	}
+	type Resp struct {
+		Data  []User `json:"data"`
+		Count int64  `json:"count"`
+	}
+
+	var resp Resp
+	if err := db.Model(&model.User{}).Count(&resp.Count).Error; err != nil {
 		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": users,
-	})
+	if err := db.Model(&model.User{}).Scan(&resp.Data).Error; err != nil {
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
+// @Param request body controller.UpdateUser.Req true "Request body"
+// @Failure 400 {object} dm.ErrResp ""
+// @Success 200
+// @Failure 500 {object} dm.ErrResp ""
+// @Router /user/update [post]
+// @Security Bearer
+// @Tags Alarm
 func (d *Handler) UpdateUser(c *gin.Context) {
 	type Req struct {
 		ID   uint   `json:"id" validate:"required"`
@@ -98,6 +141,13 @@ func (d *Handler) UpdateUser(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Param request body controller.DeleteUser.Req true "Request body"
+// @Failure 400 {object} dm.ErrResp ""
+// @Success 200
+// @Failure 500 {object} dm.ErrResp ""
+// @Router /user/delete [post]
+// @Security Bearer
+// @Tags Alarm
 func (d *Handler) DeleteUser(c *gin.Context) {
 	type Req struct {
 		ID uint `json:"id" validate:"required"`

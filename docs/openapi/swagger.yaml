@@ -1,4 +1,47 @@
 definitions:
+  controller.CreateUser.Req:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - name
+    - password
+    type: object
+  controller.DeleteUser.Req:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  controller.GetUsers.Req:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - name
+    - password
+    type: object
+  controller.GetUsers.Resp:
+    properties:
+      count:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/controller.GetUsers.User'
+        type: array
+    type: object
+  controller.GetUsers.User:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   controller.Login.Req:
     properties:
       Name:
@@ -28,6 +71,15 @@ definitions:
     - Name
     - Password
     type: object
+  controller.UpdateUser.Req:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - id
+    type: object
   dm.ErrResp:
     properties:
       error:
@@ -37,8 +89,6 @@ definitions:
     type: object
 info:
   contact: {}
-  description: This is a sample server celler server.
-  title: Swagger Example API
 paths:
   /healthy:
     get:
@@ -104,6 +154,104 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dm.ErrResp'
+  /user/create:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateUser.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+      security:
+      - Bearer: []
+      tags:
+      - Alarm
+  /user/delete:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.DeleteUser.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+      security:
+      - Bearer: []
+      tags:
+      - Alarm
+  /user/get:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.GetUsers.Req'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetUsers.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+      security:
+      - Bearer: []
+      tags:
+      - Alarm
+  /user/update:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateUser.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dm.ErrResp'
+      security:
+      - Bearer: []
+      tags:
+      - Alarm
 securityDefinitions:
   Bearer:
     in: header
