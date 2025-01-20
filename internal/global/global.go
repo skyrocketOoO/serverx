@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	ApiVersion = "/v1"
+	ApiVersion = "v1"
 )
 
 var (

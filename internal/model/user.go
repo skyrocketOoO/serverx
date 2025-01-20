@@ -1,7 +1,9 @@
 package model
 
+import "gorm.io/gorm"
+
 type User struct {
-	Base
+	gorm.Model
 
 	Name     string `gorm:"unique"`
 	Password string `gorm:"type:varchar(255)"`

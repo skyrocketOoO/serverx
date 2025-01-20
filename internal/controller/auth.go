@@ -10,7 +10,6 @@ import (
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
 	cm "github.com/skyrocketOoO/serverx/internal/common"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
-	tb "github.com/skyrocketOoO/serverx/internal/gen/table"
 	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
 	"github.com/skyrocketOoO/serverx/internal/model"
@@ -19,8 +18,8 @@ import (
 
 // @Param   user  body  controller.Login.Req  true  "Login User"
 // @Success 200 {object} controller.Login.Resp "token"
-// @Failure 500 {string} dm.ErrResp 
-// @Failure 400 {object} dm.ErrResp 
+// @Failure 500 {string} dm.ErrResp
+// @Failure 400 {object} dm.ErrResp
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	type Req struct {
@@ -38,7 +37,7 @@ func (h *Handler) Login(c *gin.Context) {
 
 	var user model.User
 	if err := db.
-		Table(tb.Users).
+		Model(&model.User{}).
 		Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Where(wh.B(col.Users.Password, ope.Eq), hashedPassword).
 		Take(&user).
