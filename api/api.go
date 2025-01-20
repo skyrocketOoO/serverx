@@ -21,4 +21,12 @@ func Bind(r *gin.Engine, h *controller.Handler) {
 
 	pR := vr.Group("/")
 	pR.Use(middleware.Jwt())
+
+	userR := pR.Group("/user")
+	{
+		userR.POST("/get", h.GetUsers)
+		userR.POST("/create", h.CreateUser)
+		userR.POST("/update", h.UpdateUser)
+		userR.POST("/delete", h.DeleteUser)
+	}
 }

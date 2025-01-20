@@ -119,6 +119,8 @@ github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6g
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
 github.com/skyrocketOoO/erx v0.1.0 h1:BIXf6MldCc9b3iezF/H7LwvZ8peaabV9ANEghGFUYU0=
 github.com/skyrocketOoO/erx v0.1.0/go.mod h1:ebjF3Rs+Hhd4HmPbYeOMeLkN6OfkX15wN4/5j6Srh4w=
+github.com/skyrocketOoO/erx v0.2.0 h1:H46Z1dn/Ji4sjyD5CpA585rjkainPzP8rkK5kKVfpkc=
+github.com/skyrocketOoO/erx v0.2.0/go.mod h1:ebjF3Rs+Hhd4HmPbYeOMeLkN6OfkX15wN4/5j6Srh4w=
 github.com/skyrocketOoO/go-utils v1.1.0 h1:po35VlrsyUQiVWGpy7xn7v6OLoW/9ZptUNb8FxMzUG0=
 github.com/skyrocketOoO/go-utils v1.1.0/go.mod h1:E84qWa2v/4yXhPnqxEFmptvVtphbKxrqY0cOW9haw3A=
 github.com/skyrocketOoO/gorm-plugin v1.3.0 h1:222AQ8g+Bo7Ksd3SrtFK9ucyg90FFXVuJOId+MhF0lw=

@@ -16,7 +16,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateUser(c *gin.Context) {
+func (d *Handler) CreateUser(c *gin.Context) {
 	type Req struct {
 		Name     string `json:"name" validate:"required"`
 		Password string `json:"password" validate:"required"`
@@ -32,11 +32,12 @@ func CreateUser(c *gin.Context) {
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
-			dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+			dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 			return
 		}
 	} else {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(dm.ErrUserNameRepetite))
+		err = dm.ErrUserNameRepetite
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(dm.ErrUserNameRepetite))
 		return
 	}
 
@@ -44,19 +45,19 @@ func CreateUser(c *gin.Context) {
 		Name:     req.Name,
 		Password: string(auth.Hash(req.Password, cm.GetSalt())),
 	}).Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
 	c.Status(http.StatusOK)
 }
 
-func GetUsers(c *gin.Context) {
+func (d *Handler) GetUsers(c *gin.Context) {
 	db := global.DB
 
 	var users []model.User
 	if err := db.Find(&users).Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
@@ -65,11 +66,10 @@ func GetUsers(c *gin.Context) {
 	})
 }
 
-func UpdateUser(c *gin.Context) {
+func (d *Handler) UpdateUser(c *gin.Context) {
 	type Req struct {
-		ID       uint   `json:"id" validate:"required"`
-		Name     string `json:"name"`
-		Password string `json:"password"`
+		ID   uint   `json:"id" validate:"required"`
+		Name string `json:"name"`
 	}
 
 	var req Req
@@ -81,32 +81,24 @@ func UpdateUser(c *gin.Context) {
 
 	// Find the user
 	var user model.User
-	if err := db.First(&user, req.ID).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			dm.RespErr(c, http.StatusNotFound, erx.W(err))
-			return
-		}
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+	if err := db.Take(&user, req.ID).Error; err != nil {
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
-	// Update fields if provided
 	if req.Name != "" {
 		user.Name = req.Name
 	}
-	if req.Password != "" {
-		user.Password = string(auth.Hash(req.Password, cm.GetSalt()))
-	}
 
 	if err := db.Save(&user).Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
 	c.Status(http.StatusOK)
 }
 
-func DeleteUser(c *gin.Context) {
+func (d *Handler) DeleteUser(c *gin.Context) {
 	type Req struct {
 		ID uint `json:"id" validate:"required"`
 	}
@@ -118,9 +110,8 @@ func DeleteUser(c *gin.Context) {
 
 	db := global.DB
 
-	// Delete the user
 	if err := db.Delete(&model.User{}, req.ID).Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 

@@ -11,7 +11,7 @@ require (
 	github.com/go-playground/validator/v10 v10.23.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/rs/zerolog v1.33.0
-	github.com/skyrocketOoO/erx v0.1.0
+	github.com/skyrocketOoO/erx v0.2.0
 	github.com/skyrocketOoO/go-utils v1.1.0
 	github.com/skyrocketOoO/gorm-plugin v1.3.0
 	github.com/spf13/cobra v1.8.1
