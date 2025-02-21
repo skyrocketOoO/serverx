@@ -26,7 +26,3 @@ func BindAndValidate[T any](c *gin.Context, req *T) bool {
 	}
 	return true
 }
-
-func RespErr(c *gin.Context, statusCode int, err error) {
-	c.JSON(statusCode, dm.ErrResp{Error: err.Error()})
-}
