@@ -11,6 +11,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	models "github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/skyrocketOoO/serverx/internal/util"
 	"gorm.io/gorm"
 )
@@ -33,7 +34,7 @@ func (d *Handler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
@@ -76,7 +77,7 @@ func (d *Handler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 
 	type User struct {
 		ID   uint   `json:"id"`
@@ -119,7 +120,7 @@ func (d *Handler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 
 	// Find the user
 	var user models.User
@@ -157,7 +158,7 @@ func (d *Handler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 
 	if err := db.Delete(&models.User{}, req.ID).Error; err != nil {
 		util.RespErr(c, util.ToHttpCode(err), erx.W(err))

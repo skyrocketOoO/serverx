@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/go-playground/validator/v10"
-	"gorm.io/gorm"
 )
 
 const (
@@ -17,8 +16,6 @@ var (
 	AutoMigrate bool = false
 	Env         string
 
-	// instance
-	DB        *gorm.DB
 	Validator *validator.Validate // use a single instance of Validate, it caches struct info
 )
 

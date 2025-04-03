@@ -11,6 +11,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	models "github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/skyrocketOoO/serverx/internal/util"
 	"gorm.io/gorm"
 )
@@ -32,7 +33,7 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	hashedPassword := string(auth.Hash(req.Password, util.GetSalt()))
-	db := domain.DB
+	db := postgres.Get()
 
 	var user models.User
 	if err := db.
@@ -75,7 +76,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {

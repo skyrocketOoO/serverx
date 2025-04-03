@@ -28,7 +28,7 @@ func Gen(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 
 	if err := tablename.GenTableNamesCode(db,
 		"internal/gen/table/table.go"); err != nil {

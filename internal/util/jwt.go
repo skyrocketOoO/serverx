@@ -8,9 +8,9 @@ import (
 	"github.com/golang-jwt/jwt"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
-	"github.com/skyrocketOoO/serverx/internal/domain"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	models "github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/viper"
 )
 
@@ -40,7 +40,7 @@ func GetOperator(c *gin.Context) (user models.User, err error) {
 		return models.User{}, errors.New("username not set in jwt")
 	}
 
-	db := domain.DB
+	db := postgres.Get()
 	if err = db.
 		Where(wh.B(col.Users.Name, ope.Eq), operatorName).
 		Take(&user).Error; err != nil {

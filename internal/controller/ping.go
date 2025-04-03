@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/domain"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -24,7 +24,7 @@ func (d *Handler) Ping(c *gin.Context) {
 // @Router /healthy [get]
 func (d *Handler) Healthy(c *gin.Context) {
 	// do something check
-	db := domain.DB
+	db := postgres.Get()
 	sqlDb, err := db.DB()
 	if err != nil {
 		util.RespErr(c, http.StatusServiceUnavailable, erx.W(err))

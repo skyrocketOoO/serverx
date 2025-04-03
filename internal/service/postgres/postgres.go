@@ -17,6 +17,12 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+var db *gorm.DB
+
+func Get() *gorm.DB {
+	return db
+}
+
 var initOnce sync.Once
 
 type zerologWriter struct{}
@@ -58,7 +64,7 @@ func New() error {
 				viper.GetString("db.timezone"),
 			)
 
-			domain.DB, err = gorm.Open(mysql.Open(dsn), &config)
+			db, err = gorm.Open(mysql.Open(dsn), &config)
 		case "postgres":
 			log.Info().Msg("Connecting to Postgres")
 			connStr := fmt.Sprintf(
@@ -70,7 +76,7 @@ func New() error {
 				viper.GetString("db.db"),
 				viper.GetString("db.timezone"),
 			)
-			domain.DB, err = gorm.Open(postgres.Open(connStr), &config)
+			db, err = gorm.Open(postgres.Open(connStr), &config)
 		}
 
 		if err != nil {
@@ -79,24 +85,23 @@ func New() error {
 		}
 
 		if domain.AutoMigrate {
-			if err = domain.DB.AutoMigrate(
+			if err = db.AutoMigrate(
 				&model.User{},
 			); err != nil {
 				err = erx.W(err, "Migration failed")
 				return
 			}
 		}
-		return
 	})
 	return err
 }
 
 func Close() error {
-	if domain.DB == nil {
+	if db == nil {
 		return nil
 	}
 
-	db, err := domain.DB.DB()
+	db, err := db.DB()
 	if err != nil {
 		return err
 	}
