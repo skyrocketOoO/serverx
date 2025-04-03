@@ -18,7 +18,7 @@ import (
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
 	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/db"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/cobra"
 )
 
@@ -72,7 +72,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Info().Msg("Server shut down gracefully.")
 	}
 
-	if err := db.Close(); err != nil {
+	if err := postgres.Close(); err != nil {
 		log.Error().Msgf("Error closing database connection: %v", err)
 	} else {
 		log.Info().Msg("Database connection closed successfully")

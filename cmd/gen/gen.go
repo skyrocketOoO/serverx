@@ -9,7 +9,7 @@ import (
 	"github.com/skyrocketOoO/gorm-plugin/tablename"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/db"
+	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ var Cmd = &cobra.Command{
 }
 
 func Gen(cmd *cobra.Command, args []string) {
-	db.New()
+	postgres.New()
 	domain.AutoMigrate = true
 	if err := boot.InitAll(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
