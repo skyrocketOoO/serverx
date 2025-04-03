@@ -19,8 +19,20 @@
 
 # Go workspace file
 go.work
+go.work.sum
 
-# env
+# env file
 .env
+.env.stage
+.env.dev
+.env.*
 
 sqlite.db
+.vscode/settings.json
+
+.codegpt
+
+bin/
+
+# Atlas
+atlas.hcl
