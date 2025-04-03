@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/internal/domain"
+	"github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
 func ParseValidate[T any](c *gin.Context, req *T) bool {
@@ -20,7 +21,7 @@ func ParseValidate[T any](c *gin.Context, req *T) bool {
 		return false
 	}
 
-	if err := domain.Validator.Struct(req); err != nil {
+	if err := validator.Get().Struct(req); err != nil {
 		RespErr(c, http.StatusBadRequest, erx.W(err))
 		return false
 	}

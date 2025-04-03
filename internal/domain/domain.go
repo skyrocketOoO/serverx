@@ -2,8 +2,6 @@ package domain
 
 import (
 	"errors"
-
-	"github.com/go-playground/validator/v10"
 )
 
 const (
@@ -15,8 +13,6 @@ var (
 	Database    string
 	AutoMigrate bool = false
 	Env         string
-
-	Validator *validator.Validate // use a single instance of Validate, it caches struct info
 )
 
 var (

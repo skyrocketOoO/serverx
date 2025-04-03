@@ -11,12 +11,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
-	controller "github.com/skyrocketOoO/serverx/internal/controller"
-	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/cobra"
@@ -35,19 +31,19 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	restController := controller.NewHandler()
+	// restController := controller.NewHandler()
 
-	router := gin.Default()
-	router.Use(middleware.Cors())
-	api.RegisterAPIHandlers(router, restController)
+	// router := gin.Default()
+	// router.Use(middleware.Cors())
+	// api.RegisterAPIHandlers(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	// router.Run(":" + port)
 
 	// Create a new server instance
 	server := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr: ":" + port,
+		// Handler: router,
 	}
 
 	go func() {
@@ -95,7 +91,10 @@ func init() {
 
 		validEnvs := map[string]bool{"dev": true, "prod": true}
 		if !validEnvs[domain.Env] {
-			return erx.Errorf("invalid environment value: %s. Must be one of: dev, prod", domain.Env)
+			return erx.Errorf(
+				"invalid environment value: %s. Must be one of: dev, prod",
+				domain.Env,
+			)
 		}
 
 		port, _ := cmd.Flags().GetString("port")

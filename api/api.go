@@ -16,8 +16,8 @@ func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	vr.GET("/ping", h.Ping)
 	vr.GET("/healthy", h.Healthy)
 
-	vr.POST("/login", h.Login)
-	vr.POST("/register", h.Register)
+	vr.POST("/login", h.Auth.Login)
+	vr.POST("/register", h.Auth.Register)
 
 	pR := vr.Group("/")
 	pR.Use(middleware.Jwt())

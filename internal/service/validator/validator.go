@@ -3,10 +3,15 @@ package validator
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
-	"github.com/skyrocketOoO/serverx/internal/domain"
 )
+
+var validate *validator.Validate
+
+func Get() *validator.Validate {
+	return validate
+}
 
 func New() {
 	log.Info().Msg("InitValidator")
-	domain.Validator = validator.New(validator.WithRequiredStructEnabled())
+	validate = validator.New(validator.WithRequiredStructEnabled())
 }
