@@ -1,4 +1,4 @@
-package cm
+package util
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ import (
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	"github.com/skyrocketOoO/serverx/internal/models"
+	models "github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/spf13/viper"
 )
 

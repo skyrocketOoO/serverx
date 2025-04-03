@@ -1,10 +1,31 @@
-package dm
+package util
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/global"
 )
+
+func ParseValidate[T any](c *gin.Context, req *T) bool {
+	if c.Request.Body == nil || c.Request.ContentLength == 0 {
+		RespErr(c, http.StatusBadRequest, erx.W(ErrEmptyRequest))
+		return false
+	}
+
+	if err := c.ShouldBindJSON(req); err != nil {
+		RespErr(c, http.StatusBadRequest, erx.W(err))
+		return false
+	}
+
+	if err := global.Validator.Struct(req); err != nil {
+		RespErr(c, http.StatusBadRequest, erx.W(err))
+		return false
+	}
+	return true
+}
 
 type ErrResp struct {
 	ID    string `json:"id"`

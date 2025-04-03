@@ -22,13 +22,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -57,7 +57,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
@@ -105,13 +105,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -145,13 +145,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -185,13 +185,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -228,13 +228,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -268,13 +268,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dm.ErrResp"
+                            "$ref": "#/definitions/util.ErrResp"
                         }
                     }
                 }
@@ -439,7 +439,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dm.ErrResp": {
+        "util.ErrResp": {
             "type": "object",
             "properties": {
                 "error": {

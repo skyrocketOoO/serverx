@@ -8,18 +8,17 @@ import (
 	"github.com/skyrocketOoO/go-utils/auth"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
-	cm "github.com/skyrocketOoO/serverx/internal/common"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
-	"github.com/skyrocketOoO/serverx/internal/models"
+	models "github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/util"
 	"gorm.io/gorm"
 )
 
 // @Param   user  body  controller.Login.Req  true  "Login User"
 // @Success 200 {object} controller.Login.Resp "token"
-// @Failure 500 {string} dm.ErrResp
-// @Failure 400 {object} dm.ErrResp
+// @Failure 500 {string} util.ErrResp
+// @Failure 400 {object} util.ErrResp
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	type Req struct {
@@ -28,11 +27,11 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	var req Req
-	if ok := cm.BindAndValidate(c, &req); !ok {
+	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
-	hashedPassword := string(auth.Hash(req.Password, cm.GetSalt()))
+	hashedPassword := string(auth.Hash(req.Password, util.GetSalt()))
 	db := global.DB
 
 	var user models.User
@@ -42,13 +41,13 @@ func (h *Handler) Login(c *gin.Context) {
 		Where(wh.B(col.Users.Password, ope.Eq), hashedPassword).
 		Take(&user).
 		Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(dm.ErrLoginFailed))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(util.ErrLoginFailed))
 		return
 	}
 
-	token, err := cm.GenerateToken(user.ID)
+	token, err := util.GenerateToken(user.ID)
 	if err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(err))
 		return
 	}
 
@@ -62,8 +61,8 @@ func (h *Handler) Login(c *gin.Context) {
 
 // @Param   user  body  controller.Register.Req  true  "Register"
 // @Success 200
-// @Failure 500 {object} dm.ErrResp
-// @Failure 400 {object} dm.ErrResp
+// @Failure 500 {object} util.ErrResp
+// @Failure 400 {object} util.ErrResp
 // @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {
@@ -72,7 +71,7 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 
 	var req Req
-	if ok := cm.BindAndValidate(c, &req); !ok {
+	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
@@ -81,19 +80,19 @@ func (h *Handler) Register(c *gin.Context) {
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
-			dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+			util.RespErr(c, http.StatusInternalServerError, erx.W(err))
 			return
 		}
 	} else {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(dm.ErrUserNameRepetite))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(util.ErrUserNameRepetite))
 		return
 	}
 
 	if err := db.Create(&models.User{
 		Name:     req.Name,
-		Password: string(auth.Hash(req.Password, cm.GetSalt())),
+		Password: string(auth.Hash(req.Password, util.GetSalt())),
 	}).Error; err != nil {
-		dm.RespErr(c, http.StatusInternalServerError, erx.W(err))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(err))
 		return
 	}
 
@@ -101,6 +100,6 @@ func (h *Handler) Register(c *gin.Context) {
 }
 
 func (h *Handler) ForgetPassword(c *gin.Context) {
-	dm.RespErr(c, http.StatusNotFound, erx.W(dm.ErrNotImplement))
+	util.RespErr(c, http.StatusNotFound, erx.W(util.ErrNotImplement))
 	return
 }

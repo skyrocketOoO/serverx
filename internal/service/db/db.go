@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	model "github.com/skyrocketOoO/serverx/internal/models"
+	model "github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

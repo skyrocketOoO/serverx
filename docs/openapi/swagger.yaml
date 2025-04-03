@@ -105,7 +105,7 @@ definitions:
     required:
     - id
     type: object
-  dm.ErrResp:
+  util.ErrResp:
     properties:
       error:
         type: string
@@ -121,11 +121,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
       summary: Check the services are healthy
   /login:
     post:
@@ -144,7 +144,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
@@ -174,11 +174,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
   /user/create:
     post:
       parameters:
@@ -194,11 +194,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -218,11 +218,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -244,11 +244,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -268,11 +268,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dm.ErrResp'
+            $ref: '#/definitions/util.ErrResp'
       security:
       - Bearer: []
       tags:

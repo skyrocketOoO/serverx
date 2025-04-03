@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	controller "github.com/skyrocketOoO/serverx/internal/controllers"
-	middleware "github.com/skyrocketOoO/serverx/internal/controllers/middlewares"
+	controller "github.com/skyrocketOoO/serverx/internal/controller"
+	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/global"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
