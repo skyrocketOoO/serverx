@@ -8,8 +8,8 @@ import (
 	"github.com/skyrocketOoO/go-utils/auth"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
-	"github.com/skyrocketOoO/serverx/internal/global"
 	models "github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/skyrocketOoO/serverx/internal/util"
 	"gorm.io/gorm"
@@ -17,8 +17,8 @@ import (
 
 // @Param   user  body  controller.Login.Req  true  "Login User"
 // @Success 200 {object} controller.Login.Resp "token"
-// @Failure 500 {string} util.ErrResp
-// @Failure 400 {object} util.ErrResp
+// @Failure 500 {string} domain.ErrResp
+// @Failure 400 {object} domain.ErrResp
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	type Req struct {
@@ -32,7 +32,7 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	hashedPassword := string(auth.Hash(req.Password, util.GetSalt()))
-	db := global.DB
+	db := domain.DB
 
 	var user models.User
 	if err := db.
@@ -41,7 +41,7 @@ func (h *Handler) Login(c *gin.Context) {
 		Where(wh.B(col.Users.Password, ope.Eq), hashedPassword).
 		Take(&user).
 		Error; err != nil {
-		util.RespErr(c, http.StatusInternalServerError, erx.W(util.ErrLoginFailed))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(domain.ErrLoginFailed))
 		return
 	}
 
@@ -61,8 +61,8 @@ func (h *Handler) Login(c *gin.Context) {
 
 // @Param   user  body  controller.Register.Req  true  "Register"
 // @Success 200
-// @Failure 500 {object} util.ErrResp
-// @Failure 400 {object} util.ErrResp
+// @Failure 500 {object} domain.ErrResp
+// @Failure 400 {object} domain.ErrResp
 // @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {
@@ -75,7 +75,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	db := global.DB
+	db := domain.DB
 	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
@@ -84,7 +84,7 @@ func (h *Handler) Register(c *gin.Context) {
 			return
 		}
 	} else {
-		util.RespErr(c, http.StatusInternalServerError, erx.W(util.ErrUserNameRepetite))
+		util.RespErr(c, http.StatusInternalServerError, erx.W(domain.ErrUserNameRepetite))
 		return
 	}
 
@@ -100,6 +100,6 @@ func (h *Handler) Register(c *gin.Context) {
 }
 
 func (h *Handler) ForgetPassword(c *gin.Context) {
-	util.RespErr(c, http.StatusNotFound, erx.W(util.ErrNotImplement))
+	util.RespErr(c, http.StatusNotFound, erx.W(domain.ErrNotImplement))
 	return
 }

@@ -8,17 +8,17 @@ import (
 	"github.com/skyrocketOoO/go-utils/auth"
 	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
-	"github.com/skyrocketOoO/serverx/internal/global"
 	models "github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/skyrocketOoO/serverx/internal/util"
 	"gorm.io/gorm"
 )
 
 // @Param request body controller.CreateUser.Req true "Request body"
-// @Failure 400 {object} util.ErrResp ""
+// @Failure 400 {object} domain.ErrResp ""
 // @Success 200
-// @Failure 500 {object} util.ErrResp ""
+// @Failure 500 {object} domain.ErrResp ""
 // @Router /user/create [post]
 // @Security Bearer
 // @Tags Alarm
@@ -33,7 +33,7 @@ func (d *Handler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	db := global.DB
+	db := domain.DB
 	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
@@ -42,8 +42,8 @@ func (d *Handler) CreateUser(c *gin.Context) {
 			return
 		}
 	} else {
-		err = util.ErrUserNameRepetite
-		util.RespErr(c, util.ToHttpCode(err), erx.W(util.ErrUserNameRepetite))
+		err = domain.ErrUserNameRepetite
+		util.RespErr(c, util.ToHttpCode(err), erx.W(domain.ErrUserNameRepetite))
 		return
 	}
 
@@ -59,9 +59,9 @@ func (d *Handler) CreateUser(c *gin.Context) {
 }
 
 // @Param request body controller.GetUsers.Req true "Request body"
-// @Failure 400 {object} util.ErrResp ""
+// @Failure 400 {object} domain.ErrResp ""
 // @Success 200 {object} controller.GetUsers.Resp ""
-// @Failure 500 {object} util.ErrResp ""
+// @Failure 500 {object} domain.ErrResp ""
 // @Router /user/get [post]
 // @Security Bearer
 // @Tags Alarm
@@ -76,7 +76,7 @@ func (d *Handler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	db := global.DB
+	db := domain.DB
 
 	type User struct {
 		ID   uint   `json:"id"`
@@ -102,9 +102,9 @@ func (d *Handler) GetUsers(c *gin.Context) {
 }
 
 // @Param request body controller.UpdateUser.Req true "Request body"
-// @Failure 400 {object} util.ErrResp ""
+// @Failure 400 {object} domain.ErrResp ""
 // @Success 200
-// @Failure 500 {object} util.ErrResp ""
+// @Failure 500 {object} domain.ErrResp ""
 // @Router /user/update [post]
 // @Security Bearer
 // @Tags Alarm
@@ -119,7 +119,7 @@ func (d *Handler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	db := global.DB
+	db := domain.DB
 
 	// Find the user
 	var user models.User
@@ -141,9 +141,9 @@ func (d *Handler) UpdateUser(c *gin.Context) {
 }
 
 // @Param request body controller.DeleteUser.Req true "Request body"
-// @Failure 400 {object} util.ErrResp ""
+// @Failure 400 {object} domain.ErrResp ""
 // @Success 200
-// @Failure 500 {object} util.ErrResp ""
+// @Failure 500 {object} domain.ErrResp ""
 // @Router /user/delete [post]
 // @Security Bearer
 // @Tags Alarm
@@ -157,7 +157,7 @@ func (d *Handler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	db := global.DB
+	db := domain.DB
 
 	if err := db.Delete(&models.User{}, req.ID).Error; err != nil {
 		util.RespErr(c, util.ToHttpCode(err), erx.W(err))

@@ -1,20 +1,12 @@
 package util
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	"gorm.io/gorm"
-)
-
-var (
-	ErrNotImplement     = errors.New("not implemented")
-	ErrEmptyRequest     = errors.New("empty request body")
-	ErrUnknown          = errors.New("unknown")
-	ErrLoginFailed      = errors.New("login failed")
-	ErrUserNameRepetite = errors.New("user name repetite")
 )
 
 // Convert original error to http status code
@@ -23,15 +15,15 @@ func ToHttpCode(err error) int {
 	switch ogErr {
 	case gorm.ErrRecordNotFound:
 		return http.StatusNotFound
-	case ErrNotImplement:
+	case domain.ErrNotImplement:
 		return http.StatusNotImplemented
-	case ErrEmptyRequest:
+	case domain.ErrEmptyRequest:
 		return http.StatusBadRequest
-	case ErrUnknown:
+	case domain.ErrUnknown:
 		return http.StatusInternalServerError
-	case ErrLoginFailed:
+	case domain.ErrLoginFailed:
 		return http.StatusUnauthorized
-	case ErrUserNameRepetite:
+	case domain.ErrUserNameRepetite:
 		return http.StatusConflict
 	default:
 		return http.StatusInternalServerError

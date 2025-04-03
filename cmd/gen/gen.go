@@ -8,7 +8,7 @@ import (
 	"github.com/skyrocketOoO/gorm-plugin/columnname"
 	"github.com/skyrocketOoO/gorm-plugin/tablename"
 	"github.com/skyrocketOoO/serverx/internal/boot"
-	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service/db"
 	"github.com/spf13/cobra"
 )
@@ -23,12 +23,12 @@ var Cmd = &cobra.Command{
 
 func Gen(cmd *cobra.Command, args []string) {
 	db.New()
-	global.AutoMigrate = true
+	domain.AutoMigrate = true
 	if err := boot.InitAll(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	db := global.DB
+	db := domain.DB
 
 	if err := tablename.GenTableNamesCode(db,
 		"internal/gen/table/table.go"); err != nil {
@@ -50,5 +50,5 @@ func Gen(cmd *cobra.Command, args []string) {
 
 func init() {
 	Cmd.Flags().
-		StringVarP(&global.Database, `database`, "d", "postgres", `"postgres", "sqlite", "mysql"`)
+		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "sqlite", "mysql"`)
 }

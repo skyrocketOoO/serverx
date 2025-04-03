@@ -11,8 +11,8 @@ import (
 
 // @Param   user  body  auth.Login.Req  true  "Login User"
 // @Success 200 {object} auth.Login.Resp "token"
-// @Failure 500 {string} util.ErrResp
-// @Failure 400 {object} util.ErrResp
+// @Failure 500 {string} domain.ErrResp
+// @Failure 400 {object} domain.ErrResp
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	type Req struct {

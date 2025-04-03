@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -19,12 +19,12 @@ func (d *Handler) Ping(c *gin.Context) {
 }
 
 // @Summary Check the services are healthy
-// @Success 200 {object} util.ErrResp
-// @Failure 503 {object} util.ErrResp
+// @Success 200 {object} domain.ErrResp
+// @Failure 503 {object} domain.ErrResp
 // @Router /healthy [get]
 func (d *Handler) Healthy(c *gin.Context) {
 	// do something check
-	db := global.DB
+	db := domain.DB
 	sqlDb, err := db.DB()
 	if err != nil {
 		util.RespErr(c, http.StatusServiceUnavailable, erx.W(err))

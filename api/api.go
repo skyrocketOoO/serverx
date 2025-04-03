@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
 	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
-	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -12,7 +12,7 @@ import (
 func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	vr := r.Group("/" + global.ApiVersion)
+	vr := r.Group("/" + domain.ApiVersion)
 	vr.GET("/ping", h.Ping)
 	vr.GET("/healthy", h.Healthy)
 

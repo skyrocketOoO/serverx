@@ -1,29 +1,35 @@
 definitions:
-  cm.Pager:
+  auth.ForgotPassword.Req:
     properties:
-      number:
-        example: 1
-        minimum: 1
-        type: integer
-      size:
-        example: 10
-        minimum: 1
-        type: integer
-    required:
-    - number
-    - size
-    type: object
-  cm.Sorter:
-    properties:
-      asc:
-        example: false
-        type: boolean
-      field:
-        example: Time
+      email:
         type: string
     required:
-    - asc
-    - field
+    - email
+    type: object
+  auth.Login.Req:
+    properties:
+      Name:
+        type: string
+      Password:
+        type: string
+    required:
+    - Name
+    - Password
+    type: object
+  auth.Login.Resp:
+    properties:
+      token:
+        type: string
+    type: object
+  auth.Register.Req:
+    properties:
+      email:
+        type: string
+      nickName:
+        type: string
+    required:
+    - email
+    - nickName
     type: object
   controller.CreateUser.Req:
     properties:
@@ -45,10 +51,10 @@ definitions:
   controller.GetUsers.Req:
     properties:
       pager:
-        $ref: '#/definitions/cm.Pager'
+        $ref: '#/definitions/util.Pager'
       sorter:
         items:
-          $ref: '#/definitions/cm.Sorter'
+          $ref: '#/definitions/util.Sorter'
         type: array
     type: object
   controller.GetUsers.Resp:
@@ -105,27 +111,73 @@ definitions:
     required:
     - id
     type: object
-  util.ErrResp:
+  domain.ErrResp:
     properties:
       error:
         type: string
       id:
         type: string
     type: object
+  util.Pager:
+    properties:
+      number:
+        example: 1
+        minimum: 1
+        type: integer
+      size:
+        example: 10
+        minimum: 1
+        type: integer
+    required:
+    - number
+    - size
+    type: object
+  util.Sorter:
+    properties:
+      asc:
+        example: false
+        type: boolean
+      field:
+        example: Time
+        type: string
+    required:
+    - asc
+    - field
+    type: object
 info:
   contact: {}
 paths:
+  /Register:
+    post:
+      parameters:
+      - description: Register User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Register.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
   /healthy:
     get:
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
       summary: Check the services are healthy
   /login:
     post:
@@ -135,16 +187,16 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controller.Login.Req'
+          $ref: '#/definitions/auth.Login.Req'
       responses:
         "200":
           description: token
           schema:
-            $ref: '#/definitions/controller.Login.Resp'
+            $ref: '#/definitions/auth.Login.Resp'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
@@ -174,11 +226,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
   /user/create:
     post:
       parameters:
@@ -194,11 +246,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -218,11 +270,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -244,11 +296,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
       security:
       - Bearer: []
       tags:
@@ -268,15 +320,41 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.ErrResp'
+            $ref: '#/definitions/domain.ErrResp'
       security:
       - Bearer: []
       tags:
       - Alarm
+  /v1/forgotPassword:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ForgotPassword.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.ErrResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - Home
 securityDefinitions:
   Bearer:
     in: header

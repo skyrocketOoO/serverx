@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	model "github.com/skyrocketOoO/serverx/internal/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -46,7 +46,7 @@ func New() error {
 			),
 		}
 
-		switch global.Database {
+		switch domain.Database {
 		case "mysql":
 			log.Info().Msg("Connecting to MySQL")
 			dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=%s",
@@ -58,7 +58,7 @@ func New() error {
 				viper.GetString("db.timezone"),
 			)
 
-			global.DB, err = gorm.Open(mysql.Open(dsn), &config)
+			domain.DB, err = gorm.Open(mysql.Open(dsn), &config)
 		case "postgres":
 			log.Info().Msg("Connecting to Postgres")
 			connStr := fmt.Sprintf(
@@ -70,7 +70,7 @@ func New() error {
 				viper.GetString("db.db"),
 				viper.GetString("db.timezone"),
 			)
-			global.DB, err = gorm.Open(postgres.Open(connStr), &config)
+			domain.DB, err = gorm.Open(postgres.Open(connStr), &config)
 		}
 
 		if err != nil {
@@ -78,8 +78,8 @@ func New() error {
 			return
 		}
 
-		if global.AutoMigrate {
-			if err = global.DB.AutoMigrate(
+		if domain.AutoMigrate {
+			if err = domain.DB.AutoMigrate(
 				&model.User{},
 			); err != nil {
 				err = erx.W(err, "Migration failed")
@@ -92,11 +92,11 @@ func New() error {
 }
 
 func Close() error {
-	if global.DB == nil {
+	if domain.DB == nil {
 		return nil
 	}
 
-	db, err := global.DB.DB()
+	db, err := domain.DB.DB()
 	if err != nil {
 		return err
 	}

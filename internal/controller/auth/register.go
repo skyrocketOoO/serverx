@@ -10,9 +10,9 @@ import (
 )
 
 // @Param   user  body  auth.Register.Req  true  "Register User"
-// @Success 200 {object}
-// @Failure 500 {string} util.ErrResp
-// @Failure 400 {object} util.ErrResp
+// @Success 200
+// @Failure 500 {string} domain.ErrResp
+// @Failure 400 {object} domain.ErrResp
 // @Router /Register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {

@@ -17,7 +17,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
 	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
-	"github.com/skyrocketOoO/serverx/internal/global"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service/db"
 	"github.com/spf13/cobra"
 )
@@ -82,20 +82,20 @@ func RunServer(cmd *cobra.Command, args []string) {
 func init() {
 	Cmd.Flags().StringP("port", "p", "8080", "port")
 	Cmd.Flags().
-		StringVarP(&global.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
+		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
-		StringVarP(&global.Env, `env`, "e", "dev", `"dev", "prod"`)
+		StringVarP(&domain.Env, `env`, "e", "dev", `"dev", "prod"`)
 
 	Cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		validDatabases := map[string]bool{"postgres": true, "mysql": true}
-		if !validDatabases[global.Database] {
+		if !validDatabases[domain.Database] {
 			return erx.Errorf("invalid database value: %s. Must be one of: postgres, mysql",
-				global.Database)
+				domain.Database)
 		}
 
 		validEnvs := map[string]bool{"dev": true, "prod": true}
-		if !validEnvs[global.Env] {
-			return erx.Errorf("invalid environment value: %s. Must be one of: dev, prod", global.Env)
+		if !validEnvs[domain.Env] {
+			return erx.Errorf("invalid environment value: %s. Must be one of: dev, prod", domain.Env)
 		}
 
 		port, _ := cmd.Flags().GetString("port")

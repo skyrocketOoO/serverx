@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -13,7 +14,7 @@ func Jwt() gin.HandlerFunc {
 		// Get the token from the Authorization header
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" || len(authHeader) <= 7 || authHeader[:7] != "Bearer " {
-			c.JSON(http.StatusUnauthorized, util.ErrResp{Error: "missing or invalid Authorization header"})
+			c.JSON(http.StatusUnauthorized, domain.ErrResp{Error: "missing or invalid Authorization header"})
 			c.Abort()
 			return
 		}
@@ -29,7 +30,7 @@ func Jwt() gin.HandlerFunc {
 			return util.GetJwtSecretKey(), nil
 		})
 		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, util.ErrResp{Error: "invalid or expired token"})
+			c.JSON(http.StatusUnauthorized, domain.ErrResp{Error: "invalid or expired token"})
 			c.Abort()
 			return
 		}

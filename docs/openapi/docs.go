@@ -15,6 +15,38 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/Register": {
+            "post": {
+                "parameters": [
+                    {
+                        "description": "Register User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.Register.Req"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/healthy": {
             "get": {
                 "summary": "Check the services are healthy",
@@ -22,13 +54,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     }
                 }
@@ -43,7 +75,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.Login.Req"
+                            "$ref": "#/definitions/auth.Login.Req"
                         }
                     }
                 ],
@@ -51,13 +83,13 @@ const docTemplate = `{
                     "200": {
                         "description": "token",
                         "schema": {
-                            "$ref": "#/definitions/controller.Login.Resp"
+                            "$ref": "#/definitions/auth.Login.Resp"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
@@ -105,13 +137,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     }
                 }
@@ -145,13 +177,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     }
                 }
@@ -185,13 +217,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     }
                 }
@@ -228,13 +260,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     }
                 }
@@ -268,13 +300,54 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.ErrResp"
+                            "$ref": "#/definitions/domain.ErrResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/forgotPassword": {
+            "post": {
+                "tags": [
+                    "Home"
+                ],
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.ForgotPassword.Req"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -282,39 +355,52 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "cm.Pager": {
+        "auth.ForgotPassword.Req": {
             "type": "object",
             "required": [
-                "number",
-                "size"
+                "email"
             ],
             "properties": {
-                "number": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "example": 1
-                },
-                "size": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "example": 10
+                "email": {
+                    "type": "string"
                 }
             }
         },
-        "cm.Sorter": {
+        "auth.Login.Req": {
             "type": "object",
             "required": [
-                "asc",
-                "field"
+                "Name",
+                "Password"
             ],
             "properties": {
-                "asc": {
-                    "type": "boolean",
-                    "example": false
+                "Name": {
+                    "type": "string"
                 },
-                "field": {
-                    "type": "string",
-                    "example": "Time"
+                "Password": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth.Login.Resp": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth.Register.Req": {
+            "type": "object",
+            "required": [
+                "email",
+                "nickName"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
                 }
             }
         },
@@ -348,12 +434,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "pager": {
-                    "$ref": "#/definitions/cm.Pager"
+                    "$ref": "#/definitions/util.Pager"
                 },
                 "sorter": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/cm.Sorter"
+                        "$ref": "#/definitions/util.Sorter"
                     }
                 }
             }
@@ -439,7 +525,7 @@ const docTemplate = `{
                 }
             }
         },
-        "util.ErrResp": {
+        "domain.ErrResp": {
             "type": "object",
             "properties": {
                 "error": {
@@ -447,6 +533,42 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "util.Pager": {
+            "type": "object",
+            "required": [
+                "number",
+                "size"
+            ],
+            "properties": {
+                "number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 10
+                }
+            }
+        },
+        "util.Sorter": {
+            "type": "object",
+            "required": [
+                "asc",
+                "field"
+            ],
+            "properties": {
+                "asc": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "field": {
+                    "type": "string",
+                    "example": "Time"
                 }
             }
         }
