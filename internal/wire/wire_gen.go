@@ -7,19 +7,25 @@
 package wire
 
 import (
-	"github.com/skyrocketOoO/serverx/internal/controller/auth"
+	"github.com/skyrocketOoO/serverx/internal/controller"
+	auth2 "github.com/skyrocketOoO/serverx/internal/controller/auth"
+	general2 "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/service/cognito"
-	auth2 "github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	"github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	"github.com/skyrocketOoO/serverx/internal/usecase/general"
 )
 
 // Injectors from injector.go:
 
-func NewHandler() (*auth.Handler, error) {
+func NewHandler() (*controller.Handler, error) {
 	client, err := cognito.New()
 	if err != nil {
 		return nil, err
 	}
-	usecase := auth2.NewUsecase(client)
-	handler := auth.NewHandler(usecase)
-	return handler, nil
+	usecase := auth.NewUsecase(client)
+	handler := auth2.NewHandler(usecase)
+	generalUsecase := general.NewUsecase()
+	generalHandler := general2.NewHandler(generalUsecase)
+	controllerHandler := controller.NewHandler(handler, generalHandler)
+	return controllerHandler, nil
 }

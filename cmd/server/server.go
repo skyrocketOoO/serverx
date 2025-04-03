@@ -9,12 +9,16 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
+	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service/postgres"
+	"github.com/skyrocketOoO/serverx/internal/wire"
 	"github.com/spf13/cobra"
 )
 
@@ -33,9 +37,9 @@ func RunServer(cmd *cobra.Command, args []string) {
 
 	// restController := controller.NewHandler()
 
-	// router := gin.Default()
-	// router.Use(middleware.Cors())
-	// api.RegisterAPIHandlers(router, restController)
+	router := gin.Default()
+	router.Use(middleware.Cors())
+	api.RegisterAPIHandlers(router, wire.NewHandler())
 
 	port, _ := cmd.Flags().GetString("port")
 	// router.Run(":" + port)

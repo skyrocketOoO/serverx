@@ -7,13 +7,13 @@ import (
 )
 
 type Handler struct {
-	Auth    auth.Handler
-	General general.Handler
+	Auth    *auth.Handler
+	General *general.Handler
 }
 
 func NewHandler(
-	auth auth.Handler,
-	general general.Handler,
+	auth *auth.Handler,
+	general *general.Handler,
 ) *Handler {
 	return &Handler{
 		Auth:    auth,

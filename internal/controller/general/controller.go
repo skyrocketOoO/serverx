@@ -2,15 +2,15 @@ package general
 
 import "context"
 
-type usecase interface {
+type Usecase interface {
 	Healthy(c context.Context) error
 }
 
 type Handler struct {
-	usecase usecase
+	usecase Usecase
 }
 
-func NewHandler(usecase usecase) *Handler {
+func NewHandler(usecase Usecase) *Handler {
 	return &Handler{
 		usecase: usecase,
 	}
