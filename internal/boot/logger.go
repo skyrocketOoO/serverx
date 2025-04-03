@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	"github.com/skyrocketOoO/serverx/internal/service/exter/loki"
+	"github.com/skyrocketOoO/serverx/internal/service/loki"
 )
 
 var SendLoki bool

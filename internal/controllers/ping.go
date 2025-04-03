@@ -5,16 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	_ "github.com/skyrocketOoO/serverx/internal/controller/middleware" // avoid import cycle
 	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
 )
-
-type Handler struct{}
-
-func NewHandler() *Handler {
-	return &Handler{}
-}
 
 // @Summary Check the server started
 // @Accept json

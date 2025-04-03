@@ -1,0 +1,67 @@
+run:
+  timeout: 10m
+  tests: true # include test files or not.
+  allow-parallel-runners: true
+  output.show-stats: true
+  # skip-dirs: # exclude dirs
+  #   - internal/openapi
+
+output:
+  sort-results: true
+
+linters:
+  disable-all: true
+  enable:
+    - gosec
+    - lll
+    - errcheck
+    - staticcheck
+    - stylecheck
+    - funlen
+    - misspell
+    - unused
+    - gofmt
+    - goconst
+    - gocritic
+    - gocyclo
+    - goprintffuncname
+    - gosimple
+    - govet
+    - ineffassign
+    - nakedret
+    - bodyclose
+    - dogsled # Checks assignments with too many blank identifiers (e.g. x, , , _, := f()).
+    - unconvert # Remove unnecessary type conversions.
+    - unparam #Reports unused function parameters.
+    - whitespace # Whitespace is a linter that checks for unnecessary newlines at the start and end of functions, if, for, etc.
+    - nilnil 
+    - containedctx # Containedctx is a linter that detects struct contained context.Context field.
+    - contextcheck # Check whether the function uses a non-inherited context.
+    - revive
+linters-settings:
+  lll:
+    line-length: 100 
+    tab-width: 4
+  funlen:
+    lines: 150 # set -1 to disable check
+    statements: 70
+    ignore-comments: true
+  goconst:
+    min-occurrences: 5
+  gosimple:
+    disable:
+      - S1019 # Disable the rule that triggers the "Empty slice declaration using a literal" warning
+  misspell:
+    whitelist:
+      - Requestee
+
+issues:
+  exclude-dirs:
+    - internal/openapi/restful
+  exclude-rules:
+    - linters:
+        - lll
+      source: "^// "
+    - linters:
+        - staticcheck
+      text: "SA1029:"

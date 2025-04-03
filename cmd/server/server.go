@@ -15,10 +15,10 @@ import (
 	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
-	"github.com/skyrocketOoO/serverx/internal/controller"
-	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
+	controller "github.com/skyrocketOoO/serverx/internal/controllers"
+	middleware "github.com/skyrocketOoO/serverx/internal/controllers/middlewares"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
+	"github.com/skyrocketOoO/serverx/internal/service/db"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +39,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 
 	router := gin.Default()
 	router.Use(middleware.Cors())
-	api.Bind(router, restController)
+	api.RegisterAPIHandlers(router, restController)
 
 	port, _ := cmd.Flags().GetString("port")
 	// router.Run(":" + port)

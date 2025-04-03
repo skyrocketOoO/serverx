@@ -10,7 +10,7 @@ import (
 	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	"github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/models"
 	"github.com/spf13/viper"
 )
 
@@ -34,10 +34,10 @@ func GenerateToken(userID uint) (string, error) {
 	return token.SignedString(GetJwtSecretKey())
 }
 
-func GetOperator(c *gin.Context) (user model.User, err error) {
+func GetOperator(c *gin.Context) (user models.User, err error) {
 	operatorName, ok := c.Get("username")
 	if !ok {
-		return model.User{}, errors.New("username not set in jwt")
+		return models.User{}, errors.New("username not set in jwt")
 	}
 
 	db := global.DB

@@ -2,14 +2,14 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/skyrocketOoO/serverx/internal/controller"
-	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
+	controller "github.com/skyrocketOoO/serverx/internal/controllers"
+	middleware "github.com/skyrocketOoO/serverx/internal/controllers/middlewares"
 	"github.com/skyrocketOoO/serverx/internal/global"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func Bind(r *gin.Engine, h *controller.Handler) {
+func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	vr := r.Group("/" + global.ApiVersion)

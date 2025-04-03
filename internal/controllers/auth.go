@@ -12,7 +12,7 @@ import (
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
-	"github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/models"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +23,7 @@ import (
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	type Req struct {
-		Name     string `json:"Name" validate:"required"`
+		Name     string `json:"Name"     validate:"required"`
 		Password string `json:"Password" validate:"required"`
 	}
 
@@ -35,9 +35,9 @@ func (h *Handler) Login(c *gin.Context) {
 	hashedPassword := string(auth.Hash(req.Password, cm.GetSalt()))
 	db := global.DB
 
-	var user model.User
+	var user models.User
 	if err := db.
-		Model(&model.User{}).
+		Model(&models.User{}).
 		Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Where(wh.B(col.Users.Password, ope.Eq), hashedPassword).
 		Take(&user).
@@ -67,7 +67,7 @@ func (h *Handler) Login(c *gin.Context) {
 // @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {
-		Name     string `json:"Name" validate:"required,min=6,max=32"`
+		Name     string `json:"Name"     validate:"required,min=6,max=32"`
 		Password string `json:"Password" validate:"required,min=8,max=32"`
 	}
 
@@ -77,7 +77,7 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 
 	db := global.DB
-	var existingUser model.User
+	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
@@ -89,7 +89,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	if err := db.Create(&model.User{
+	if err := db.Create(&models.User{
 		Name:     req.Name,
 		Password: string(auth.Hash(req.Password, cm.GetSalt())),
 	}).Error; err != nil {

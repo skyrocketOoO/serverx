@@ -12,7 +12,7 @@ import (
 	col "github.com/skyrocketOoO/serverx/internal/gen/column"
 	"github.com/skyrocketOoO/serverx/internal/global"
 	dm "github.com/skyrocketOoO/serverx/internal/global/domain"
-	"github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/models"
 	"gorm.io/gorm"
 )
 
@@ -25,7 +25,7 @@ import (
 // @Tags Alarm
 func (d *Handler) CreateUser(c *gin.Context) {
 	type Req struct {
-		Name     string `json:"name" validate:"required"`
+		Name     string `json:"name"     validate:"required"`
 		Password string `json:"password" validate:"required"`
 	}
 
@@ -35,7 +35,7 @@ func (d *Handler) CreateUser(c *gin.Context) {
 	}
 
 	db := global.DB
-	var existingUser model.User
+	var existingUser models.User
 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 		Take(&existingUser).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
@@ -48,7 +48,7 @@ func (d *Handler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	if err := db.Create(&model.User{
+	if err := db.Create(&models.User{
 		Name:     req.Name,
 		Password: string(auth.Hash(req.Password, cm.GetSalt())),
 	}).Error; err != nil {
@@ -89,12 +89,12 @@ func (d *Handler) GetUsers(c *gin.Context) {
 	}
 
 	var resp Resp
-	if err := db.Model(&model.User{}).Count(&resp.Count).Error; err != nil {
+	if err := db.Model(&models.User{}).Count(&resp.Count).Error; err != nil {
 		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
 
-	if err := db.Model(&model.User{}).Scan(&resp.Data).Error; err != nil {
+	if err := db.Model(&models.User{}).Scan(&resp.Data).Error; err != nil {
 		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}
@@ -111,7 +111,7 @@ func (d *Handler) GetUsers(c *gin.Context) {
 // @Tags Alarm
 func (d *Handler) UpdateUser(c *gin.Context) {
 	type Req struct {
-		ID   uint   `json:"id" validate:"required"`
+		ID   uint   `json:"id"   validate:"required"`
 		Name string `json:"name"`
 	}
 
@@ -123,7 +123,7 @@ func (d *Handler) UpdateUser(c *gin.Context) {
 	db := global.DB
 
 	// Find the user
-	var user model.User
+	var user models.User
 	if err := db.Take(&user, req.ID).Error; err != nil {
 		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
@@ -160,7 +160,7 @@ func (d *Handler) DeleteUser(c *gin.Context) {
 
 	db := global.DB
 
-	if err := db.Delete(&model.User{}, req.ID).Error; err != nil {
+	if err := db.Delete(&models.User{}, req.ID).Error; err != nil {
 		dm.RespErr(c, dm.ToHttpCode(err), erx.W(err))
 		return
 	}

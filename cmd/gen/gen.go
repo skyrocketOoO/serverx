@@ -9,7 +9,7 @@ import (
 	"github.com/skyrocketOoO/gorm-plugin/tablename"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/global"
-	"github.com/skyrocketOoO/serverx/internal/service/exter/db"
+	"github.com/skyrocketOoO/serverx/internal/service/db"
 	"github.com/spf13/cobra"
 )
 
