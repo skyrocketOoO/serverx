@@ -7,7 +7,6 @@ package cognito
 // 	"encoding/base64"
 // 	"errors"
 
-// 	"github.com/Fontech/api.vortex-panel/internal/config/local"
 // 	"github.com/aws/aws-sdk-go-v2/config"
 // 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 // 	"github.com/skyrocketOoO/erx/erx"
