@@ -15,10 +15,15 @@ import (
 	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
+	"github.com/skyrocketOoO/serverx/internal/controller"
+	authcontroller "github.com/skyrocketOoO/serverx/internal/controller/auth"
+	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/postgres"
-	"github.com/skyrocketOoO/serverx/internal/wire"
+	"github.com/skyrocketOoO/serverx/internal/service/cognito"
+	"github.com/skyrocketOoO/serverx/internal/service/validator"
+	authusecase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	generalusecase "github.com/skyrocketOoO/serverx/internal/usecase/general"
 	"github.com/spf13/cobra"
 )
 
@@ -35,11 +40,30 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	// restController := controller.NewHandler()
-
 	router := gin.Default()
 	router.Use(middleware.Cors())
-	api.RegisterAPIHandlers(router, wire.NewHandler())
+
+	// db, err := postgres.New()
+	// if err != nil {
+	// 	log.Fatal().Msgf("%v", err)
+	// }
+
+	validator.New()
+
+	cognitoCli, err := cognito.New()
+	if err != nil {
+		log.Fatal().Msgf("%v", err)
+	}
+
+	authUsecase := authusecase.New(cognitoCli)
+	generalUsecase := generalusecase.New()
+
+	authHandler := authcontroller.NewHandler(authUsecase)
+	generalHandler := generalcontroller.NewHandler(generalUsecase)
+
+	handlers := controller.NewHandler(authHandler, generalHandler)
+
+	api.RegisterAPIHandlers(router, handlers)
 
 	port, _ := cmd.Flags().GetString("port")
 	// router.Run(":" + port)
@@ -72,11 +96,11 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Info().Msg("Server shut down gracefully.")
 	}
 
-	if err := postgres.Close(); err != nil {
-		log.Error().Msgf("Error closing database connection: %v", err)
-	} else {
-		log.Info().Msg("Database connection closed successfully")
-	}
+	// if err := postgres.Close(); err != nil {
+	// 	log.Error().Msgf("Error closing database connection: %v", err)
+	// } else {
+	// 	log.Info().Msg("Database connection closed successfully")
+	// }
 }
 
 func init() {

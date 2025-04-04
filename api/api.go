@@ -14,7 +14,7 @@ func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 
 	vr := r.Group("/" + domain.ApiVersion)
 	vr.GET("/ping", h.Ping)
-	vr.GET("/healthy", h.Healthy)
+	vr.GET("/healthy", h.General.Healthy)
 
 	vr.POST("/login", h.Auth.Login)
 	vr.POST("/register", h.Auth.Register)
@@ -22,11 +22,11 @@ func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	pR := vr.Group("/")
 	pR.Use(middleware.Jwt())
 
-	userR := pR.Group("/user")
-	{
-		userR.POST("/get", h.GetUsers)
-		userR.POST("/create", h.CreateUser)
-		userR.POST("/update", h.UpdateUser)
-		userR.POST("/delete", h.DeleteUser)
-	}
+	// userR := pR.Group("/user")
+	// {
+	// 	userR.POST("/get", h.GetUsers)
+	// 	userR.POST("/create", h.CreateUser)
+	// 	userR.POST("/update", h.UpdateUser)
+	// 	userR.POST("/delete", h.DeleteUser)
+	// }
 }

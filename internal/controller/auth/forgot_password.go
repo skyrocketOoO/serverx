@@ -1,4 +1,4 @@
-package auth
+package authcontroller
 
 import (
 	"net/http"
@@ -26,7 +26,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.ForgotPassword(c.Request.Context(), auth.ForgotPasswordInput{
+	err := h.Usecase.ForgotPassword(c.Request.Context(), authusecase.ForgotPasswordInput{
 		Email: req.Email,
 	})
 	if err != nil {

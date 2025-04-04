@@ -17,12 +17,6 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var db *gorm.DB
-
-func Get() *gorm.DB {
-	return db
-}
-
 var initOnce sync.Once
 
 type zerologWriter struct{}
@@ -31,9 +25,7 @@ func (z *zerologWriter) Printf(format string, v ...interface{}) {
 	log.Info().Msgf(format, v...)
 }
 
-func New() error {
-	var err error
-
+func New() (db *gorm.DB, err error) {
 	initOnce.Do(func() {
 		log.Info().Msg("New db")
 		config := gorm.Config{
@@ -93,17 +85,17 @@ func New() error {
 			}
 		}
 	})
-	return err
+	return db, err
 }
 
-func Close() error {
-	if db == nil {
-		return nil
-	}
+// func Close() error {
+// 	if db == nil {
+// 		return nil
+// 	}
 
-	db, err := db.DB()
-	if err != nil {
-		return err
-	}
-	return db.Close()
-}
+// 	db, err := db.DB()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return db.Close()
+// }

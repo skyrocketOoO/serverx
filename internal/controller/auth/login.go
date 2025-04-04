@@ -1,4 +1,4 @@
-package auth
+package authcontroller
 
 import (
 	"net/http"
@@ -25,7 +25,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.Usecase.Login(c.Request.Context(), auth.LoginInput{
+	token, err := h.Usecase.Login(c.Request.Context(), authusecase.LoginInput{
 		Email:    req.Name,
 		Password: req.Password,
 	})

@@ -1,16 +1,9 @@
 package util
 
 import (
-	"errors"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	ope "github.com/skyrocketOoO/gorm-plugin/lib/operator"
-	wh "github.com/skyrocketOoO/gorm-plugin/lib/where"
-	col "github.com/skyrocketOoO/serverx/internal/gen/column"
-	models "github.com/skyrocketOoO/serverx/internal/model"
-	"github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/viper"
 )
 
@@ -34,18 +27,18 @@ func GenerateToken(userID uint) (string, error) {
 	return token.SignedString(GetJwtSecretKey())
 }
 
-func GetOperator(c *gin.Context) (user models.User, err error) {
-	operatorName, ok := c.Get("username")
-	if !ok {
-		return models.User{}, errors.New("username not set in jwt")
-	}
+// func GetOperator(c *gin.Context) (user models.User, err error) {
+// 	operatorName, ok := c.Get("username")
+// 	if !ok {
+// 		return models.User{}, errors.New("username not set in jwt")
+// 	}
 
-	db := postgres.Get()
-	if err = db.
-		Where(wh.B(col.Users.Name, ope.Eq), operatorName).
-		Take(&user).Error; err != nil {
-		return
-	}
+// 	db := postgres.Get()
+// 	if err = db.
+// 		Where(wh.B(col.Users.Name, ope.Eq), operatorName).
+// 		Take(&user).Error; err != nil {
+// 		return
+// 	}
 
-	return user, nil
-}
+// 	return user, nil
+// }

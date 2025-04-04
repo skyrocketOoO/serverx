@@ -1,15 +1,15 @@
-package auth
+package authcontroller
 
 import (
 	"context"
 
-	"github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	authusecase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 )
 
 type Usecase interface {
-	Login(c context.Context, in auth.LoginInput) (string, error)
-	Register(c context.Context, in auth.RegisterInput) error
-	ForgotPassword(c context.Context, in auth.ForgotPasswordInput) error
+	Login(c context.Context, in authusecase.LoginInput) (string, error)
+	Register(c context.Context, in authusecase.RegisterInput) error
+	ForgotPassword(c context.Context, in authusecase.ForgotPasswordInput) error
 }
 
 type Handler struct {

@@ -1,11 +1,11 @@
-package auth
+package authcontroller
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	authusecase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -25,7 +25,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.Register(c.Request.Context(), auth.RegisterInput{
+	err := h.Usecase.Register(c.Request.Context(), authusecase.RegisterInput{
 		Email:    req.Email,
 		NickName: req.NickName,
 	})

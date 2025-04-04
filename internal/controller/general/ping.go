@@ -1,4 +1,4 @@
-package general
+package generalcontroller
 
 import (
 	"net/http"

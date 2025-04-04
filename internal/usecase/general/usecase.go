@@ -1,7 +1,7 @@
-package general
+package generalusecase
 
 type Usecase struct{}
 
-func NewUsecase() *Usecase {
+func New() *Usecase {
 	return &Usecase{}
 }
