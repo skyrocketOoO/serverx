@@ -1,20 +1,17 @@
 package boot
 
 import (
-	"errors"
-
+	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
+	"github.com/skyrocketOoO/serverx/internal/domain"
 )
 
 func InitConfig() (err error) {
-	log.Info().Msg("InitConfig")
-	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(".env")
-
-	if err = viper.ReadInConfig(); err != nil {
-		return errors.New(err.Error())
+	if domain.Env == "local" {
+		if err := godotenv.Load(".env"); err != nil {
+			log.Error().Msg("Error loading .env file")
+			return err
+		}
 	}
 
 	return nil

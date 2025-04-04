@@ -20,8 +20,7 @@ import (
 	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/cognito"
-	"github.com/skyrocketOoO/serverx/internal/service/validator"
+	"github.com/skyrocketOoO/serverx/internal/service"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	generalucase "github.com/skyrocketOoO/serverx/internal/usecase/general"
 	"github.com/spf13/cobra"
@@ -48,9 +47,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 	// 	log.Fatal().Msgf("%v", err)
 	// }
 
-	validator.New()
-
-	cognitoCli, err := cognito.New()
+	cognitoCli, err := service.NewCognito(context.TODO())
 	if err != nil {
 		log.Fatal().Msgf("%v", err)
 	}
@@ -108,7 +105,7 @@ func init() {
 	Cmd.Flags().
 		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
-		StringVarP(&domain.Env, `env`, "e", "dev", `"dev", "prod"`)
+		StringVarP(&domain.Env, `env`, "e", "dev", `"local", "dev", "prod"`)
 
 	Cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		validDatabases := map[string]bool{"postgres": true, "mysql": true}

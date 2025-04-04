@@ -1,13 +1,15 @@
 package authucase
 
-import "github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+import (
+	"github.com/skyrocketOoO/serverx/internal/service"
+)
 
 type Usecase struct {
-	cognitoCli *cognitoidentityprovider.Client
+	cognitoSvc *service.Cognito
 }
 
-func New(cognitoCli *cognitoidentityprovider.Client) *Usecase {
+func New(cognitoSvc *service.Cognito) *Usecase {
 	return &Usecase{
-		cognitoCli: cognitoCli,
+		cognitoSvc: cognitoSvc,
 	}
 }

@@ -1,40 +1,41 @@
-package cognito
+package service
 
 import (
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/skyrocketOoO/erx/erx"
 )
 
-var (
+type Cognito struct {
+	Client       *cognitoidentityprovider.Client
 	UserPoolID   string
 	ClientID     string
 	ClientSecret string
-)
+}
 
-func New() (*cognitoidentityprovider.Client, error) {
-	// UserPoolID = local.GetEnv("COGNITO_USERPOOLID")
-	// ClientID = local.GetEnv("COGNITO_CLIENTID")
-	// ClientSecret = local.GetEnv("COGNITO_CLIENTSECRET")
-
-	cfg, err := config.LoadDefaultConfig(
-		context.TODO(),
-	) // config.WithRegion(local.GetEnv("COGNITO_REGION")), // 仍然可以從環境變數獲取區域
+func NewCognito(c context.Context) (*Cognito, error) {
+	cfg, err := config.LoadDefaultConfig(c)
 	if err != nil {
 		return nil, erx.W(err, "Error loading AWS config")
 	}
 
-	return cognitoidentityprovider.NewFromConfig(cfg), nil
+	return &Cognito{
+		Client:       cognitoidentityprovider.NewFromConfig(cfg),
+		UserPoolID:   os.Getenv("COGNITO_USERPOOLID"),
+		ClientID:     os.Getenv("COGNITO_CLIENTID"),
+		ClientSecret: os.Getenv("COGNITO_CLIENTSECRET"),
+	}, nil
 }
 
-func GenerateSecretHash(input string) string {
-	h := hmac.New(sha256.New, []byte(ClientSecret))
-	h.Write([]byte(input + ClientID)) // clientID is your Cognito App Client ID
+func (c *Cognito) GenerateSecretHash(input string) string {
+	h := hmac.New(sha256.New, []byte(c.ClientSecret))
+	h.Write([]byte(input + c.ClientID))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
