@@ -7,12 +7,13 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/validator"
+	"github.com/skyrocketOoO/serverx/internal/domain/err"
+	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
 func ParseValidate[T any](c *gin.Context, req *T) bool {
 	if c.Request.Body == nil || c.Request.ContentLength == 0 {
-		RespErr(c, http.StatusBadRequest, erx.W(domain.ErrEmptyRequest))
+		RespErr(c, http.StatusBadRequest, erx.W(err.New(err.EmptyRequest)))
 		return false
 	}
 
@@ -21,7 +22,7 @@ func ParseValidate[T any](c *gin.Context, req *T) bool {
 		return false
 	}
 
-	if err := validator.Get().Struct(req); err != nil {
+	if err := validate.Get().Struct(req); err != nil {
 		RespErr(c, http.StatusBadRequest, erx.W(err))
 		return false
 	}

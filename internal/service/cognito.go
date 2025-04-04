@@ -33,9 +33,9 @@ func NewCognito(c context.Context) (*Cognito, error) {
 	}, nil
 }
 
-func (c *Cognito) GenerateSecretHash(input string) string {
+func (c *Cognito) ComputeSecretHash(email string) string {
 	h := hmac.New(sha256.New, []byte(c.ClientSecret))
-	h.Write([]byte(input + c.ClientID))
+	h.Write([]byte(email + c.ClientID))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 

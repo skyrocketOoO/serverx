@@ -2,7 +2,7 @@ package boot
 
 import (
 	"github.com/rs/zerolog/log"
-	"github.com/skyrocketOoO/serverx/internal/service/validator"
+	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
 func NewService() error {
@@ -11,7 +11,7 @@ func NewService() error {
 	// 	return err
 	// }
 
-	validator.New()
+	validate.New()
 
 	return nil
 }

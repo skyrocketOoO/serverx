@@ -1,17 +1,17 @@
-package validator
+package validate
 
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
 )
 
-var validate *validator.Validate
+var validatr *validator.Validate
 
 func Get() *validator.Validate {
-	return validate
+	return validatr
 }
 
 func New() {
 	log.Info().Msg("InitValidator")
-	validate = validator.New(validator.WithRequiredStructEnabled())
+	validatr = validator.New(validator.WithRequiredStructEnabled())
 }
