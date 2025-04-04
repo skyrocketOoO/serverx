@@ -22,8 +22,8 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service/cognito"
 	"github.com/skyrocketOoO/serverx/internal/service/validator"
-	authusecase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
-	generalusecase "github.com/skyrocketOoO/serverx/internal/usecase/general"
+	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	generalucase "github.com/skyrocketOoO/serverx/internal/usecase/general"
 	"github.com/spf13/cobra"
 )
 
@@ -55,8 +55,8 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("%v", err)
 	}
 
-	authUsecase := authusecase.New(cognitoCli)
-	generalUsecase := generalusecase.New()
+	authUsecase := authucase.New(cognitoCli)
+	generalUsecase := generalucase.New()
 
 	authHandler := authcontroller.NewHandler(authUsecase)
 	generalHandler := generalcontroller.NewHandler(generalUsecase)

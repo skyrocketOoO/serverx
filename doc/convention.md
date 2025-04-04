@@ -1,5 +1,11 @@
 # Convention
 
+## Abreviation
+- controller -> ctrl
+- usecase -> ucase
+- service -> svc
+- client -> cli
+
 ## Folder name
 1. Use Plural for "Collections" of Things
 /controllers (multiple controller files)

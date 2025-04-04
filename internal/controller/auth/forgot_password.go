@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -26,7 +26,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.ForgotPassword(c.Request.Context(), authusecase.ForgotPasswordInput{
+	err := h.Usecase.ForgotPassword(c.Request.Context(), authucase.ForgotPasswordInput{
 		Email: req.Email,
 	})
 	if err != nil {

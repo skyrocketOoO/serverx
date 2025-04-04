@@ -1,4 +1,4 @@
-package generalusecase
+package generalucase
 
 type Usecase struct{}
 

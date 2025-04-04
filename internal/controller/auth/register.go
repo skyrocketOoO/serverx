@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	authusecase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -25,7 +25,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.Register(c.Request.Context(), authusecase.RegisterInput{
+	err := h.Usecase.Register(c.Request.Context(), authucase.RegisterInput{
 		Email:    req.Email,
 		NickName: req.NickName,
 	})

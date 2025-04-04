@@ -1,4 +1,4 @@
-package authusecase
+package authucase
 
 import "github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 

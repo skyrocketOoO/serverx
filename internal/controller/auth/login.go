@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
-	"github.com/skyrocketOoO/serverx/internal/usecase/auth"
+	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
@@ -25,7 +25,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.Usecase.Login(c.Request.Context(), authusecase.LoginInput{
+	token, err := h.Usecase.Login(c.Request.Context(), authucase.LoginInput{
 		Email:    req.Name,
 		Password: req.Password,
 	})
