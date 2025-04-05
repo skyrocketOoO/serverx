@@ -27,7 +27,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.ForgotPassword(c.Request.Context(), authucase.ForgotPasswordInput{
+	err := h.Usecase.ForgotPassword(c.Request.Context(), authucase.ForgotPasswordIn{
 		Email: req.Email,
 	})
 	if err != nil {

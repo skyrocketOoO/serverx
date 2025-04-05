@@ -11,13 +11,13 @@ import (
 	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
-type SignUpInput struct {
+type SignUpIn struct {
 	Email    string `validate:"required"`
 	Password string `validate:"required"`
 	NickName string `validate:"required"`
 }
 
-func (u *Usecase) SignUp(c context.Context, in SignUpInput) error {
+func (u *Usecase) SignUp(c context.Context, in SignUpIn) error {
 	if err := validate.Get().Struct(in); err != nil {
 		return er.W(err, er.ValidateInput)
 	}

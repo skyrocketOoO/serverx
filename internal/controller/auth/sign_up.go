@@ -23,11 +23,11 @@ func (h *Handler) SignUp(c *gin.Context) {
 	}
 
 	var req Req
-	if ok := util.ParseValidate(c, &req); !ok {
+	if !util.ParseValidate(c, &req) {
 		return
 	}
 
-	err := h.Usecase.SignUp(c.Request.Context(), authucase.SignUpInput{
+	err := h.Usecase.SignUp(c.Request.Context(), authucase.SignUpIn{
 		Email:    req.Email,
 		Password: req.Password,
 		NickName: req.NickName,

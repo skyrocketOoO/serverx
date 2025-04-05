@@ -2,10 +2,10 @@ package authucase
 
 import "context"
 
-type ForgotPasswordInput struct {
+type ForgotPasswordIn struct {
 	Email string `json:"email" validate:"required"`
 }
 
-func (u *Usecase) ForgotPassword(c context.Context, in ForgotPasswordInput) error {
+func (u *Usecase) ForgotPassword(c context.Context, in ForgotPasswordIn) error {
 	return nil
 }

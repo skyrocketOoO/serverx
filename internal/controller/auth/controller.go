@@ -8,8 +8,9 @@ import (
 
 type Usecase interface {
 	Login(c context.Context, in authucase.LoginIn) (*authucase.LoginOut, error)
-	SignUp(c context.Context, in authucase.SignUpInput) error
-	ForgotPassword(c context.Context, in authucase.ForgotPasswordInput) error
+	SignUp(c context.Context, in authucase.SignUpIn) error
+	ConfirmSignUp(c context.Context, in authucase.ConfirmSignUpIn) error
+	ForgotPassword(c context.Context, in authucase.ForgotPasswordIn) error
 }
 
 type Handler struct {
