@@ -16,15 +16,18 @@ definitions:
     - Name
     - Password
     type: object
-  authcontroller.Register.Req:
+  authcontroller.SignUp.Req:
     properties:
       email:
         type: string
       nickName:
         type: string
+      password:
+        type: string
     required:
     - email
     - nickName
+    - password
     type: object
   authucase.LoginOut:
     properties:
@@ -47,26 +50,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /Register:
-    post:
-      parameters:
-      - description: Register User
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/authcontroller.Register.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
   /healthy:
     get:
       responses:
@@ -107,6 +90,26 @@ paths:
           description: OK
       tags:
       - TroubleShooting
+  /sign-up:
+    post:
+      parameters:
+      - description: Register User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authcontroller.SignUp.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/er.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
   /v1/forgotPassword:
     post:
       parameters:

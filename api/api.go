@@ -10,11 +10,11 @@ import (
 func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.GET("/ping", h.Ping)
+	r.GET("/ping", h.General.Ping)
 	r.GET("/healthy", h.General.Healthy)
 
 	r.POST("/login", h.Auth.Login)
-	r.POST("/register", h.Auth.Register)
+	r.POST("/sign-up", h.Auth.SignUp)
 
 	// pR := r.Group("/")
 	// pR.Use(middleware.Jwt())

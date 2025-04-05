@@ -8,7 +8,7 @@ import (
 
 type Usecase interface {
 	Login(c context.Context, in authucase.LoginIn) (*authucase.LoginOut, error)
-	Register(c context.Context, in authucase.RegisterInput) error
+	SignUp(c context.Context, in authucase.SignUpInput) error
 	ForgotPassword(c context.Context, in authucase.ForgotPasswordInput) error
 }
 

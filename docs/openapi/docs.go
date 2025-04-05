@@ -15,38 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/Register": {
-            "post": {
-                "parameters": [
-                    {
-                        "description": "Register User",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/authcontroller.Register.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/healthy": {
             "get": {
                 "responses": {
@@ -108,6 +76,38 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/sign-up": {
+            "post": {
+                "parameters": [
+                    {
+                        "description": "Register User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authcontroller.SignUp.Req"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -181,17 +181,21 @@ const docTemplate = `{
                 }
             }
         },
-        "authcontroller.Register.Req": {
+        "authcontroller.SignUp.Req": {
             "type": "object",
             "required": [
                 "email",
-                "nickName"
+                "nickName",
+                "password"
             ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "nickName": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }

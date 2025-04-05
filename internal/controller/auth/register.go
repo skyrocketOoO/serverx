@@ -10,14 +10,15 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Param   user  body  authcontroller.Register.Req  true  "Register User"
+// @Param   user  body  authcontroller.SignUp.Req  true  "Register User"
 // @Success 200
 // @Failure 500 {string} er.APIError
 // @Failure 400 {object} er.APIError
-// @Router /Register [post]
-func (h *Handler) Register(c *gin.Context) {
+// @Router /sign-up [post]
+func (h *Handler) SignUp(c *gin.Context) {
 	type Req struct {
 		Email    string `json:"email"    validate:"required"`
+		Password string `json:"password" validate:"required"`
 		NickName string `json:"nickName" validate:"required"`
 	}
 
@@ -26,8 +27,9 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.Usecase.Register(c.Request.Context(), authucase.RegisterInput{
+	err := h.Usecase.SignUp(c.Request.Context(), authucase.SignUpInput{
 		Email:    req.Email,
+		Password: req.Password,
 		NickName: req.NickName,
 	})
 	if err != nil {

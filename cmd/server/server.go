@@ -81,7 +81,7 @@ func init() {
 	Cmd.Flags().
 		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
-		StringVarP(&domain.Env, `env`, "e", "dev", `"local", "dev", "prod"`)
+		StringVarP(&domain.Env, `env`, "e", "local", `"local", "dev", "prod"`)
 
 	Cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		validDatabases := map[string]bool{"postgres": true, "mysql": true}
@@ -90,7 +90,7 @@ func init() {
 				domain.Database)
 		}
 
-		validEnvs := map[string]bool{"dev": true, "prod": true}
+		validEnvs := map[string]bool{"local": true, "dev": true, "prod": true}
 		if !validEnvs[domain.Env] {
 			return erx.Errorf(
 				"invalid environment value: %s. Must be one of: dev, prod",

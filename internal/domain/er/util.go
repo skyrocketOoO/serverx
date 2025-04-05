@@ -39,14 +39,13 @@ func logAppErr(code code, errs ...error) (traceID uuid.UUID) {
 
 	event := log.Error().
 		Str("traceID", traceID.String()).
-		Str("code", code.String()).
-		Str("callStack", callStk)
+		Str("code", code.String())
 
 	if len(errs) > 0 {
 		event = event.Err(errs[0])
 	}
 
-	event.Msg("Application error occurred")
+	event.Msg(callStk)
 
 	return traceID
 }
@@ -70,5 +69,6 @@ func getCallStack(callerSkip ...int) (stkMsg string) {
 			break
 		}
 	}
+
 	return stkMsg
 }
