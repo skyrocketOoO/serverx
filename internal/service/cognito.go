@@ -9,7 +9,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
-	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/domain/er"
 )
 
 type Cognito struct {
@@ -22,7 +22,7 @@ type Cognito struct {
 func NewCognito(c context.Context) (*Cognito, error) {
 	cfg, err := config.LoadDefaultConfig(c)
 	if err != nil {
-		return nil, erx.W(err, "Error loading AWS config")
+		return nil, er.W(err, "Error loading AWS config")
 	}
 
 	return &Cognito{

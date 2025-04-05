@@ -6,11 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Check the server started
-// @Accept json
-// @Produce json
-// @Success 200
-// @Router /ping [get]
 func (d *Handler) Ping(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
@@ -24,11 +19,11 @@ func (d *Handler) Ping(c *gin.Context) {
 // 	db := postgres.Get()
 // 	sqlDb, err := db.DB()
 // 	if err != nil {
-// 		util.ErrResp(c, http.StatusServiceUnavailable, erx.W(err))
+// 		util.ErrResp(c, http.StatusServiceUnavailable, er.W(err))
 // 		return
 // 	}
 // 	if err := sqlDb.Ping(); err != nil {
-// 		util.ErrResp(c, http.StatusServiceUnavailable, erx.W(err))
+// 		util.ErrResp(c, http.StatusServiceUnavailable, er.W(err))
 // 		return
 // 	}
 

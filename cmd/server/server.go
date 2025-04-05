@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
 	"time"
 
@@ -20,6 +19,7 @@ import (
 	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
+	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	"github.com/skyrocketOoO/serverx/internal/service"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	generalucase "github.com/skyrocketOoO/serverx/internal/usecase/general"
@@ -30,8 +30,7 @@ var Cmd = &cobra.Command{
 	Use:   "server",
 	Short: "The main service command",
 	Long:  ``,
-	// Args:  cobra.MinimumNArgs(1),
-	Run: RunServer,
+	Run:   RunServer,
 }
 
 func RunServer(cmd *cobra.Command, args []string) {
@@ -42,34 +41,24 @@ func RunServer(cmd *cobra.Command, args []string) {
 	router := gin.Default()
 	router.Use(middleware.Cors())
 
-	cognitoCli, err := service.NewCognito(context.TODO())
+	handlers, err := newHandlers()
 	if err != nil {
-		log.Fatal().Msgf("%v", err)
+		log.Error().Err(err).Msg("Error creating handlers")
+		return
 	}
-
-	authUsecase := authucase.New(cognitoCli)
-	generalUsecase := generalucase.New()
-
-	authHandler := authcontroller.NewHandler(authUsecase)
-	generalHandler := generalcontroller.NewHandler(generalUsecase)
-
-	handlers := controller.NewHandler(authHandler, generalHandler)
 
 	api.RegisterAPIHandlers(router, handlers)
 
-	port, _ := cmd.Flags().GetString("port")
-	// router.Run(":" + port)
-
-	// Create a new server instance
 	server := &http.Server{
-		Addr: ":" + port,
-		// Handler: router,
+		Addr:    ":8080",
+		Handler: router,
 	}
 
 	go func() {
-		log.Info().Msgf("Starting server on port %s...", port)
+		log.Info().Msgf("Starting server on port %d...", 8080)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal().Msgf("Server failed: %v", err)
+			log.Error().Err(err).Msg("Server failed")
+			return
 		}
 	}()
 
@@ -87,16 +76,10 @@ func RunServer(cmd *cobra.Command, args []string) {
 	} else {
 		log.Info().Msg("Server shut down gracefully.")
 	}
-
-	// if err := postgres.Close(); err != nil {
-	// 	log.Error().Msgf("Error closing database connection: %v", err)
-	// } else {
-	// 	log.Info().Msg("Database connection closed successfully")
-	// }
 }
 
 func init() {
-	Cmd.Flags().StringP("port", "p", "8080", "port")
+	// Cmd.Flags().StringP("port", "p", "8080", "port")
 	Cmd.Flags().
 		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
@@ -117,11 +100,28 @@ func init() {
 			)
 		}
 
-		port, _ := cmd.Flags().GetString("port")
-		if _, err := strconv.Atoi(port); err != nil || port == "" {
-			return erx.Errorf("invalid port value: %s. Must be a valid number", port)
-		}
+		// port, _ := cmd.Flags().GetString("port")
+		// if _, err := strconv.Atoi(port); err != nil || port == "" {
+		// 	return erx.Errorf("invalid port value: %s. Must be a valid number", port)
+		// }
 
 		return nil
 	}
+}
+
+func newHandlers() (*controller.Handler, error) {
+	cognitoCli, err := service.NewCognito(context.TODO())
+	if err != nil {
+		return nil, er.W(err)
+	}
+
+	authUsecase := authucase.New(cognitoCli)
+	generalUsecase := generalucase.New()
+
+	authHandler := authcontroller.NewHandler(authUsecase)
+	generalHandler := generalcontroller.NewHandler(generalUsecase)
+
+	handlers := controller.NewHandler(authHandler, generalHandler)
+
+	return handlers, nil
 }

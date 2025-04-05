@@ -2,11 +2,11 @@ package authucase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
+	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
@@ -23,7 +23,7 @@ type LoginOut struct {
 
 func (u *Usecase) Login(c context.Context, in LoginIn) (*LoginOut, error) {
 	if err := validate.Get().Struct(in); err != nil {
-		return nil, err
+		return nil, er.W(err, er.ValidateInput)
 	}
 
 	input := &cognitoidentityprovider.InitiateAuthInput{
@@ -38,14 +38,15 @@ func (u *Usecase) Login(c context.Context, in LoginIn) (*LoginOut, error) {
 
 	resp, err := u.cognitoSvc.Client.InitiateAuth(c, input)
 	if err != nil {
-		return nil, fmt.Errorf("failed to initiate auth: %w", err)
+		return nil, er.W(err, er.Unauthorized)
 	}
 
 	if resp.ChallengeName == types.ChallengeNameTypeNewPasswordRequired {
+		return nil, er.NewAppErr(er.NewPasswordRequired)
 	}
 
 	if resp.AuthenticationResult == nil {
-		return nil, fmt.Errorf("authentication result is nil")
+		return nil, er.NewAppErr(er.Unknown)
 	}
 
 	return &LoginOut{

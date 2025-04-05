@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/skyrocketOoO/erx/erx"
+
 	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
@@ -31,7 +31,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		Email: req.Email,
 	})
 	if err != nil {
-		er.Bind(c, erx.W(err))
+		er.Bind(c, er.W(err))
 		return
 	}
 

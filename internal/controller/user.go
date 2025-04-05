@@ -23,12 +23,12 @@ package controller
 // 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 // 		Take(&existingUser).Error; err != nil {
 // 		if err != gorm.ErrRecordNotFound {
-// 			util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 			util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 			return
 // 		}
 // 	} else {
 // 		err = domain.ErrUserNameRepetite
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(domain.ErrUserNameRepetite))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(domain.ErrUserNameRepetite))
 // 		return
 // 	}
 
@@ -36,7 +36,7 @@ package controller
 // 		Name:     req.Name,
 // 		Password: string(auth.Hash(req.Password, util.GetSalt())),
 // 	}).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 
@@ -74,12 +74,12 @@ package controller
 
 // 	var resp Resp
 // 	if err := db.Model(&models.User{}).Count(&resp.Count).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 
 // 	if err := db.Model(&models.User{}).Scan(&resp.Data).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 
@@ -109,7 +109,7 @@ package controller
 // 	// Find the user
 // 	var user models.User
 // 	if err := db.Take(&user, req.ID).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 
@@ -118,7 +118,7 @@ package controller
 // 	}
 
 // 	if err := db.Save(&user).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 
@@ -145,7 +145,7 @@ package controller
 // 	db := postgres.Get()
 
 // 	if err := db.Delete(&models.User{}, req.ID).Error; err != nil {
-// 		util.ErrResp(c, util.ToHttpCode(err), erx.W(err))
+// 		util.ErrResp(c, util.ToHttpCode(err), er.W(err))
 // 		return
 // 	}
 

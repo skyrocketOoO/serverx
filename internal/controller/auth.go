@@ -26,13 +26,13 @@ package controller
 // 		Where(wh.B(col.Users.Password, ope.Eq), hashedPassword).
 // 		Take(&user).
 // 		Error; err != nil {
-// 		util.ErrResp(c, http.StatusInternalServerError, erx.W(domain.ErrLoginFailed))
+// 		util.ErrResp(c, http.StatusInternalServerError, er.W(domain.ErrLoginFailed))
 // 		return
 // 	}
 
 // 	token, err := util.GenerateToken(user.ID)
 // 	if err != nil {
-// 		util.ErrResp(c, http.StatusInternalServerError, erx.W(err))
+// 		util.ErrResp(c, http.StatusInternalServerError, er.W(err))
 // 		return
 // 	}
 
@@ -65,11 +65,11 @@ package controller
 // 	if err := db.Where(wh.B(col.Users.Name, ope.Eq), req.Name).
 // 		Take(&existingUser).Error; err != nil {
 // 		if err != gorm.ErrRecordNotFound {
-// 			util.ErrResp(c, http.StatusInternalServerError, erx.W(err))
+// 			util.ErrResp(c, http.StatusInternalServerError, er.W(err))
 // 			return
 // 		}
 // 	} else {
-// 		util.ErrResp(c, http.StatusInternalServerError, erx.W(domain.ErrUserNameRepetite))
+// 		util.ErrResp(c, http.StatusInternalServerError, er.W(domain.ErrUserNameRepetite))
 // 		return
 // 	}
 
@@ -77,7 +77,7 @@ package controller
 // 		Name:     req.Name,
 // 		Password: string(auth.Hash(req.Password, util.GetSalt())),
 // 	}).Error; err != nil {
-// 		util.ErrResp(c, http.StatusInternalServerError, erx.W(err))
+// 		util.ErrResp(c, http.StatusInternalServerError, er.W(err))
 // 		return
 // 	}
 
@@ -85,6 +85,6 @@ package controller
 // }
 
 // func (h *Handler) ForgetPassword(c *gin.Context) {
-// 	util.ErrResp(c, http.StatusNotFound, erx.W(domain.ErrNotImplement))
+// 	util.ErrResp(c, http.StatusNotFound, er.W(domain.ErrNotImplement))
 // 	return
 // }

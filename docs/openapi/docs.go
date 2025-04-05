@@ -102,13 +102,9 @@ const docTemplate = `{
         },
         "/ping": {
             "get": {
-                "consumes": [
-                    "application/json"
+                "tags": [
+                    "TroubleShooting"
                 ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Check the server started",
                 "responses": {
                     "200": {
                         "description": "OK"

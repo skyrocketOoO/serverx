@@ -10,25 +10,29 @@ func (c code) String() string {
 }
 
 const (
+	BadRequest    code = "400.0000"
 	EmptyRequest  code = "400.0001"
 	ParsePayload  code = "400.0002"
 	ValidateInput code = "400.0003"
 
+	Unauthorized        code = "401.0000"
 	NewPasswordRequired code = "401.0001"
 
-	NotFound code = "404"
+	NotFound code = "404.0000"
 
-	Unknown       code = "500"
+	Unknown       code = "500.0000"
 	DBUnavailable code = "500.0001"
 
-	NotImplemented code = "501"
+	NotImplemented code = "501.0000"
 )
 
 var CodeToMsg = map[code]string{
+	BadRequest:    "bad request",
 	EmptyRequest:  "empty request body",
 	ParsePayload:  "parse payload error",
 	ValidateInput: "validate input error",
 
+	Unauthorized:        "unauthorized",
 	NewPasswordRequired: "new password required",
 
 	NotFound: "not found",
@@ -40,12 +44,15 @@ var CodeToMsg = map[code]string{
 }
 
 var codeToHTTP = map[code]int{
+	BadRequest:    http.StatusBadRequest,
 	EmptyRequest:  http.StatusBadRequest,
 	ParsePayload:  http.StatusBadRequest,
 	ValidateInput: http.StatusBadRequest,
 
+	Unauthorized:        http.StatusUnauthorized,
 	NewPasswordRequired: http.StatusUnauthorized,
-	NotFound:            http.StatusNotFound,
+
+	NotFound: http.StatusNotFound,
 
 	Unknown:       http.StatusInternalServerError,
 	DBUnavailable: http.StatusInternalServerError,
