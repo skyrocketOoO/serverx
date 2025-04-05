@@ -13,7 +13,7 @@ import (
 // @Tags			auth
 // @Param   user  body  authcontroller.SignUp.Req  true  "Register User"
 // @Success 200
-// @Failure 500 {string} er.APIError
+// @Failure 500 {object} er.APIError
 // @Failure 400 {object} er.APIError
 // @Router /sign-up [post]
 func (h *Handler) SignUp(c *gin.Context) {

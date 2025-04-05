@@ -12,7 +12,7 @@ import (
 
 // @Param		user	body	authcontroller.ForgotPassword.Req	true	"Request body"
 // @Success	200
-// @Failure	500	{string}	er.APIError
+// @Failure	500	{object}	er.APIError
 // @Failure	400	{object}	er.APIError
 // @Failure	404	{object}	er.APIError
 // @Router		/v1/forgotPassword [post]

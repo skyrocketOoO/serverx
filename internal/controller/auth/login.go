@@ -12,7 +12,7 @@ import (
 // @Tags			auth
 // @Param   user  body  authcontroller.Login.Req  true  "Login User"
 // @Success 200 {object} authucase.LoginOut
-// @Failure 500 {string} er.APIError
+// @Failure 500 {object} er.APIError
 // @Failure 400 {object} er.APIError
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
