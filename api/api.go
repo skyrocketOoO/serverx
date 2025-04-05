@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
-	middleware "github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -19,8 +18,8 @@ func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	vr.POST("/login", h.Auth.Login)
 	vr.POST("/register", h.Auth.Register)
 
-	pR := vr.Group("/")
-	pR.Use(middleware.Jwt())
+	// pR := vr.Group("/")
+	// pR.Use(middleware.Jwt())
 
 	// userR := pR.Group("/user")
 	// {

@@ -6,9 +6,8 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
-	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	model "github.com/skyrocketOoO/serverx/internal/model"
+	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -72,17 +71,8 @@ func New() (db *gorm.DB, err error) {
 		}
 
 		if err != nil {
-			err = erx.W(err, "Initialize database failed")
+			err = er.W(err, er.DBUnavailable)
 			return
-		}
-
-		if domain.AutoMigrate {
-			if err = db.AutoMigrate(
-				&model.User{},
-			); err != nil {
-				err = erx.W(err, "Migration failed")
-				return
-			}
 		}
 	})
 	return db, err

@@ -24,11 +24,11 @@ func (d *Handler) Ping(c *gin.Context) {
 // 	db := postgres.Get()
 // 	sqlDb, err := db.DB()
 // 	if err != nil {
-// 		util.RespErr(c, http.StatusServiceUnavailable, erx.W(err))
+// 		util.ErrResp(c, http.StatusServiceUnavailable, erx.W(err))
 // 		return
 // 	}
 // 	if err := sqlDb.Ping(); err != nil {
-// 		util.RespErr(c, http.StatusServiceUnavailable, erx.W(err))
+// 		util.ErrResp(c, http.StatusServiceUnavailable, erx.W(err))
 // 		return
 // 	}
 

@@ -6,12 +6,6 @@ const (
 
 var (
 	// env | flag
-	Database    string
-	AutoMigrate bool = false
-	Env         string
+	Database string
+	Env      string
 )
-
-type ErrResp struct {
-	ID    string `json:"id"`
-	Error string `json:"error"`
-}

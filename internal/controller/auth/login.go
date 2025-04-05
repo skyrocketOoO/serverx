@@ -5,12 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/erx/erx"
+	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
 // @Param   user  body  auth.Login.Req  true  "Login User"
-// @Success 200 {object} auth.Login.Resp "token"
+// @Success 200 {object} authucase.LoginOut
 // @Failure 500 {string} domain.ErrResp
 // @Failure 400 {object} domain.ErrResp
 // @Router /login [post]
@@ -25,18 +26,14 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.Usecase.Login(c.Request.Context(), authucase.LoginInput{
+	out, err := h.Usecase.Login(c.Request.Context(), authucase.LoginIn{
 		Email:    req.Name,
 		Password: req.Password,
 	})
 	if err != nil {
-		util.RespErr(c, util.ToHttpCode(err), erx.W(err))
+		er.Bind(c, erx.W(err))
 		return
 	}
 
-	type Resp struct {
-		Token string `json:"token"`
-	}
-
-	c.JSON(http.StatusOK, Resp{Token: token})
+	c.JSON(http.StatusOK, out)
 }

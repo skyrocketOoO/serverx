@@ -23,7 +23,6 @@ var Cmd = &cobra.Command{
 
 func Gen(cmd *cobra.Command, args []string) {
 	postgres.New()
-	domain.AutoMigrate = true
 	if err := boot.InitAll(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
