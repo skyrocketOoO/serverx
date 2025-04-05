@@ -39,22 +39,18 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	router := gin.Default()
-	router.Use(middleware.Cors())
-
 	handlers, err := newHandlers()
 	if err != nil {
 		log.Error().Err(err).Msg("Error creating handlers")
 		return
 	}
 
+	router := gin.Default()
+	router.Use(middleware.Cors())
+	router.Use(middleware.ErrorHttp)
 	api.RegisterAPIHandlers(router, handlers)
-
 	port, _ := cmd.Flags().GetString("port")
-	server := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
-	}
+	server := newHTTPServer(router, port)
 
 	go func() {
 		log.Info().Msgf("Starting server on port %s...", port)
@@ -126,4 +122,15 @@ func newHandlers() (*controller.Handler, error) {
 	handlers := controller.NewHandler(authHandler, generalHandler)
 
 	return handlers, nil
+}
+
+func newHTTPServer(router *gin.Engine, port string) *http.Server {
+	return &http.Server{
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+	}
 }

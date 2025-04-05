@@ -7,9 +7,6 @@ import (
 
 func NewService() error {
 	log.Info().Msg("InitService")
-	// if err := postgres.New(); err != nil {
-	// 	return err
-	// }
 
 	validate.New()
 

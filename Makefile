@@ -29,3 +29,6 @@ backup:
 
 gen-rest-doc:
 	swag init --output ./docs/openapi  -g main.go internal/controller/*
+
+lint:
+	golangci-lint run ./...

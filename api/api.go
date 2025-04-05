@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
-	"github.com/skyrocketOoO/serverx/internal/domain"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -11,21 +10,12 @@ import (
 func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	vr := r.Group("/" + domain.ApiVersion)
-	vr.GET("/ping", h.Ping)
-	vr.GET("/healthy", h.General.Healthy)
+	r.GET("/ping", h.Ping)
+	r.GET("/healthy", h.General.Healthy)
 
-	vr.POST("/login", h.Auth.Login)
-	vr.POST("/register", h.Auth.Register)
+	r.POST("/login", h.Auth.Login)
+	r.POST("/register", h.Auth.Register)
 
-	// pR := vr.Group("/")
+	// pR := r.Group("/")
 	// pR.Use(middleware.Jwt())
-
-	// userR := pR.Group("/user")
-	// {
-	// 	userR.POST("/get", h.GetUsers)
-	// 	userR.POST("/create", h.CreateUser)
-	// 	userR.POST("/update", h.UpdateUser)
-	// 	userR.POST("/delete", h.DeleteUser)
-	// }
 }
