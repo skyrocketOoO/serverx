@@ -10,6 +10,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
+// @Tags			auth
 // @Param   user  body  authcontroller.SignUp.Req  true  "Register User"
 // @Success 200
 // @Failure 500 {string} er.APIError

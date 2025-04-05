@@ -10,12 +10,12 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Tags			Home
+// @Tags			auth
 // @Param			user	body	authcontroller.ConfirmSignUp.Req	true	"Request body"
 // @Success		200
 // @Failure		500	{object}	er.APIError
 // @Failure		400	{object}	er.APIError
-// @Router			/v1/confirm-sign-up [post]
+// @Router			/confirm-sign-up [post]
 func (h *Handler) ConfirmSignUp(c *gin.Context) {
 	type Req struct {
 		Email string `json:"email" validate:"required"`

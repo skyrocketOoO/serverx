@@ -15,6 +15,41 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/confirm-sign-up": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authcontroller.ConfirmSignUp.Req"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/healthy": {
             "get": {
                 "responses": {
@@ -35,6 +70,9 @@ const docTemplate = `{
         },
         "/login": {
             "post": {
+                "tags": [
+                    "auth"
+                ],
                 "parameters": [
                     {
                         "description": "Login User",
@@ -82,6 +120,9 @@ const docTemplate = `{
         },
         "/sign-up": {
             "post": {
+                "tags": [
+                    "auth"
+                ],
                 "parameters": [
                     {
                         "description": "Register User",
@@ -155,6 +196,22 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "authcontroller.ConfirmSignUp.Req": {
+            "type": "object",
+            "required": [
+                "code",
+                "email"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
         "authcontroller.ForgotPassword.Req": {
             "type": "object",
             "required": [

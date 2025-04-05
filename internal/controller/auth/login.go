@@ -9,6 +9,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
+// @Tags			auth
 // @Param   user  body  authcontroller.Login.Req  true  "Login User"
 // @Success 200 {object} authucase.LoginOut
 // @Failure 500 {string} er.APIError

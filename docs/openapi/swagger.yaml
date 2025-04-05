@@ -1,4 +1,15 @@
 definitions:
+  authcontroller.ConfirmSignUp.Req:
+    properties:
+      code:
+        example: "123456"
+        type: string
+      email:
+        type: string
+    required:
+    - code
+    - email
+    type: object
   authcontroller.ForgotPassword.Req:
     properties:
       email:
@@ -50,6 +61,28 @@ definitions:
 info:
   contact: {}
 paths:
+  /confirm-sign-up:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authcontroller.ConfirmSignUp.Req'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/er.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/er.APIError'
+      tags:
+      - auth
   /healthy:
     get:
       responses:
@@ -83,6 +116,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      tags:
+      - auth
   /ping:
     get:
       responses:
@@ -110,6 +145,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      tags:
+      - auth
   /v1/forgotPassword:
     post:
       parameters:

@@ -15,6 +15,7 @@ func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler) {
 
 	r.POST("/login", h.Auth.Login)
 	r.POST("/sign-up", h.Auth.SignUp)
+	r.POST("/confirm-sign-up", h.Auth.ConfirmSignUp)
 
 	// pR := r.Group("/")
 	// pR.Use(middleware.Jwt())
