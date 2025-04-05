@@ -1,12 +1,12 @@
 definitions:
-  auth.ForgotPassword.Req:
+  authcontroller.ForgotPassword.Req:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  auth.Login.Req:
+  authcontroller.Login.Req:
     properties:
       Name:
         type: string
@@ -16,12 +16,7 @@ definitions:
     - Name
     - Password
     type: object
-  auth.Login.Resp:
-    properties:
-      token:
-        type: string
-    type: object
-  auth.Register.Req:
+  authcontroller.Register.Req:
     properties:
       email:
         type: string
@@ -31,118 +26,23 @@ definitions:
     - email
     - nickName
     type: object
-  controller.CreateUser.Req:
+  authucase.LoginOut:
     properties:
-      name:
+      accessToken:
         type: string
-      password:
+      idToken:
         type: string
-    required:
-    - name
-    - password
-    type: object
-  controller.DeleteUser.Req:
-    properties:
-      id:
-        type: integer
-    required:
-    - id
-    type: object
-  controller.GetUsers.Req:
-    properties:
-      pager:
-        $ref: '#/definitions/util.Pager'
-      sorter:
-        items:
-          $ref: '#/definitions/util.Sorter'
-        type: array
-    type: object
-  controller.GetUsers.Resp:
-    properties:
-      count:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/controller.GetUsers.User'
-        type: array
-    type: object
-  controller.GetUsers.User:
-    properties:
-      id:
-        type: integer
-      name:
+      refreshToken:
         type: string
     type: object
-  controller.Login.Req:
+  er.APIError:
     properties:
-      Name:
+      code:
         type: string
-      Password:
+      msg:
         type: string
-    required:
-    - Name
-    - Password
-    type: object
-  controller.Login.Resp:
-    properties:
-      token:
+      traceID:
         type: string
-    type: object
-  controller.Register.Req:
-    properties:
-      Name:
-        maxLength: 32
-        minLength: 6
-        type: string
-      Password:
-        maxLength: 32
-        minLength: 8
-        type: string
-    required:
-    - Name
-    - Password
-    type: object
-  controller.UpdateUser.Req:
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-    required:
-    - id
-    type: object
-  domain.ErrResp:
-    properties:
-      error:
-        type: string
-      id:
-        type: string
-    type: object
-  util.Pager:
-    properties:
-      number:
-        example: 1
-        minimum: 1
-        type: integer
-      size:
-        example: 10
-        minimum: 1
-        type: integer
-    required:
-    - number
-    - size
-    type: object
-  util.Sorter:
-    properties:
-      asc:
-        example: false
-        type: boolean
-      field:
-        example: Time
-        type: string
-    required:
-    - asc
-    - field
     type: object
 info:
   contact: {}
@@ -155,14 +55,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/auth.Register.Req'
+          $ref: '#/definitions/authcontroller.Register.Req'
       responses:
         "200":
           description: OK
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/domain.ErrResp'
+            $ref: '#/definitions/er.APIError'
         "500":
           description: Internal Server Error
           schema:
@@ -173,12 +73,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.ErrResp'
+            $ref: '#/definitions/er.APIError'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/domain.ErrResp'
-      summary: Check the services are healthy
+            $ref: '#/definitions/er.APIError'
   /login:
     post:
       parameters:
@@ -187,16 +86,16 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/auth.Login.Req'
+          $ref: '#/definitions/authcontroller.Login.Req'
       responses:
         "200":
-          description: token
+          description: OK
           schema:
-            $ref: '#/definitions/auth.Login.Resp'
+            $ref: '#/definitions/authucase.LoginOut'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/domain.ErrResp'
+            $ref: '#/definitions/er.APIError'
         "500":
           description: Internal Server Error
           schema:
@@ -211,124 +110,6 @@ paths:
         "200":
           description: OK
       summary: Check the server started
-  /register:
-    post:
-      parameters:
-      - description: Register
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/controller.Register.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-  /user/create:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controller.CreateUser.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-      security:
-      - Bearer: []
-      tags:
-      - Alarm
-  /user/delete:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controller.DeleteUser.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-      security:
-      - Bearer: []
-      tags:
-      - Alarm
-  /user/get:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controller.GetUsers.Req'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.GetUsers.Resp'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-      security:
-      - Bearer: []
-      tags:
-      - Alarm
-  /user/update:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controller.UpdateUser.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.ErrResp'
-      security:
-      - Bearer: []
-      tags:
-      - Alarm
   /v1/forgotPassword:
     post:
       parameters:
@@ -337,18 +118,18 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/auth.ForgotPassword.Req'
+          $ref: '#/definitions/authcontroller.ForgotPassword.Req'
       responses:
         "200":
           description: OK
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/domain.ErrResp'
+            $ref: '#/definitions/er.APIError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/domain.ErrResp'
+            $ref: '#/definitions/er.APIError'
         "500":
           description: Internal Server Error
           schema:

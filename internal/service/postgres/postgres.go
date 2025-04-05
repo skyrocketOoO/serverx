@@ -1,4 +1,4 @@
-package postgres
+package database
 
 import (
 	"fmt"
@@ -78,14 +78,14 @@ func New() (db *gorm.DB, err error) {
 	return db, err
 }
 
-// func Close() error {
-// 	if db == nil {
-// 		return nil
-// 	}
+func Close(db *gorm.DB) error {
+	if db == nil {
+		return nil
+	}
 
-// 	db, err := db.DB()
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return db.Close()
-// }
+	sqlDB, err := db.DB()
+	if err != nil {
+		return err
+	}
+	return sqlDB.Close()
+}

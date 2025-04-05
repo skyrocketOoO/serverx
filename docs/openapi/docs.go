@@ -24,7 +24,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.Register.Req"
+                            "$ref": "#/definitions/authcontroller.Register.Req"
                         }
                     }
                 ],
@@ -35,7 +35,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     },
                     "500": {
@@ -49,18 +49,17 @@ const docTemplate = `{
         },
         "/healthy": {
             "get": {
-                "summary": "Check the services are healthy",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     }
                 }
@@ -75,21 +74,21 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.Login.Req"
+                            "$ref": "#/definitions/authcontroller.Login.Req"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "token",
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.Login.Resp"
+                            "$ref": "#/definitions/authucase.LoginOut"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     },
                     "500": {
@@ -117,201 +116,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/register": {
-            "post": {
-                "parameters": [
-                    {
-                        "description": "Register",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.Register.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/create": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "tags": [
-                    "Alarm"
-                ],
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.CreateUser.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/delete": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "tags": [
-                    "Alarm"
-                ],
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.DeleteUser.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/get": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "tags": [
-                    "Alarm"
-                ],
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.GetUsers.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.GetUsers.Resp"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/update": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "tags": [
-                    "Alarm"
-                ],
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.UpdateUser.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/forgotPassword": {
             "post": {
                 "tags": [
@@ -324,7 +128,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.ForgotPassword.Req"
+                            "$ref": "#/definitions/authcontroller.ForgotPassword.Req"
                         }
                     }
                 ],
@@ -335,13 +139,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/domain.ErrResp"
+                            "$ref": "#/definitions/er.APIError"
                         }
                     },
                     "500": {
@@ -355,7 +159,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "auth.ForgotPassword.Req": {
+        "authcontroller.ForgotPassword.Req": {
             "type": "object",
             "required": [
                 "email"
@@ -366,7 +170,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.Login.Req": {
+        "authcontroller.Login.Req": {
             "type": "object",
             "required": [
                 "Name",
@@ -381,15 +185,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.Login.Resp": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "auth.Register.Req": {
+        "authcontroller.Register.Req": {
             "type": "object",
             "required": [
                 "email",
@@ -404,171 +200,31 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.CreateUser.Req": {
+        "authucase.LoginOut": {
             "type": "object",
-            "required": [
-                "name",
-                "password"
-            ],
             "properties": {
-                "name": {
+                "accessToken": {
                     "type": "string"
                 },
-                "password": {
+                "idToken": {
                     "type": "string"
-                }
-            }
-        },
-        "controller.DeleteUser.Req": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "controller.GetUsers.Req": {
-            "type": "object",
-            "properties": {
-                "pager": {
-                    "$ref": "#/definitions/util.Pager"
                 },
-                "sorter": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/util.Sorter"
-                    }
-                }
-            }
-        },
-        "controller.GetUsers.Resp": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/controller.GetUsers.User"
-                    }
-                }
-            }
-        },
-        "controller.GetUsers.User": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
+                "refreshToken": {
                     "type": "string"
                 }
             }
         },
-        "controller.Login.Req": {
+        "er.APIError": {
             "type": "object",
-            "required": [
-                "Name",
-                "Password"
-            ],
             "properties": {
-                "Name": {
+                "code": {
                     "type": "string"
                 },
-                "Password": {
-                    "type": "string"
-                }
-            }
-        },
-        "controller.Login.Resp": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "controller.Register.Req": {
-            "type": "object",
-            "required": [
-                "Name",
-                "Password"
-            ],
-            "properties": {
-                "Name": {
-                    "type": "string",
-                    "maxLength": 32,
-                    "minLength": 6
-                },
-                "Password": {
-                    "type": "string",
-                    "maxLength": 32,
-                    "minLength": 8
-                }
-            }
-        },
-        "controller.UpdateUser.Req": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.ErrResp": {
-            "type": "object",
-            "properties": {
-                "error": {
+                "msg": {
                     "type": "string"
                 },
-                "id": {
+                "traceID": {
                     "type": "string"
-                }
-            }
-        },
-        "util.Pager": {
-            "type": "object",
-            "required": [
-                "number",
-                "size"
-            ],
-            "properties": {
-                "number": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "example": 1
-                },
-                "size": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "example": 10
-                }
-            }
-        },
-        "util.Sorter": {
-            "type": "object",
-            "required": [
-                "asc",
-                "field"
-            ],
-            "properties": {
-                "asc": {
-                    "type": "boolean",
-                    "example": false
-                },
-                "field": {
-                    "type": "string",
-                    "example": "Time"
                 }
             }
         }

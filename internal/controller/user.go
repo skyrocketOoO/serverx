@@ -1,9 +1,9 @@
 package controller
 
 // @Param request body controller.CreateUser.Req true "Request body"
-// @Failure 400 {object} domain.ErrResp ""
+// @Failure 400 {object} er.APIError ""
 // @Success 200
-// @Failure 500 {object} domain.ErrResp ""
+// @Failure 500 {object} er.APIError ""
 // @Router /user/create [post]
 // @Security Bearer
 // @Tags Alarm
@@ -44,9 +44,9 @@ package controller
 // }
 
 // // @Param request body controller.GetUsers.Req true "Request body"
-// // @Failure 400 {object} domain.ErrResp ""
+// // @Failure 400 {object} er.APIError ""
 // // @Success 200 {object} controller.GetUsers.Resp ""
-// // @Failure 500 {object} domain.ErrResp ""
+// // @Failure 500 {object} er.APIError ""
 // // @Router /user/get [post]
 // // @Security Bearer
 // // @Tags Alarm
@@ -87,9 +87,9 @@ package controller
 // }
 
 // // @Param request body controller.UpdateUser.Req true "Request body"
-// // @Failure 400 {object} domain.ErrResp ""
+// // @Failure 400 {object} er.APIError ""
 // // @Success 200
-// // @Failure 500 {object} domain.ErrResp ""
+// // @Failure 500 {object} er.APIError ""
 // // @Router /user/update [post]
 // // @Security Bearer
 // // @Tags Alarm
@@ -126,9 +126,9 @@ package controller
 // }
 
 // // @Param request body controller.DeleteUser.Req true "Request body"
-// // @Failure 400 {object} domain.ErrResp ""
+// // @Failure 400 {object} er.APIError ""
 // // @Success 200
-// // @Failure 500 {object} domain.ErrResp ""
+// // @Failure 500 {object} er.APIError ""
 // // @Router /user/delete [post]
 // // @Security Bearer
 // // @Tags Alarm

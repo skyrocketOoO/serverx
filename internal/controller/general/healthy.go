@@ -7,8 +7,8 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/domain/er"
 )
 
-// @Success 200 {object} domain.ErrResp
-// @Failure 503 {object} domain.ErrResp
+// @Success 200 {object} er.APIError
+// @Failure 503 {object} er.APIError
 // @Router /healthy [get]
 func (d *Handler) Healthy(c *gin.Context) {
 	if err := d.usecase.Healthy(c); err != nil {

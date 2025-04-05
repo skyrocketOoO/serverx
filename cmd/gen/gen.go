@@ -9,7 +9,7 @@ import (
 	"github.com/skyrocketOoO/gorm-plugin/tablename"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service/postgres"
+	database "github.com/skyrocketOoO/serverx/internal/service/postgres"
 	"github.com/spf13/cobra"
 )
 
@@ -22,15 +22,16 @@ var Cmd = &cobra.Command{
 }
 
 func Gen(cmd *cobra.Command, args []string) {
-	postgres.New()
+	database.New()
 	if err := boot.InitAll(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	db, err := postgres.New()
+	db, err := database.New()
 	if err != nil {
 		log.Fatal().Msgf("%v", err)
 	}
+	defer database.Close(db)
 
 	if err := tablename.GenTableNamesCode(db,
 		"internal/gen/table/table.go"); err != nil {

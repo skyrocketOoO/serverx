@@ -5,7 +5,7 @@ package middleware
 // 		// Get the token from the Authorization header
 // 		authHeader := c.GetHeader("Authorization")
 // 		if authHeader == "" || len(authHeader) <= 7 || authHeader[:7] != "Bearer " {
-// 			c.JSON(http.StatusUnauthorized, domain.ErrResp{Error: "missing or invalid Authorization header"})
+// 			c.JSON(http.StatusUnauthorized, er.APIError{Error: "missing or invalid Authorization header"})
 // 			c.Abort()
 // 			return
 // 		}
@@ -21,7 +21,7 @@ package middleware
 // 			return util.GetJwtSecretKey(), nil
 // 		})
 // 		if err != nil || !token.Valid {
-// 			c.JSON(http.StatusUnauthorized, domain.ErrResp{Error: "invalid or expired token"})
+// 			c.JSON(http.StatusUnauthorized, er.APIError{Error: "invalid or expired token"})
 // 			c.Abort()
 // 			return
 // 		}

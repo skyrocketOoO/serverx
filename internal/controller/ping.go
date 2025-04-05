@@ -16,8 +16,8 @@ func (d *Handler) Ping(c *gin.Context) {
 }
 
 // @Summary Check the services are healthy
-// @Success 200 {object} domain.ErrResp
-// @Failure 503 {object} domain.ErrResp
+// @Success 200 {object} er.APIError
+// @Failure 503 {object} er.APIError
 // @Router /healthy [get]
 // func (d *Handler) Healthy(c *gin.Context) {
 // 	// do something check

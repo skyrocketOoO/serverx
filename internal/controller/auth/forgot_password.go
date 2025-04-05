@@ -10,11 +10,11 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Param		user	body	auth.ForgotPassword.Req	true	"Request body"
+// @Param		user	body	authcontroller.ForgotPassword.Req	true	"Request body"
 // @Success	200
-// @Failure	500	{string}	domain.ErrResp
-// @Failure	400	{object}	domain.ErrResp
-// @Failure	404	{object}	domain.ErrResp
+// @Failure	500	{string}	er.APIError
+// @Failure	400	{object}	er.APIError
+// @Failure	404	{object}	er.APIError
 // @Router		/v1/forgotPassword [post]
 // @Tags		Home
 func (h *Handler) ForgotPassword(c *gin.Context) {

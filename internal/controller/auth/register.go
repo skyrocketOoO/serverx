@@ -10,10 +10,10 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Param   user  body  auth.Register.Req  true  "Register User"
+// @Param   user  body  authcontroller.Register.Req  true  "Register User"
 // @Success 200
-// @Failure 500 {string} domain.ErrResp
-// @Failure 400 {object} domain.ErrResp
+// @Failure 500 {string} er.APIError
+// @Failure 400 {object} er.APIError
 // @Router /Register [post]
 func (h *Handler) Register(c *gin.Context) {
 	type Req struct {

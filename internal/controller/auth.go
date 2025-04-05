@@ -2,8 +2,8 @@ package controller
 
 // @Param   user  body  controller.Login.Req  true  "Login User"
 // @Success 200 {object} controller.Login.Resp "token"
-// @Failure 500 {string} domain.ErrResp
-// @Failure 400 {object} domain.ErrResp
+// @Failure 500 {string} er.APIError
+// @Failure 400 {object} er.APIError
 // @Router /login [post]
 // func (h *Handler) Login(c *gin.Context) {
 // 	type Req struct {
@@ -46,8 +46,8 @@ package controller
 
 // // @Param   user  body  controller.Register.Req  true  "Register"
 // // @Success 200
-// // @Failure 500 {object} domain.ErrResp
-// // @Failure 400 {object} domain.ErrResp
+// // @Failure 500 {object} er.APIError
+// // @Failure 400 {object} er.APIError
 // // @Router /register [post]
 // func (h *Handler) Register(c *gin.Context) {
 // 	type Req struct {

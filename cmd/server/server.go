@@ -42,11 +42,6 @@ func RunServer(cmd *cobra.Command, args []string) {
 	router := gin.Default()
 	router.Use(middleware.Cors())
 
-	// db, err := postgres.New()
-	// if err != nil {
-	// 	log.Fatal().Msgf("%v", err)
-	// }
-
 	cognitoCli, err := service.NewCognito(context.TODO())
 	if err != nil {
 		log.Fatal().Msgf("%v", err)
