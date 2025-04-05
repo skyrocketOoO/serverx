@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -49,13 +50,14 @@ func RunServer(cmd *cobra.Command, args []string) {
 
 	api.RegisterAPIHandlers(router, handlers)
 
+	port, _ := cmd.Flags().GetString("port")
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + port,
 		Handler: router,
 	}
 
 	go func() {
-		log.Info().Msgf("Starting server on port %d...", 8080)
+		log.Info().Msgf("Starting server on port %s...", port)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Error().Err(err).Msg("Server failed")
 			return
@@ -79,7 +81,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 }
 
 func init() {
-	// Cmd.Flags().StringP("port", "p", "8080", "port")
+	Cmd.Flags().StringP("port", "p", "8080", "port")
 	Cmd.Flags().
 		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
@@ -100,10 +102,10 @@ func init() {
 			)
 		}
 
-		// port, _ := cmd.Flags().GetString("port")
-		// if _, err := strconv.Atoi(port); err != nil || port == "" {
-		// 	return erx.Errorf("invalid port value: %s. Must be a valid number", port)
-		// }
+		port, _ := cmd.Flags().GetString("port")
+		if _, err := strconv.Atoi(port); err != nil || port == "" {
+			return erx.Errorf("invalid port value: %s. Must be a valid number", port)
+		}
 
 		return nil
 	}
