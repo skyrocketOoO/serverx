@@ -115,7 +115,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/er.APIError'
       tags:
       - auth
   /ping:
@@ -144,7 +144,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/er.APIError'
       tags:
       - auth
   /v1/forgotPassword:
@@ -170,7 +170,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/er.APIError'
       tags:
       - Home
 securityDefinitions:
