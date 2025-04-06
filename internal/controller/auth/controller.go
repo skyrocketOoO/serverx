@@ -15,6 +15,8 @@ type Usecase interface {
 	RefreshToken(c context.Context, in authucase.RefreshTokenIn) (*authucase.RefreshTokenOut, error)
 	ChangePassword(c context.Context, in authucase.ChangePasswordIn) error
 	ResendConfirmationCode(c context.Context, in authucase.ResendConfirmationCodeIn) error
+	InviteUser(c context.Context, in authucase.InviteUserIn) error
+	SetNewPassword(c context.Context, in authucase.SetNewPasswordIn) error
 }
 
 type Handler struct {

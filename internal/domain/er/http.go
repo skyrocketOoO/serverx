@@ -23,7 +23,7 @@ func Bind(c *gin.Context, err error) {
 	}
 
 	c.JSON(
-		codeToHTTP[appErr.code],
+		appErr.HTTPCode(),
 		NewAPIErr(
 			appErr.traceID.String(),
 			appErr.code.String(),

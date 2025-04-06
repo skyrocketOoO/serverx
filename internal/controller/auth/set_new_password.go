@@ -4,23 +4,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
 	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
 // @Tags	auth
-// @Param   user  body  authucase.SignUpIn  true  "req"
+// @Param   user  body  authucase.SetNewPasswordIn  true "request body"
 // @Success 200
-// @Router /v1/sign-up [post]
-func (h *Handler) SignUp(c *gin.Context) {
-	var req authucase.SignUpIn
-	if !util.ParseValidate(c, &req) {
+// @Router /v1/set-new-password [post]
+func (h *Handler) SetNewPassword(c *gin.Context) {
+	var req authucase.SetNewPasswordIn
+	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
-	if err := h.Usecase.SignUp(c.Request.Context(), req); err != nil {
+	if err := h.Usecase.SetNewPassword(c.Request.Context(), req); err != nil {
 		er.Bind(c, er.W(err))
 		return
 	}

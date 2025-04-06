@@ -33,48 +33,56 @@ const docTemplate = `{
                 }
             }
         },
-        "/login": {
+        "/ping": {
+            "get": {
+                "tags": [
+                    "TroubleShooting"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/change-password": {
             "post": {
                 "tags": [
                     "auth"
                 ],
                 "parameters": [
                     {
-                        "description": "request body",
+                        "description": "req",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authucase.LoginIn"
+                            "$ref": "#/definitions/authcontroller.ChangePassword.Req"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/authucase.LoginOut"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
+                        "description": "OK"
                     }
                 }
             }
         },
-        "/ping": {
-            "get": {
+        "/v1/confirm-forgot-password": {
+            "post": {
                 "tags": [
-                    "TroubleShooting"
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authucase.ConfirmForgotPasswordIn"
+                        }
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -102,26 +110,14 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
                     }
                 }
             }
         },
-        "/v1/forgotPassword": {
+        "/v1/forgot-password": {
             "post": {
                 "tags": [
-                    "Home"
+                    "auth"
                 ],
                 "parameters": [
                     {
@@ -137,23 +133,57 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
+                    }
+                }
+            }
+        },
+        "/v1/invite-user": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/er.APIError"
+                            "$ref": "#/definitions/authucase.LoginIn"
                         }
-                    },
-                    "404": {
-                        "description": "Not Found",
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/er.APIError"
+                            "$ref": "#/definitions/authucase.LoginOut"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
+                    }
+                }
+            }
+        },
+        "/v1/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/er.APIError"
+                            "$ref": "#/definitions/authucase.LoginIn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/authucase.LoginOut"
                         }
                     }
                 }
@@ -181,18 +211,52 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/authucase.RefreshTokenOut"
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request",
+                    }
+                }
+            }
+        },
+        "/v1/resend-confirmation-code": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/er.APIError"
+                            "$ref": "#/definitions/authucase.ResendConfirmationCodeIn"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/set-new-password": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/er.APIError"
+                            "$ref": "#/definitions/authucase.SetNewPasswordIn"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -216,24 +280,27 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "authcontroller.ChangePassword.Req": {
+            "type": "object",
+            "required": [
+                "newPass",
+                "oldPass"
+            ],
+            "properties": {
+                "newPass": {
+                    "type": "string"
+                },
+                "oldPass": {
+                    "type": "string"
+                }
+            }
+        },
         "authucase.ConfirmForgotPasswordIn": {
             "type": "object",
             "required": [
@@ -333,6 +400,36 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "refreshToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.ResendConfirmationCodeIn": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.SetNewPasswordIn": {
+            "type": "object",
+            "required": [
+                "email",
+                "newPass",
+                "oldPass"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "newPass": {
+                    "type": "string"
+                },
+                "oldPass": {
                     "type": "string"
                 }
             }

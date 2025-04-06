@@ -10,13 +10,10 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
+// @Tags		auth
 // @Param		user	body	authucase.ForgotPasswordIn	true	"Request body"
-// @Success	200
-// @Failure	500	{object}	er.APIError
-// @Failure	400	{object}	er.APIError
-// @Failure	404	{object}	er.APIError
-// @Router		/v1/forgotPassword [post]
-// @Tags		Home
+// @Success		200
+// @Router		/v1/forgot-password [post]
 func (h *Handler) ForgotPassword(c *gin.Context) {
 	var req authucase.ForgotPasswordIn
 	if ok := util.ParseValidate(c, &req); !ok {

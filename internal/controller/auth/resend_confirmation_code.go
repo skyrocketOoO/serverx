@@ -9,11 +9,9 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Tags			auth
+// @Tags	auth
 // @Param   user  body  authucase.ResendConfirmationCodeIn  true "request body"
 // @Success 200
-// @Failure 500 {object} er.APIError
-// @Failure 400 {object} er.APIError
 // @Router /v1/resend-confirmation-code [post]
 func (h *Handler) ResendConfirmationCode(c *gin.Context) {
 	var req authucase.ResendConfirmationCodeIn

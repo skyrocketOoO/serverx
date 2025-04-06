@@ -12,9 +12,7 @@ import (
 // @Tags	auth
 // @Param   user  body  authcontroller.ChangePassword.Req  true  "req"
 // @Success 200
-// @Failure 500 {object} er.APIError
-// @Failure 400 {object} er.APIError
-// @Router /v1/refresh-token [post]
+// @Router /v1/change-password [post]
 func (h *Handler) ChangePassword(c *gin.Context) {
 	type Req struct {
 		OldPass string `json:"oldPass" validate:"required"`

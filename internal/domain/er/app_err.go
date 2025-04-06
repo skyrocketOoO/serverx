@@ -1,7 +1,7 @@
 package er
 
 import (
-	"net/http"
+	"strconv"
 
 	"github.com/google/uuid"
 )
@@ -26,10 +26,8 @@ func (e *AppError) Code() code {
 }
 
 func (e *AppError) HTTPCode() int {
-	if code, ok := codeToHTTP[e.code]; ok {
-		return code
-	}
-	return http.StatusInternalServerError
+	codeStr, _ := strconv.Atoi(e.code.String()[:3])
+	return codeStr
 }
 
 // NewAppError will log the caller stack and original error message if exist

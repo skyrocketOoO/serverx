@@ -9,12 +9,10 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Tags			auth
+// @Tags	auth
 // @Param   user  body  authucase.LoginIn  true "request body"
 // @Success 200 {object} authucase.LoginOut
-// @Failure 500 {object} er.APIError
-// @Failure 400 {object} er.APIError
-// @Router /login [post]
+// @Router /v1/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var req authucase.LoginIn
 	if ok := util.ParseValidate(c, &req); !ok {

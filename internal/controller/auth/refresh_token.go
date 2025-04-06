@@ -9,11 +9,9 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Tags			auth
+// @Tags	auth
 // @Param   user  body  authucase.RefreshTokenIn  true  "req"
 // @Success 200 {object} authucase.RefreshTokenOut
-// @Failure 500 {object} er.APIError
-// @Failure 400 {object} er.APIError
 // @Router /v1/refresh-token [post]
 func (h *Handler) RefreshToken(c *gin.Context) {
 	var req authucase.RefreshTokenIn

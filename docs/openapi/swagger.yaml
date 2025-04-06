@@ -1,4 +1,14 @@
 definitions:
+  authcontroller.ChangePassword.Req:
+    properties:
+      newPass:
+        type: string
+      oldPass:
+        type: string
+    required:
+    - newPass
+    - oldPass
+    type: object
   authucase.ConfirmForgotPasswordIn:
     properties:
       code:
@@ -67,6 +77,26 @@ definitions:
       refreshToken:
         type: string
     type: object
+  authucase.ResendConfirmationCodeIn:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  authucase.SetNewPasswordIn:
+    properties:
+      email:
+        type: string
+      newPass:
+        type: string
+      oldPass:
+        type: string
+    required:
+    - email
+    - newPass
+    - oldPass
+    type: object
   authucase.SignUpIn:
     properties:
       email:
@@ -103,7 +133,70 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/er.APIError'
-  /login:
+  /ping:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - TroubleShooting
+  /v1/change-password:
+    post:
+      parameters:
+      - description: req
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authcontroller.ChangePassword.Req'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - auth
+  /v1/confirm-forgot-password:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.ConfirmForgotPasswordIn'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - auth
+  /v1/confirm-sign-up:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.ConfirmSignUpIn'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - auth
+  /v1/forgot-password:
+    post:
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.ForgotPasswordIn'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - auth
+  /v1/invite-user:
     post:
       parameters:
       - description: request body
@@ -117,71 +210,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/authucase.LoginOut'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
       tags:
       - auth
-  /ping:
-    get:
-      responses:
-        "200":
-          description: OK
-      tags:
-      - TroubleShooting
-  /v1/confirm-sign-up:
+  /v1/login:
     post:
       parameters:
-      - description: Request body
+      - description: request body
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/authucase.ConfirmSignUpIn'
+          $ref: '#/definitions/authucase.LoginIn'
       responses:
         "200":
           description: OK
-        "400":
-          description: Bad Request
           schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
+            $ref: '#/definitions/authucase.LoginOut'
       tags:
       - auth
-  /v1/forgotPassword:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/authucase.ForgotPasswordIn'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
-      tags:
-      - Home
   /v1/refresh-token:
     post:
       parameters:
@@ -196,14 +242,34 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/authucase.RefreshTokenOut'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
+      tags:
+      - auth
+  /v1/resend-confirmation-code:
+    post:
+      parameters:
+      - description: request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.ResendConfirmationCodeIn'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - auth
+  /v1/set-new-password:
+    post:
+      parameters:
+      - description: request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.SetNewPasswordIn'
+      responses:
+        "200":
+          description: OK
       tags:
       - auth
   /v1/sign-up:
@@ -218,14 +284,6 @@ paths:
       responses:
         "200":
           description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
       tags:
       - auth
 securityDefinitions:

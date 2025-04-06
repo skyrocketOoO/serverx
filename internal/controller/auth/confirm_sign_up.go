@@ -10,12 +10,10 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Tags			auth
-// @Param			user	body	authucase.ConfirmSignUpIn	true	"Request body"
+// @Tags		auth
+// @Param		user	body	authucase.ConfirmSignUpIn	true	"Request body"
 // @Success		200
-// @Failure		500	{object}	er.APIError
-// @Failure		400	{object}	er.APIError
-// @Router			/v1/confirm-sign-up [post]
+// @Router		/v1/confirm-sign-up [post]
 func (h *Handler) ConfirmSignUp(c *gin.Context) {
 	var req authucase.ConfirmSignUpIn
 	if !util.ParseValidate(c, &req) {

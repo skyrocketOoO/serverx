@@ -20,7 +20,6 @@ import (
 	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/domain/er"
 	"github.com/skyrocketOoO/serverx/internal/service"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	generalucase "github.com/skyrocketOoO/serverx/internal/usecase/general"
@@ -39,7 +38,13 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	handlers, err := newHandlers()
+	cognitoCli, err := service.NewCognito(context.TODO())
+	if err != nil {
+		log.Error().Err(err).Msg("Error creating cognito client")
+		return
+	}
+
+	handlers, err := newHandlers(cognitoCli)
 	if err != nil {
 		log.Error().Err(err).Msg("Error creating handlers")
 		return
@@ -48,7 +53,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 	router := gin.Default()
 	router.Use(middleware.Cors())
 	router.Use(middleware.ErrorHttp)
-	api.RegisterAPIHandlers(router, handlers)
+	api.RegisterAPIHandlers(router, handlers, cognitoCli)
 	port, _ := cmd.Flags().GetString("port")
 	server := newHTTPServer(router, port)
 
@@ -107,13 +112,8 @@ func init() {
 	}
 }
 
-func newHandlers() (*controller.Handler, error) {
-	cognitoCli, err := service.NewCognito(context.TODO())
-	if err != nil {
-		return nil, er.W(err)
-	}
-
-	authUsecase := authucase.New(cognitoCli)
+func newHandlers(cognito *service.Cognito) (*controller.Handler, error) {
+	authUsecase := authucase.New(cognito)
 	generalUsecase := generalucase.New()
 
 	authHandler := authcontroller.NewHandler(authUsecase)
