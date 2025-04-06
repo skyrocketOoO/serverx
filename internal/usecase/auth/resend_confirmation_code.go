@@ -9,23 +9,24 @@ import (
 	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
-type ForgotPasswordIn struct {
-	Email string `json:"email" validate:"required"`
+type ResendConfirmationCodeIn struct {
+	Email string `json:"email" validate:"required,email"`
 }
 
-func (u *Usecase) ForgotPassword(c context.Context, in ForgotPasswordIn) error {
+func (u *Usecase) ResendConfirmationCode(c context.Context, in ResendConfirmationCodeIn) error {
 	if err := validate.Get().Struct(in); err != nil {
 		return er.W(err, er.ValidateInput)
 	}
 
-	input := &cognitoidentityprovider.ForgotPasswordInput{
+	input := &cognitoidentityprovider.ResendConfirmationCodeInput{
 		ClientId:   aws.String(u.cognitoSvc.ClientID),
-		SecretHash: aws.String(u.cognitoSvc.ComputeSecretHash(in.Email)),
 		Username:   aws.String(in.Email),
+		SecretHash: aws.String(u.cognitoSvc.ComputeSecretHash(in.Email)),
 	}
 
-	if _, err := u.cognitoSvc.Client.ForgotPassword(c, input); err != nil {
-		return er.W(err)
+	_, err := u.cognitoSvc.Client.ResendConfirmationCode(c, input)
+	if err != nil {
+		return er.W(err, er.BadRequest)
 	}
 
 	return nil

@@ -15,41 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/confirm-sign-up": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/authcontroller.ConfirmSignUp.Req"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    }
-                }
-            }
-        },
         "/healthy": {
             "get": {
                 "responses": {
@@ -75,12 +40,12 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Login User",
+                        "description": "request body",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authcontroller.Login.Req"
+                            "$ref": "#/definitions/authucase.LoginIn"
                         }
                     }
                 ],
@@ -118,19 +83,19 @@ const docTemplate = `{
                 }
             }
         },
-        "/sign-up": {
+        "/v1/confirm-sign-up": {
             "post": {
                 "tags": [
                     "auth"
                 ],
                 "parameters": [
                     {
-                        "description": "Register User",
+                        "description": "Request body",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authcontroller.SignUp.Req"
+                            "$ref": "#/definitions/authucase.ConfirmSignUpIn"
                         }
                     }
                 ],
@@ -165,7 +130,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authcontroller.ForgotPassword.Req"
+                            "$ref": "#/definitions/authucase.ForgotPasswordIn"
                         }
                     }
                 ],
@@ -193,10 +158,102 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/refresh-token": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "req",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authucase.RefreshTokenIn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/authucase.RefreshTokenOut"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sign-up": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "req",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authucase.SignUpIn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "authcontroller.ConfirmSignUp.Req": {
+        "authucase.ConfirmForgotPasswordIn": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "newPass"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "newPass": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.ConfirmSignUpIn": {
             "type": "object",
             "required": [
                 "code",
@@ -204,15 +261,14 @@ const docTemplate = `{
             ],
             "properties": {
                 "code": {
-                    "type": "string",
-                    "example": "123456"
+                    "type": "string"
                 },
                 "email": {
                     "type": "string"
                 }
             }
         },
-        "authcontroller.ForgotPassword.Req": {
+        "authucase.ForgotPasswordIn": {
             "type": "object",
             "required": [
                 "email"
@@ -223,33 +279,14 @@ const docTemplate = `{
                 }
             }
         },
-        "authcontroller.Login.Req": {
-            "type": "object",
-            "required": [
-                "Name",
-                "Password"
-            ],
-            "properties": {
-                "Name": {
-                    "type": "string"
-                },
-                "Password": {
-                    "type": "string"
-                }
-            }
-        },
-        "authcontroller.SignUp.Req": {
+        "authucase.LoginIn": {
             "type": "object",
             "required": [
                 "email",
-                "nickName",
                 "password"
             ],
             "properties": {
                 "email": {
-                    "type": "string"
-                },
-                "nickName": {
                     "type": "string"
                 },
                 "password": {
@@ -267,6 +304,54 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "refreshToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.RefreshTokenIn": {
+            "type": "object",
+            "required": [
+                "email",
+                "refreshToken"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "refreshToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.RefreshTokenOut": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "idToken": {
+                    "type": "string"
+                },
+                "refreshToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "authucase.SignUpIn": {
+            "type": "object",
+            "required": [
+                "email",
+                "nickName",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }

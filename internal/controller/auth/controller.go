@@ -12,6 +12,9 @@ type Usecase interface {
 	ConfirmSignUp(c context.Context, in authucase.ConfirmSignUpIn) error
 	ForgotPassword(c context.Context, in authucase.ForgotPasswordIn) error
 	ConfirmForgotPassword(c context.Context, in authucase.ConfirmForgotPasswordIn) error
+	RefreshToken(c context.Context, in authucase.RefreshTokenIn) (*authucase.RefreshTokenOut, error)
+	ChangePassword(c context.Context, in authucase.ChangePasswordIn) error
+	ResendConfirmationCode(c context.Context, in authucase.ResendConfirmationCodeIn) error
 }
 
 type Handler struct {

@@ -11,26 +11,18 @@ import (
 )
 
 // @Tags			auth
-// @Param			user	body	authcontroller.ConfirmSignUp.Req	true	"Request body"
+// @Param			user	body	authucase.ConfirmSignUpIn	true	"Request body"
 // @Success		200
 // @Failure		500	{object}	er.APIError
 // @Failure		400	{object}	er.APIError
-// @Router			/confirm-sign-up [post]
+// @Router			/v1/confirm-sign-up [post]
 func (h *Handler) ConfirmSignUp(c *gin.Context) {
-	type Req struct {
-		Email string `json:"email" validate:"required"`
-		Code  string `json:"code"  validate:"required" example:"123456"`
-	}
-
-	var req Req
+	var req authucase.ConfirmSignUpIn
 	if !util.ParseValidate(c, &req) {
 		return
 	}
 
-	if err := h.Usecase.ConfirmSignUp(c.Request.Context(), authucase.ConfirmSignUpIn{
-		Email: req.Email,
-		Code:  req.Code,
-	}); err != nil {
+	if err := h.Usecase.ConfirmSignUp(c.Request.Context(), req); err != nil {
 		er.Bind(c, erx.W(err))
 		return
 	}

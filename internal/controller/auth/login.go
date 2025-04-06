@@ -10,26 +10,18 @@ import (
 )
 
 // @Tags			auth
-// @Param   user  body  authcontroller.Login.Req  true  "Login User"
+// @Param   user  body  authucase.LoginIn  true "request body"
 // @Success 200 {object} authucase.LoginOut
 // @Failure 500 {object} er.APIError
 // @Failure 400 {object} er.APIError
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
-	type Req struct {
-		Name     string `json:"Name"     validate:"required"`
-		Password string `json:"Password" validate:"required"`
-	}
-
-	var req Req
+	var req authucase.LoginIn
 	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
-	out, err := h.Usecase.Login(c.Request.Context(), authucase.LoginIn{
-		Email:    req.Name,
-		Password: req.Password,
-	})
+	out, err := h.Usecase.Login(c.Request.Context(), req)
 	if err != nil {
 		er.Bind(c, er.W(err))
 		return

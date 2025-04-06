@@ -12,9 +12,9 @@ import (
 )
 
 type SignUpIn struct {
-	Email    string `validate:"required"`
-	Password string `validate:"required"`
-	NickName string `validate:"required"`
+	Email    string `json:"email"    validate:"required"`
+	Password string `json:"password" validate:"required"`
+	NickName string `json:"nickName" validate:"required"`
 }
 
 func (u *Usecase) SignUp(c context.Context, in SignUpIn) error {

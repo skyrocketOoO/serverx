@@ -9,29 +9,20 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Param		user	body	authcontroller.ConfirmForgotPassword.Req	true	"Request body"
+// @Param		user	body	authucase.ConfirmForgotPasswordIn	true	"Request body"
 // @Success	200
 // @Failure	500	{object}	er.APIError
 // @Failure	400	{object}	er.APIError
 // @Failure	404	{object}	er.APIError
 // @Router		/v1/forgotPassword [post]
-// @Tags		Home
+// @Tags		auth
 func (h *Handler) ConfirmForgotPassword(c *gin.Context) {
-	type Req struct {
-		Email   string `json:"email"   validate:"required"`
-		Code    string `json:"code"    validate:"required"`
-		NewPass string `json:"newPass" validate:"required"`
-	}
-
-	var req Req
+	var req authucase.ConfirmForgotPasswordIn
 	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
-	err := h.Usecase.ConfirmForgotPassword(c.Request.Context(), authucase.ConfirmForgotPasswordIn{
-		Email: req.Email,
-	})
-	if err != nil {
+	if err := h.Usecase.ConfirmForgotPassword(c.Request.Context(), req); err != nil {
 		er.Bind(c, er.W(err))
 		return
 	}

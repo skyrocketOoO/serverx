@@ -1,8 +1,20 @@
 definitions:
-  authcontroller.ConfirmSignUp.Req:
+  authucase.ConfirmForgotPasswordIn:
     properties:
       code:
-        example: "123456"
+        type: string
+      email:
+        type: string
+      newPass:
+        type: string
+    required:
+    - code
+    - email
+    - newPass
+    type: object
+  authucase.ConfirmSignUpIn:
+    properties:
+      code:
         type: string
       email:
         type: string
@@ -10,24 +22,52 @@ definitions:
     - code
     - email
     type: object
-  authcontroller.ForgotPassword.Req:
+  authucase.ForgotPasswordIn:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  authcontroller.Login.Req:
+  authucase.LoginIn:
     properties:
-      Name:
+      email:
         type: string
-      Password:
+      password:
         type: string
     required:
-    - Name
-    - Password
+    - email
+    - password
     type: object
-  authcontroller.SignUp.Req:
+  authucase.LoginOut:
+    properties:
+      accessToken:
+        type: string
+      idToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
+  authucase.RefreshTokenIn:
+    properties:
+      email:
+        type: string
+      refreshToken:
+        type: string
+    required:
+    - email
+    - refreshToken
+    type: object
+  authucase.RefreshTokenOut:
+    properties:
+      accessToken:
+        type: string
+      idToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
+  authucase.SignUpIn:
     properties:
       email:
         type: string
@@ -39,15 +79,6 @@ definitions:
     - email
     - nickName
     - password
-    type: object
-  authucase.LoginOut:
-    properties:
-      accessToken:
-        type: string
-      idToken:
-        type: string
-      refreshToken:
-        type: string
     type: object
   er.APIError:
     properties:
@@ -61,28 +92,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /confirm-sign-up:
-    post:
-      parameters:
-      - description: Request body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/authcontroller.ConfirmSignUp.Req'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/er.APIError'
-      tags:
-      - auth
   /healthy:
     get:
       responses:
@@ -97,12 +106,12 @@ paths:
   /login:
     post:
       parameters:
-      - description: Login User
+      - description: request body
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/authcontroller.Login.Req'
+          $ref: '#/definitions/authucase.LoginIn'
       responses:
         "200":
           description: OK
@@ -125,15 +134,15 @@ paths:
           description: OK
       tags:
       - TroubleShooting
-  /sign-up:
+  /v1/confirm-sign-up:
     post:
       parameters:
-      - description: Register User
+      - description: Request body
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/authcontroller.SignUp.Req'
+          $ref: '#/definitions/authucase.ConfirmSignUpIn'
       responses:
         "200":
           description: OK
@@ -155,7 +164,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/authcontroller.ForgotPassword.Req'
+          $ref: '#/definitions/authucase.ForgotPasswordIn'
       responses:
         "200":
           description: OK
@@ -173,6 +182,52 @@ paths:
             $ref: '#/definitions/er.APIError'
       tags:
       - Home
+  /v1/refresh-token:
+    post:
+      parameters:
+      - description: req
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.RefreshTokenIn'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authucase.RefreshTokenOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/er.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/er.APIError'
+      tags:
+      - auth
+  /v1/sign-up:
+    post:
+      parameters:
+      - description: req
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/authucase.SignUpIn'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/er.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/er.APIError'
+      tags:
+      - auth
 securityDefinitions:
   Bearer:
     in: header

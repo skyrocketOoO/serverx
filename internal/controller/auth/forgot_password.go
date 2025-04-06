@@ -10,7 +10,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/util"
 )
 
-// @Param		user	body	authcontroller.ForgotPassword.Req	true	"Request body"
+// @Param		user	body	authucase.ForgotPasswordIn	true	"Request body"
 // @Success	200
 // @Failure	500	{object}	er.APIError
 // @Failure	400	{object}	er.APIError
@@ -18,19 +18,12 @@ import (
 // @Router		/v1/forgotPassword [post]
 // @Tags		Home
 func (h *Handler) ForgotPassword(c *gin.Context) {
-	type Req struct {
-		Email string `json:"email" validate:"required"`
-	}
-
-	var req Req
+	var req authucase.ForgotPasswordIn
 	if ok := util.ParseValidate(c, &req); !ok {
 		return
 	}
 
-	err := h.Usecase.ForgotPassword(c.Request.Context(), authucase.ForgotPasswordIn{
-		Email: req.Email,
-	})
-	if err != nil {
+	if err := h.Usecase.ForgotPassword(c.Request.Context(), req); err != nil {
 		er.Bind(c, er.W(err))
 		return
 	}

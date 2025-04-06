@@ -10,46 +10,37 @@ import (
 	validate "github.com/skyrocketOoO/serverx/internal/service/validator"
 )
 
-type LoginIn struct {
-	Email    string `json:"email"    validate:"required"`
-	Password string `json:"password" validate:"required"`
+type RefreshTokenIn struct {
+	Email        string `json:"email"        validate:"required"`
+	RefreshToken string `json:"refreshToken" validate:"required"`
 }
 
-type LoginOut struct {
+type RefreshTokenOut struct {
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
 	IDToken      string `json:"idToken"`
 }
 
-func (u *Usecase) Login(c context.Context, in LoginIn) (*LoginOut, error) {
+func (u *Usecase) RefreshToken(c context.Context, in RefreshTokenIn) (*RefreshTokenOut, error) {
 	if err := validate.Get().Struct(in); err != nil {
 		return nil, er.W(err, er.ValidateInput)
 	}
 
 	input := &cognitoidentityprovider.InitiateAuthInput{
-		AuthFlow: types.AuthFlowTypeUserPasswordAuth,
+		AuthFlow: types.AuthFlowTypeRefreshTokenAuth,
 		ClientId: aws.String(u.cognitoSvc.ClientID),
 		AuthParameters: map[string]string{
-			"USERNAME":    in.Email,
-			"PASSWORD":    in.Password,
-			"SECRET_HASH": u.cognitoSvc.ComputeSecretHash(in.Email),
+			"REFRESH_TOKEN": in.RefreshToken,
+			"SECRET_HASH":   u.cognitoSvc.ComputeSecretHash(in.Email),
 		},
 	}
 
 	resp, err := u.cognitoSvc.Client.InitiateAuth(c, input)
 	if err != nil {
-		return nil, er.W(err, er.Unauthorized)
+		return nil, er.W(err)
 	}
 
-	if resp.ChallengeName == types.ChallengeNameTypeNewPasswordRequired {
-		return nil, er.NewAppErr(er.NewPasswordRequired)
-	}
-
-	if resp.AuthenticationResult == nil {
-		return nil, er.NewAppErr(er.Unknown)
-	}
-
-	return &LoginOut{
+	return &RefreshTokenOut{
 		AccessToken:  *resp.AuthenticationResult.AccessToken,
 		RefreshToken: *resp.AuthenticationResult.RefreshToken,
 		IDToken:      *resp.AuthenticationResult.IdToken,
