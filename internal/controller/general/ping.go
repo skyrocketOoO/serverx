@@ -7,8 +7,8 @@ import (
 )
 
 // @Success		200
-// @Router			/ping [get]
-// @Tags			TroubleShooting
+// @Router		/v1/ping [get]
+// @Tags		general
 func (h *Handler) Ping(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
