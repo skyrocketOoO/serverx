@@ -5,7 +5,9 @@ func Run() (err error) {
 		return
 	}
 
-	InitLogger()
+	if err = InitLogger(); err != nil {
+		return err
+	}
 
 	if err = NewService(); err != nil {
 		return err

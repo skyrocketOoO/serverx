@@ -10,6 +10,9 @@ import (
 )
 
 func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler, cognito *service.Cognito) {
+	r.Use(middleware.Cors())
+	r.Use(middleware.ErrorHttp)
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	vr := r.Group("/v1")

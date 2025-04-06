@@ -18,7 +18,6 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/controller"
 	authcontroller "github.com/skyrocketOoO/serverx/internal/controller/auth"
 	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
-	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
 	"github.com/skyrocketOoO/serverx/internal/domain"
 	"github.com/skyrocketOoO/serverx/internal/service"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
@@ -50,10 +49,9 @@ func RunServer(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	router := gin.Default()
-	router.Use(middleware.Cors())
-	router.Use(middleware.ErrorHttp)
+	router := newRouter()
 	api.RegisterAPIHandlers(router, handlers, cognitoCli)
+
 	port, _ := cmd.Flags().GetString("port")
 	server := newHTTPServer(router, port)
 
@@ -143,4 +141,12 @@ func newHTTPServer(router *gin.Engine, port string) *http.Server {
 		IdleTimeout:       120 * time.Second,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
+}
+
+func newRouter() *gin.Engine {
+	if domain.Env == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	return gin.Default()
 }

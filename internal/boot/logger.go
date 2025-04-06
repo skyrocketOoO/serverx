@@ -10,7 +10,7 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/service/loki"
 )
 
-func InitLogger() {
+func InitLogger() error {
 	if domain.Env == "local" || domain.Env == "dev" {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	} else {
@@ -51,9 +51,14 @@ func InitLogger() {
 		}
 		log.Logger = zerolog.New(consoleWriter).With().Caller().Timestamp().Logger()
 	case "loki":
-		lokiWriter := loki.NewLokiWriter()
+		lokiWriter, err := loki.NewLokiWriter()
+		if err != nil {
+			return err
+		}
 		log.Logger = log.Output(lokiWriter).With().Caller().Timestamp().Logger()
 	}
+
+	return nil
 }
 
 func simplifyCaller(caller string) string {

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -12,10 +13,20 @@ type LokiWriter struct {
 	LokiURL string
 }
 
-func NewLokiWriter() *LokiWriter {
-	return &LokiWriter{
-		LokiURL: "http://localhost:3100/loki/api/v1/push",
+func NewLokiWriter() (*LokiWriter, error) {
+	lokiURL := os.Getenv("LOKI_URL")
+	fullPushURL := lokiURL + "/loki/api/v1/push"
+	healthURL := lokiURL + "/ready"
+
+	// Simple health check
+	resp, err := http.Get(healthURL)
+	if err != nil || resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("loki not available at %s: %v", healthURL, err)
 	}
+
+	return &LokiWriter{
+		LokiURL: fullPushURL,
+	}, nil
 }
 
 func (lw *LokiWriter) Write(p []byte) (n int, err error) {
