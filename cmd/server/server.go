@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -12,7 +13,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 
-	"github.com/skyrocketOoO/erx/erx"
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/controller"
@@ -34,7 +34,7 @@ var Cmd = &cobra.Command{
 }
 
 func RunServer(cmd *cobra.Command, args []string) {
-	if err := boot.InitAll(); err != nil {
+	if err := boot.Run(); err != nil {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
@@ -87,17 +87,19 @@ func init() {
 		StringVarP(&domain.Database, `database`, "d", "postgres", `"postgres", "mysql"`)
 	Cmd.Flags().
 		StringVarP(&domain.Env, `env`, "e", "local", `"local", "dev", "prod"`)
+	Cmd.Flags().
+		StringVarP(&domain.LogTo, `log`, "l", "stdout", `"stdout", "loki"`)
 
 	Cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		validDatabases := map[string]bool{"postgres": true, "mysql": true}
 		if !validDatabases[domain.Database] {
-			return erx.Errorf("invalid database value: %s. Must be one of: postgres, mysql",
+			return fmt.Errorf("invalid database value: %s. Must be one of: postgres, mysql",
 				domain.Database)
 		}
 
 		validEnvs := map[string]bool{"local": true, "dev": true, "prod": true}
 		if !validEnvs[domain.Env] {
-			return erx.Errorf(
+			return fmt.Errorf(
 				"invalid environment value: %s. Must be one of: dev, prod",
 				domain.Env,
 			)
@@ -105,7 +107,15 @@ func init() {
 
 		port, _ := cmd.Flags().GetString("port")
 		if _, err := strconv.Atoi(port); err != nil || port == "" {
-			return erx.Errorf("invalid port value: %s. Must be a valid number", port)
+			return fmt.Errorf("invalid port value: %s. Must be a valid number", port)
+		}
+
+		validLogs := map[string]bool{"stdout": true, "loki": true}
+		if !validLogs[domain.LogTo] {
+			return fmt.Errorf(
+				"invalid log value: %s. Must be one of: stdout, loki",
+				domain.LogTo,
+			)
 		}
 
 		return nil

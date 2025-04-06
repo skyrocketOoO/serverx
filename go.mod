@@ -16,7 +16,6 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.33.0
-	github.com/skyrocketOoO/erx v0.2.0
 	github.com/skyrocketOoO/gorm-plugin v1.3.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0

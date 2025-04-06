@@ -1,6 +1,6 @@
 package boot
 
-func InitAll() (err error) {
+func Run() (err error) {
 	if err = InitConfig(); err != nil {
 		return
 	}

@@ -10,53 +10,49 @@ import (
 	"github.com/skyrocketOoO/serverx/internal/service/loki"
 )
 
-var SendLoki bool
-
 func InitLogger() {
-	log.Info().Msg("Logger initialized")
-
-	if domain.Env == "dev" {
+	if domain.Env == "local" || domain.Env == "dev" {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	} else if domain.Env == "prod" {
+	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
-
-	consoleWriter := zerolog.ConsoleWriter{
-		Out:        os.Stdout,
-		TimeFormat: "2006-01-02 15:04:05",
-		FormatTimestamp: func(i interface{}) string {
-			if i == nil {
-				return "0000-00-00 00:00:00"
-			}
-			return i.(string)
-		},
-		FormatLevel: func(i interface{}) string {
-			if i == nil {
-				return "[???]"
-			}
-			return "[" + i.(string) + "]"
-		},
-		FormatCaller: func(i interface{}) string {
-			if i == nil {
-				return "unknown:0"
-			}
-			return simplifyCaller(i.(string))
-		},
-		FormatMessage: func(i interface{}) string {
-			if i == nil {
-				return ""
-			}
-			return i.(string)
-		},
-		// NoColor: false,
-	}
-
 	log.Info().Msg("Logger initialized")
-	if SendLoki {
-		consoleWriter.Out = log.Output(loki.NewLokiWriter()).With().Caller().Timestamp().Logger()
-		log.Logger = log.Output(loki.NewLokiWriter()).With().Caller().Timestamp().Logger()
-	} else {
-		log.Logger = log.Output(consoleWriter).With().Caller().Timestamp().Logger()
+
+	switch domain.LogTo {
+	case "stdout":
+		consoleWriter := zerolog.ConsoleWriter{
+			Out:        os.Stdout,
+			TimeFormat: "2006-01-02 15:04:05",
+			FormatTimestamp: func(i any) string {
+				if i == nil {
+					return "0000-00-00 00:00:00"
+				}
+				return i.(string)
+			},
+			FormatLevel: func(i any) string {
+				if i == nil {
+					return "[???]"
+				}
+				return "[" + i.(string) + "]"
+			},
+			FormatCaller: func(i any) string {
+				if i == nil {
+					return "unknown:0"
+				}
+				return simplifyCaller(i.(string))
+			},
+			FormatMessage: func(i any) string {
+				if i == nil {
+					return ""
+				}
+				return i.(string)
+			},
+			// NoColor: false,
+		}
+		log.Logger = zerolog.New(consoleWriter).With().Caller().Timestamp().Logger()
+	case "loki":
+		lokiWriter := loki.NewLokiWriter()
+		log.Logger = log.Output(lokiWriter).With().Caller().Timestamp().Logger()
 	}
 }
 
