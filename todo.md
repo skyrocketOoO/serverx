@@ -1,4 +1,5 @@
-- query and route parameter binding and validate
-- implement map error to http status code
-- implement role based auth
-- implement basic user, role CRUD
+- test auth
+- ut with mock
+- api test
+- refactor er to package
+- integrate db migration
