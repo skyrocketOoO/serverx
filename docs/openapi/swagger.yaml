@@ -122,24 +122,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /healthy:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/er.APIError'
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/er.APIError'
-  /ping:
-    get:
-      responses:
-        "200":
-          description: OK
-      tags:
-      - TroubleShooting
   /v1/change-password:
     post:
       parameters:
@@ -196,6 +178,15 @@ paths:
           description: OK
       tags:
       - auth
+  /v1/healthy:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/er.APIError'
+      tags:
+      - general
   /v1/invite-user:
     post:
       parameters:
@@ -228,6 +219,13 @@ paths:
             $ref: '#/definitions/authucase.LoginOut'
       tags:
       - auth
+  /v1/ping:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - general
   /v1/refresh-token:
     post:
       parameters:

@@ -3,3 +3,4 @@
 - api test
 - refactor er to package
 - integrate db migration
+- send important error to rd

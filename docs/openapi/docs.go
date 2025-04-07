@@ -15,36 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/healthy": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    },
-                    "503": {
-                        "description": "Service Unavailable",
-                        "schema": {
-                            "$ref": "#/definitions/er.APIError"
-                        }
-                    }
-                }
-            }
-        },
-        "/ping": {
-            "get": {
-                "tags": [
-                    "TroubleShooting"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/v1/change-password": {
             "post": {
                 "tags": [
@@ -137,6 +107,21 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/healthy": {
+            "get": {
+                "tags": [
+                    "general"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/er.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/invite-user": {
             "post": {
                 "tags": [
@@ -185,6 +170,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/authucase.LoginOut"
                         }
+                    }
+                }
+            }
+        },
+        "/v1/ping": {
+            "get": {
+                "tags": [
+                    "general"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
