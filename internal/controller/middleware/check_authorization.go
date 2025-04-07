@@ -7,10 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/gin-gonic/gin"
 	"github.com/skyrocketOoO/serverx/internal/domain/er"
-	"github.com/skyrocketOoO/serverx/internal/service"
+	"github.com/skyrocketOoO/serverx/internal/service/aws"
 )
 
-func CheckAuthorization(cognito *service.Cognito) gin.HandlerFunc {
+func CheckAuthorization(cognito *aws.Cognito) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
@@ -33,7 +33,7 @@ func CheckAuthorization(cognito *service.Cognito) gin.HandlerFunc {
 	}
 }
 
-func getUserMail(c context.Context, cognito *service.Cognito, token string) (string, error) {
+func getUserMail(c context.Context, cognito *aws.Cognito, token string) (string, error) {
 	input := &cognitoidentityprovider.GetUserInput{
 		AccessToken: &token,
 	}

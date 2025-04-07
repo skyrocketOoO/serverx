@@ -19,7 +19,7 @@ import (
 	authcontroller "github.com/skyrocketOoO/serverx/internal/controller/auth"
 	generalcontroller "github.com/skyrocketOoO/serverx/internal/controller/general"
 	"github.com/skyrocketOoO/serverx/internal/domain"
-	"github.com/skyrocketOoO/serverx/internal/service"
+	"github.com/skyrocketOoO/serverx/internal/service/aws"
 	authucase "github.com/skyrocketOoO/serverx/internal/usecase/auth"
 	generalucase "github.com/skyrocketOoO/serverx/internal/usecase/general"
 	"github.com/spf13/cobra"
@@ -37,7 +37,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 		log.Fatal().Msgf("Initialization failed: %v", err)
 	}
 
-	cognitoCli, err := service.NewCognito(context.TODO())
+	cognitoCli, err := aws.NewCognito(context.TODO())
 	if err != nil {
 		log.Error().Err(err).Msg("Error creating cognito client")
 		return
@@ -120,7 +120,7 @@ func init() {
 	}
 }
 
-func newHandlers(cognito *service.Cognito) (*controller.Handler, error) {
+func newHandlers(cognito *aws.Cognito) (*controller.Handler, error) {
 	authUsecase := authucase.New(cognito)
 	generalUsecase := generalucase.New()
 

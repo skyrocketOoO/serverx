@@ -1,14 +1,14 @@
 package authucase
 
 import (
-	"github.com/skyrocketOoO/serverx/internal/service"
+	"github.com/skyrocketOoO/serverx/internal/service/aws"
 )
 
 type Usecase struct {
-	cognitoSvc *service.Cognito
+	cognitoSvc *aws.Cognito
 }
 
-func New(cognitoSvc *service.Cognito) *Usecase {
+func New(cognitoSvc *aws.Cognito) *Usecase {
 	return &Usecase{
 		cognitoSvc: cognitoSvc,
 	}

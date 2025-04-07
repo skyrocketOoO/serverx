@@ -4,12 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	controller "github.com/skyrocketOoO/serverx/internal/controller"
 	"github.com/skyrocketOoO/serverx/internal/controller/middleware"
-	"github.com/skyrocketOoO/serverx/internal/service"
+	"github.com/skyrocketOoO/serverx/internal/service/aws"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler, cognito *service.Cognito) {
+func RegisterAPIHandlers(r *gin.Engine, h *controller.Handler, cognito *aws.Cognito) {
 	r.Use(middleware.Cors())
 	r.Use(middleware.ErrorHttp)
 
