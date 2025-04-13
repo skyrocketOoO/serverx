@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 
+	ginpprof "github.com/gin-contrib/pprof"
 	"github.com/skyrocketOoO/serverx/api"
 	"github.com/skyrocketOoO/serverx/internal/boot"
 	"github.com/skyrocketOoO/serverx/internal/controller"
@@ -51,7 +52,7 @@ func RunServer(cmd *cobra.Command, args []string) {
 
 	router := newRouter()
 	api.RegisterAPIHandlers(router, handlers, cognitoCli)
-
+	ginpprof.Register(router)
 	port, _ := cmd.Flags().GetString("port")
 	server := newHTTPServer(router, port)
 
