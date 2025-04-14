@@ -4,3 +4,6 @@
 - refactor er to package
 - integrate db migration
 - send important error to rd
+- pprof
+- intergrate grafana alert
+- aws alert
